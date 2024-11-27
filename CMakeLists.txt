@@ -7,4 +7,4 @@ add_executable(sae_s1_01_s1_02
         head/type.h
         head/head.h
         source/main.c
-        head/fonctions.c)
+        source/fonctions.c)
