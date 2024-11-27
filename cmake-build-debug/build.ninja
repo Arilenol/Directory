@@ -49,17 +49,17 @@ cmake_ninja_workdir = E$:/Intro$ developpement/sae_s1.01-s1.02/cmake-build-debug
 
 build cmake_object_order_depends_target_sae_s1_01_s1_02: phony || CMakeFiles/sae_s1_01_s1_02.dir
 
-build CMakeFiles/sae_s1_01_s1_02.dir/main.c.obj: C_COMPILER__sae_s1_01_s1_02_unscanned_Debug E$:/Intro$ developpement/sae_s1.01-s1.02/main.c || cmake_object_order_depends_target_sae_s1_01_s1_02
-  DEP_FILE = CMakeFiles\sae_s1_01_s1_02.dir\main.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+build CMakeFiles/sae_s1_01_s1_02.dir/source/main.c.obj: C_COMPILER__sae_s1_01_s1_02_unscanned_Debug E$:/Intro$ developpement/sae_s1.01-s1.02/source/main.c || cmake_object_order_depends_target_sae_s1_01_s1_02
+  DEP_FILE = CMakeFiles\sae_s1_01_s1_02.dir\source\main.c.obj.d
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\sae_s1_01_s1_02.dir
-  OBJECT_FILE_DIR = CMakeFiles\sae_s1_01_s1_02.dir
+  OBJECT_FILE_DIR = CMakeFiles\sae_s1_01_s1_02.dir\source
 
-build CMakeFiles/sae_s1_01_s1_02.dir/fonctions.c.obj: C_COMPILER__sae_s1_01_s1_02_unscanned_Debug E$:/Intro$ developpement/sae_s1.01-s1.02/fonctions.c || cmake_object_order_depends_target_sae_s1_01_s1_02
-  DEP_FILE = CMakeFiles\sae_s1_01_s1_02.dir\fonctions.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+build CMakeFiles/sae_s1_01_s1_02.dir/head/fonctions.c.obj: C_COMPILER__sae_s1_01_s1_02_unscanned_Debug E$:/Intro$ developpement/sae_s1.01-s1.02/head/fonctions.c || cmake_object_order_depends_target_sae_s1_01_s1_02
+  DEP_FILE = CMakeFiles\sae_s1_01_s1_02.dir\head\fonctions.c.obj.d
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\sae_s1_01_s1_02.dir
-  OBJECT_FILE_DIR = CMakeFiles\sae_s1_01_s1_02.dir
+  OBJECT_FILE_DIR = CMakeFiles\sae_s1_01_s1_02.dir\head
 
 
 # =============================================================================
@@ -69,7 +69,7 @@ build CMakeFiles/sae_s1_01_s1_02.dir/fonctions.c.obj: C_COMPILER__sae_s1_01_s1_0
 #############################################
 # Link the executable sae_s1_01_s1_02.exe
 
-build sae_s1_01_s1_02.exe: C_EXECUTABLE_LINKER__sae_s1_01_s1_02_Debug CMakeFiles/sae_s1_01_s1_02.dir/main.c.obj CMakeFiles/sae_s1_01_s1_02.dir/fonctions.c.obj
+build sae_s1_01_s1_02.exe: C_EXECUTABLE_LINKER__sae_s1_01_s1_02_Debug CMakeFiles/sae_s1_01_s1_02.dir/source/main.c.obj CMakeFiles/sae_s1_01_s1_02.dir/head/fonctions.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\sae_s1_01_s1_02.dir
