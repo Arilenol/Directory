@@ -3,5 +3,6 @@
 
 
 int main(int arg,char * argv[]){
+    printf("test");
     return 0;
 }
