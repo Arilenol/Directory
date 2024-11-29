@@ -33,5 +33,6 @@ int main(void){
         printf("Valeur erronée");
         break;
     }
+
     return 0;
 }
