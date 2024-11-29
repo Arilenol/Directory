@@ -1,3 +1,6 @@
+//
+// Created by Leny_ARIZZI on 27/11/2024.
+//
 #include "../head/head.h"
 #define NB_PROP 2
 int main(void){
@@ -25,7 +28,10 @@ int main(void){
     case 2:
         //fonction Ajouter
         break;
-    }
 
+    default:
+        printf("Valeur erronée");
+        break;
+    }
     return 0;
 }
