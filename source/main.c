@@ -2,7 +2,6 @@
 // Created by Leny_ARIZZI on 27/11/2024.
 //
 #include "../head/head.h"
-#define NB_PROP 2
 int main(void){
     system("chcp 65001");
     system("cls");
@@ -14,15 +13,16 @@ int main(void){
     }
     printf("\nEntrez le chiffre correspondant à l'action que vous souhaitez réaliser : ");
     scanf("%d",&choix);
-
     while (choix<1 || choix >NB_PROP){
         printf("Sasie hors plage\nRéessayez : ");
         scanf("%d",&choix);
     }
+    char annuaire[6][30]={"annuaire à 10 entrée","annuaire à 50 entrée","annuaire à 100 entrée","annuaire à 500 entrée","annuaire à 1000 entrée","annuaire à 5000 entrée"};
+    char** pannuaire = &annuaire[0][0];
     switch (choix)
     {
     case 1:
-        //fonction Consulter
+        consulter(pannuaire);
         break;
     
     case 2:
