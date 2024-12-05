@@ -22,7 +22,7 @@ int main(void){
     switch (choix)
     {
     case 1:
-        consulter(pannuaire);
+        ouverture(pannuaire);
         break;
     
     case 2:

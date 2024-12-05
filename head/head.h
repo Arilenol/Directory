@@ -21,6 +21,6 @@
  * @post : la fonction affiche un menu qui demande à l'utilisateur de
  * choisir parmis les fichier disponible lequel ouvrir
  */
-void consulter(char* pann);
+void ouverture(char* pann);
 
 #endif // HEAD_H_INCLUDED
