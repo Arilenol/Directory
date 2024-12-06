@@ -18,11 +18,10 @@ int main(void){
         scanf("%d",&choix);
     }
     char annuaire[6][30]={"annuaire à 10 entrée","annuaire à 50 entrée","annuaire à 100 entrée","annuaire à 500 entrée","annuaire à 1000 entrée","annuaire à 5000 entrée"};
-    char** pannuaire = &annuaire[0][0];
     switch (choix)
     {
     case 1:
-        ouverture(pannuaire);
+        ouverture(6,30,annuaire);
         break;
     
     case 2:

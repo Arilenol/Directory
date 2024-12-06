@@ -61,6 +61,12 @@ build CMakeFiles/sae_s1_01_s1_02.dir/source/fonctions.c.obj: C_COMPILER__sae_s1_
   OBJECT_DIR = CMakeFiles\sae_s1_01_s1_02.dir
   OBJECT_FILE_DIR = CMakeFiles\sae_s1_01_s1_02.dir\source
 
+build CMakeFiles/sae_s1_01_s1_02.dir/source/Larz.c.obj: C_COMPILER__sae_s1_01_s1_02_unscanned_Debug E$:/Intro$ developpement/sae_s1.01-s1.02/source/Larz.c || cmake_object_order_depends_target_sae_s1_01_s1_02
+  DEP_FILE = CMakeFiles\sae_s1_01_s1_02.dir\source\Larz.c.obj.d
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\sae_s1_01_s1_02.dir
+  OBJECT_FILE_DIR = CMakeFiles\sae_s1_01_s1_02.dir\source
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target sae_s1_01_s1_02
@@ -69,7 +75,7 @@ build CMakeFiles/sae_s1_01_s1_02.dir/source/fonctions.c.obj: C_COMPILER__sae_s1_
 #############################################
 # Link the executable sae_s1_01_s1_02.exe
 
-build sae_s1_01_s1_02.exe: C_EXECUTABLE_LINKER__sae_s1_01_s1_02_Debug CMakeFiles/sae_s1_01_s1_02.dir/source/main.c.obj CMakeFiles/sae_s1_01_s1_02.dir/source/fonctions.c.obj
+build sae_s1_01_s1_02.exe: C_EXECUTABLE_LINKER__sae_s1_01_s1_02_Debug CMakeFiles/sae_s1_01_s1_02.dir/source/main.c.obj CMakeFiles/sae_s1_01_s1_02.dir/source/fonctions.c.obj CMakeFiles/sae_s1_01_s1_02.dir/source/Larz.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\sae_s1_01_s1_02.dir
