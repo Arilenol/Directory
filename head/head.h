@@ -21,7 +21,7 @@
  * @post : la fonction affiche un menu qui demande à l'utilisateur de
  * choisir parmis les fichier disponible lequel ouvrir
  */
-void ouverture(int x,int y,char annuaires[x][y]);
+int ouverture(int x,int y,char annuaires[x][y],FILE* fic);
 void ajout(FILE* fic);
-
+int total_lignes(FILE * fichier);
 #endif // HEAD_H_INCLUDED

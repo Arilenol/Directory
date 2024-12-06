@@ -17,11 +17,12 @@ int main(void){
         printf("Sasie hors plage\nRéessayez : ");
         scanf("%d",&choix);
     }
+    FILE* fic = NULL;
     char annuaire[6][30]={"annuaire à 10 entrée","annuaire à 50 entrée","annuaire à 100 entrée","annuaire à 500 entrée","annuaire à 1000 entrée","annuaire à 5000 entrée"};
     switch (choix)
     {
     case 1:
-        ouverture(6,30,annuaire);
+        ouverture(6,30,annuaire,fic);
         break;
     
     case 2:

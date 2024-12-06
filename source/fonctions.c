@@ -2,10 +2,10 @@
 // Created by Aymeric_ONFRAY on 27/11/2024.
 //
 #include "../head/head.h"
-void ouverture(int x,int y,char annuaires[x][y]){
+int ouverture(int x,int y,char annuaires[x][y],FILE* fic){
     int choix;
     printf("Quel fichier voulez vous consulter\n");
-    for (int i = 0; i<NB_FICH; i++){
+    for (int i = 0; i<x; i++){
         printf("%d) %s\n",i+1,annuaires[i]);
     }
     printf("\nEntrez le chiffre correspondant au fichier que vous souhaitez ouvrir : ");
@@ -14,7 +14,7 @@ void ouverture(int x,int y,char annuaires[x][y]){
         printf("Sasie hors plage\nRéessayez : ");
         scanf("%d",&choix);
     }
-    FILE* fic = NULL;
+    int nb_ligne;
     switch(choix){
         case(1):
             fic = fopen(DIX,"r+");
@@ -23,6 +23,8 @@ void ouverture(int x,int y,char annuaires[x][y]){
                 perror("fopen");
                 exit(EXIT_FAILURE);
             }
+            nb_ligne = total_lignes(fic);
+            CLIENT tab_client
             break;
         case(2):
             fic = fopen(CINQUANTE,"r+");
