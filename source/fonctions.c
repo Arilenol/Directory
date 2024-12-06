@@ -24,7 +24,6 @@ int ouverture(int x,int y,char annuaires[x][y],FILE* fic){
                 exit(EXIT_FAILURE);
             }
             nb_ligne = total_lignes(fic);
-            CLIENT tab_client
             break;
         case(2):
             fic = fopen(CINQUANTE,"r+");
@@ -70,28 +69,30 @@ int ouverture(int x,int y,char annuaires[x][y],FILE* fic){
 
             break;
     }
+}
+void fermeture(FILE* fic){
     fclose(fic);
     printf("Le fichier à bien été fermé");
 }
 void ajout(FILE* fic){
     fseek(fic,SEEK_END,0);
-    CLIENT cli;
-    printf("Rentrez les inofrmation du client a rajouter\n");
-    printf("Le nom du client : \n");
-    scanf("%s",cli.nom);
-    printf("Le prenom du client : \n");
-    scanf("%s",cli.prenom);
-    printf("La ville du client : \n");
-    scanf("%s",cli.ville);
-    printf("Le code postal du client : \n");
-    scanf("%s",cli.codep);
-    printf("Le numero de téléphone du client : \n");
-    scanf("%s",cli.tel);
-    printf("L'adresse mail du client : \n");
-    scanf("%s",cli.adrmail);
-    printf("La profession du client : \n");
-    scanf("%s",cli.profession);
-    printf("La date de naissance du client : \n");
-    scanf("%s",cli.date_naissance);
-    fprintf(fic,"%s,%s;%s %s,%s,%s,%s,%s",cli.nom,cli.prenom,cli.ville,cli.codep,cli.tel,cli.adrmail,cli.profession,cli.date_naissance);
+    CLIENT cli = {"","","","","","","",""};
+    printf("Rentrez les inofrmation du client a rajouter");
+    printf("\nLe prenom du client :");
+    fgets(cli.prenom,75,stdin);
+    /*printf("\nLe nom du client :");
+    fgets(cli.nom,85,stdin);
+    printf("\nLa ville du client : ");
+    fgets(cli.ville,85,stdin);
+    printf("\nLe code postal du client :");
+    fgets(cli.codep,6,stdin);
+    printf("\nLe numero de téléphone du client :");
+    fgets(cli.tel,16,stdin);
+    printf("\nL'adresse mail du client :");
+    fgets(cli.adrmail,100,stdin);
+    printf("\nLa profession du client :");
+    fgets(cli.profession,85,stdin);
+    printf("\nLa date de naissance du client :");
+    fgets(cli.date_naissance,11,stdin);*/
+    fprintf(fic,"%s,%s;%s %s,%s,%s,%s,%s",cli.prenom,cli.nom,cli.ville,cli.codep,cli.tel,cli.adrmail,cli.profession,cli.date_naissance);
 }

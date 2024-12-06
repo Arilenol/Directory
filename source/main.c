@@ -7,6 +7,8 @@ int main(void){
     system("cls");
     char possible[NB_PROP][10]={"Consulter","Ajouter"};
     int choix;
+    FILE* fic = NULL;int nb_ligne;
+    char annuaire[6][30]={"annuaire à 10 entrée","annuaire à 50 entrée","annuaire à 100 entrée","annuaire à 500 entrée","annuaire à 1000 entrée","annuaire à 5000 entrée"};
     printf("Que voulez-faire parmi les actions suivantes ? \n");
     for (int i = 0; i<NB_PROP; i++){
         printf("%d) %s\n",i+1,possible[i]);
@@ -17,16 +19,19 @@ int main(void){
         printf("Sasie hors plage\nRéessayez : ");
         scanf("%d",&choix);
     }
-    FILE* fic = NULL;
-    char annuaire[6][30]={"annuaire à 10 entrée","annuaire à 50 entrée","annuaire à 100 entrée","annuaire à 500 entrée","annuaire à 1000 entrée","annuaire à 5000 entrée"};
+
     switch (choix)
     {
     case 1:
         ouverture(6,30,annuaire,fic);
+         nb_ligne = total_lignes(fic);
+            fermeture(fic);
         break;
     
     case 2:
-        //fonction Ajouter
+        ouverture(6,30,annuaire,fic);
+        ajout(fic);
+        fermeture(fic);
         break;
 
     default:

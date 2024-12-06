@@ -24,4 +24,5 @@
 int ouverture(int x,int y,char annuaires[x][y],FILE* fic);
 void ajout(FILE* fic);
 int total_lignes(FILE * fichier);
+void fermeture(FILE* fic);
 #endif // HEAD_H_INCLUDED
