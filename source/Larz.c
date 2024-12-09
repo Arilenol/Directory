@@ -15,4 +15,4 @@ int total_lignes(FILE * fichier){
 }
 
 
-//fonction modif
+//fonction modi

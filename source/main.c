@@ -24,16 +24,15 @@ int main(void){
     switch (choix)
     {
     case 1:
-        ouverture(6,30,annuaire,fic);
-         nb_ligne = total_lignes(fic);
-         printf("%d\n",nb_ligne);
-           // afficher(fic,nb_ligne);
+        fic = ouverture(6,30,annuaire,fic);
+         afficher(fic);
             fermeture(fic);
         break;
     
     case 2:
-        ouverture(6,30,annuaire,fic);
+        fic = ouverture(6,30,annuaire,fic);
         ajout(fic);
+        afficher(fic);
         fermeture(fic);
         break;
 

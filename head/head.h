@@ -21,10 +21,11 @@
  * @post : la fonction affiche un menu qui demande à l'utilisateur de
  * choisir parmis les fichier disponible lequel ouvrir
  */
-int ouverture(int x,int y,char annuaires[x][y],FILE* fic);
+FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic);
 void ajout(FILE* fic);
 int total_lignes(FILE * fichier);
 void fermeture(FILE* fic);
 void retirer_chariot(char* mot);
-void afficher(FILE* fic,int lignes);
+void afficher(FILE* fic);
+void vider_buffer();
 #endif // HEAD_H_INCLUDED
