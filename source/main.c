@@ -7,7 +7,8 @@ int main(void){
     system("cls");
     char possible[NB_PROP][10]={"Consulter","Ajouter"};
     int choix;
-    FILE* fic = NULL;int nb_ligne;
+    FILE* fic = NULL;
+    int nb_ligne;
     char annuaire[6][30]={"annuaire à 10 entrée","annuaire à 50 entrée","annuaire à 100 entrée","annuaire à 500 entrée","annuaire à 1000 entrée","annuaire à 5000 entrée"};
     printf("Que voulez-faire parmi les actions suivantes ? \n");
     for (int i = 0; i<NB_PROP; i++){
@@ -25,6 +26,8 @@ int main(void){
     case 1:
         ouverture(6,30,annuaire,fic);
          nb_ligne = total_lignes(fic);
+         printf("%d\n",nb_ligne);
+           // afficher(fic,nb_ligne);
             fermeture(fic);
         break;
     

@@ -14,7 +14,6 @@ int ouverture(int x,int y,char annuaires[x][y],FILE* fic){
         printf("Sasie hors plage\nRéessayez : ");
         scanf("%d",&choix);
     }
-    int nb_ligne;
     switch(choix){
         case(1):
             fic = fopen(DIX,"r+");
@@ -23,7 +22,6 @@ int ouverture(int x,int y,char annuaires[x][y],FILE* fic){
                 perror("fopen");
                 exit(EXIT_FAILURE);
             }
-            nb_ligne = total_lignes(fic);
             break;
         case(2):
             fic = fopen(CINQUANTE,"r+");
@@ -74,25 +72,48 @@ void fermeture(FILE* fic){
     fclose(fic);
     printf("Le fichier à bien été fermé");
 }
+void afficher(FILE* fic,int lignes){
+    char ligne[464];
+    for(int i=0;i<=lignes;i++){
+        printf("%d\n",i);
+    }
+}
 void ajout(FILE* fic){
     fseek(fic,SEEK_END,0);
     CLIENT cli = {"","","","","","","",""};
     printf("Rentrez les inofrmation du client a rajouter");
-    printf("\nLe prenom du client :");
+    printf("\nLe prenom du client : ");
     fgets(cli.prenom,75,stdin);
-    /*printf("\nLe nom du client :");
+    retirer_chariot(cli.prenom);
+    printf("\nLe nom du client :");
     fgets(cli.nom,85,stdin);
+    retirer_chariot(cli.nom);
     printf("\nLa ville du client : ");
     fgets(cli.ville,85,stdin);
+    retirer_chariot(cli.ville);
     printf("\nLe code postal du client :");
     fgets(cli.codep,6,stdin);
+    retirer_chariot(cli.codep);
     printf("\nLe numero de téléphone du client :");
     fgets(cli.tel,16,stdin);
+    retirer_chariot(cli.tel);
     printf("\nL'adresse mail du client :");
     fgets(cli.adrmail,100,stdin);
+    retirer_chariot(cli.adrmail);
     printf("\nLa profession du client :");
     fgets(cli.profession,85,stdin);
+    retirer_chariot(cli.profession);
     printf("\nLa date de naissance du client :");
-    fgets(cli.date_naissance,11,stdin);*/
-    fprintf(fic,"%s,%s;%s %s,%s,%s,%s,%s",cli.prenom,cli.nom,cli.ville,cli.codep,cli.tel,cli.adrmail,cli.profession,cli.date_naissance);
+    fgets(cli.date_naissance,11,stdin);
+    retirer_chariot(cli.date_naissance);
+    printf("%s,%s,%s %s,%s,%s,%s,%s\n",cli.prenom,cli.nom,cli.ville,cli.codep,cli.tel,cli.adrmail,cli.profession,cli.date_naissance);
+}
+void retirer_chariot(char mot[]){
+    int i = 0;
+    if(mot[0] == '\n')
+        mot[0] = '\0';
+    while(mot[i] != '\n' && mot[i] != '\0') {
+        i++;
+    }
+    mot[i] = '\0';
 }
