@@ -2,7 +2,7 @@
 // Created by Aymeric_ONFRAY on 27/11/2024.
 //
 #include "../head/head.h"
-FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic){
+FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
     int choix;
     printf("Quel fichier voulez vous consulter\n");
     for (int i = 0; i<x; i++){
@@ -16,7 +16,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic){
     }
     switch(choix){
         case(1):
-            fic = fopen(DIX,"r");
+            fic = fopen(DIX,mode);
             if (fic == NULL){
                 printf("Echec ouverture fichier\n");
                 perror("fopen");
@@ -24,7 +24,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic){
             }
             break;
         case(2):
-            fic = fopen(CINQUANTE,"r+");
+            fic = fopen(CINQUANTE,mode);
             if (fic == NULL){
                 printf("Echec ouverture fichier\n");
                 perror("fopen");
@@ -33,7 +33,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic){
             break;
         case(3):
             printf("");
-            fic = fopen(CENT,"r+");
+            fic = fopen(CENT,mode);
             if (fic == NULL){
                 printf("Echec ouverture fichier\n");
                 perror("fopen");
@@ -41,7 +41,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic){
             }
             break;
         case(4):
-            fic = fopen(CINQ_CENTS,"r+");
+            fic = fopen(CINQ_CENTS,mode);
             if (fic == NULL){
                 printf("Echec ouverture fichier\n");
                 perror("fopen");
@@ -49,7 +49,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic){
             }
             break;
         case(5):
-            fic = fopen(MILLE,"r+");
+            fic = fopen(MILLE,mode);
             if (fic == NULL){
                 printf("Echec ouverture fichier\n");
                 perror("fopen");
@@ -58,7 +58,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic){
             break;
         case(6):
             printf("");
-            fic = fopen(CINQ_MILLES,"r+");
+            fic = fopen(CINQ_MILLES,mode);
             if (fic == NULL){
                 printf("Echec ouverture fichier\n");
                 perror("fopen");
@@ -85,10 +85,10 @@ void afficher(FILE* fic){
 }
 void ajout(FILE* fic){
     vider_buffer();
-    fseek(fic,SEEK_END,0);
-    CLIENT cli = {"Antoine","Dupont","TOULOUSE","31000","0600000000","a","rugbyman","15/11/1996"};
+    fseek(fic,SEEK_END,1);
+    CLIENT cli;
     printf("Rentrez les information du client a rajouter");
-    /*printf("\nLe prenom du client : ");
+    printf("\nLe prenom du client : ");
     fgets(cli.prenom,sizeof(cli.prenom),stdin);
     retirer_chariot(cli.prenom);
     printf("\nLe nom du client :");
@@ -112,9 +112,8 @@ void ajout(FILE* fic){
     retirer_chariot(cli.profession);
     printf("\nLa date de naissance du client :");
     fgets(cli.date_naissance,sizeof(cli.date_naissance),stdin);
-    retirer_chariot(cli.date_naissance);*/
-    if(fprintf(fic,"%s,%s,%s %s,%s,%s,%s,%s\n",cli.prenom,cli.nom,cli.ville,cli.codep,cli.tel,cli.adrmail,cli.profession,cli.date_naissance) <= 0)
-        printf("erreur de copy");
+    retirer_chariot(cli.date_naissance);
+    fprintf(fic,"%s,%s,%s %s,%s,%s,%s,%s\n",cli.prenom,cli.nom,cli.ville,cli.codep,cli.tel,cli.adrmail,cli.profession,cli.date_naissance);
 }
 void retirer_chariot(char mot[]){
     int i = 0;

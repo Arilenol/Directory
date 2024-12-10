@@ -24,13 +24,13 @@ int main(void){
     switch (choix)
     {
     case 1:
-        fic = ouverture(6,30,annuaire,fic);
+        fic = ouverture(6,30,annuaire,fic,"r");
          afficher(fic);
             fermeture(fic);
         break;
     
     case 2:
-        fic = ouverture(6,30,annuaire,fic);
+        fic = ouverture(6,30,annuaire,fic,"a+");
         ajout(fic);
         afficher(fic);
         fermeture(fic);
