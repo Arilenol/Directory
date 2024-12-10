@@ -64,7 +64,6 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
                 perror("fopen");
                 exit(EXIT_FAILURE);
             }
-
             break;
         default:
             printf("erreur");
@@ -81,6 +80,26 @@ void afficher(FILE* fic){
     int i =1;
     while (fgets(ligne, sizeof(ligne), fic) != NULL) {
         printf("%d: %s", i++, ligne); // Afficher la ligne
+    }
+}
+void afficher_ligne_donnee_manq(FILE* fic){
+    rewind(fic);
+    char ligne[464];
+    int i =1,j=1;
+    while (fgets(ligne, sizeof(ligne), fic) != NULL) {
+        j=1;
+        if(ligne[j] == ',') {
+            printf("%d: %s", i++, ligne); // Afficher la ligne
+            break;
+        }
+        else {
+            while (ligne[j] != '\n' && ligne[j] != '\0') {
+                if (ligne[j] == ',' && ligne[j - 1]){
+                    printf("%d: %s", i++, ligne); // Afficher la ligne
+                    break;
+                }
+            }
+        }
     }
 }
 void ajout(FILE* fic){

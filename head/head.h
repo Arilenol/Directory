@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "type.h"
 #include <assert.h>
-#define NB_PROP 2
+#define NB_PROP 4
 #define NB_FICH 6
 #define DIX "../benchmark_1/annuaire_10_entrees.csv"
 #define CINQUANTE "../benchmark_1/annuaire_50_entrees.csv"
@@ -28,4 +28,5 @@ void fermeture(FILE* fic);
 void retirer_chariot(char* mot);
 void afficher(FILE* fic);
 void vider_buffer();
+void afficher_ligne_donnee_manq(FILE* fic);
 #endif // HEAD_H_INCLUDED
