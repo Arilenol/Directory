@@ -8,8 +8,6 @@
 #include <stdlib.h>
 #include "type.h"
 #include <assert.h>
-#define NB_PROP 4
-#define NB_FICH 6
 #define DIX "../benchmark_1/annuaire_10_entrees.csv"
 #define CINQUANTE "../benchmark_1/annuaire_50_entrees.csv"
 #define CENT "../benchmark_1/annuaire_100_entrees.csv"
@@ -17,16 +15,51 @@
 #define MILLE "../benchmark_1/annuaire_1000_entrees.csv"
 #define CINQ_MILLES "../benchmark_1/annuaire_5000_entrees.csv"
 /**
- * param[in] int* pann
+ * param[in] int x,y,char[x][y],FILE*,char[]
  * @post : la fonction affiche un menu qui demande à l'utilisateur de
  * choisir parmis les fichier disponible lequel ouvrir
  */
 FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]);
+/**
+ *
+ * @param fic
+ * @post: demande a l'utilisateur de saisir les informations du nouveau client et les rentre a la fin du
+ * fichier
+ */
 void ajout(FILE* fic);
+/**
+ * @param fichier
+ * @return le nombre de ligne contenant du texte d'un fichier
+ */
 int total_lignes(FILE * fichier);
+/**
+ * @param fic
+ * @post ferme le fichier dont le pointeur est rentré en parametre
+ */
 void fermeture(FILE* fic);
+/**
+ * @param mot
+ * @post prend la chaine mot et supprime la premiere ocurrence de '\n'
+ */
 void retirer_chariot(char* mot);
+/**
+ * @param fic
+ * @post affiche dans le terminal toute les ligne du fichier rentrée en parametre
+ */
 void afficher(FILE* fic);
+/**
+ * @post decale le curseur du fichier stdin (buffer) pour eviter une lecture involontaire
+ * du buffer par fgets
+ */
 void vider_buffer();
-void afficher_ligne_donnee_manq(FILE* fic);
+/**
+ * @param mot
+ * @post transforme toute les lettre minuscule en majuscule
+ */
+void upper(char mot[]);
+/**
+ * @param fic
+ * @post affiche toute les ligne ou il manque des informations
+ */
+void afficher_manq(FILE* fic);
 #endif // HEAD_H_INCLUDED

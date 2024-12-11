@@ -5,19 +5,19 @@
 int main(void){
     system("chcp 65001");
     system("cls");
-    char possible[NB_PROP][50]={"Consulter","Ajouter","Consulter les Client avec donné manquante","Terminer"};
+    char possible[4][50]={"Consulter","Ajouter","Consulter les Client avec donné manquante","Terminer"};
     int choix;
     FILE* fic = NULL;
     int nb_ligne;
     char annuaire[6][30]={"annuaire à 10 entrée","annuaire à 50 entrée","annuaire à 100 entrée","annuaire à 500 entrée","annuaire à 1000 entrée","annuaire à 5000 entrée"};
     do {
         printf("\n\nQue voulez-faire parmi les actions suivantes ? \n");
-        for (int i = 0; i < NB_PROP; i++) {
+        for (int i = 0; i < 4; i++) {
             printf("%d) %s\n", i + 1, possible[i]);
         }
         printf("\nEntrez le chiffre correspondant à l'action que vous souhaitez réaliser : ");
         scanf("%d", &choix);
-        while (choix < 1 || choix > NB_PROP) {
+        while (choix < 1 || choix > 4) {
             printf("Sasie hors plage\nRéessayez : ");
             scanf("%d", &choix);
         }
@@ -38,7 +38,7 @@ int main(void){
 
             case (3):
                 fic = ouverture(6, 30, annuaire, fic, "r");
-                afficher_ligne_donnee_manq(fic);
+                afficher_manq(fic);
                 fermeture(fic);
                 break;
 

@@ -10,7 +10,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
     }
     printf("\nEntrez le chiffre correspondant au fichier que vous souhaitez ouvrir : ");
     scanf("%d",&choix);
-    while (choix<1 || choix >NB_FICH){
+    while (choix<1 || choix > 6){
         printf("Sasie hors plage\nRéessayez : ");
         scanf("%d",&choix);
     }
@@ -82,24 +82,18 @@ void afficher(FILE* fic){
         printf("%d: %s", i++, ligne); // Afficher la ligne
     }
 }
-void afficher_ligne_donnee_manq(FILE* fic){
+void afficher_manq(FILE* fic){
     rewind(fic);
     char ligne[464];
-    int i =1,j=1;
+    int i =0;
     while (fgets(ligne, sizeof(ligne), fic) != NULL) {
-        j=1;
-        if(ligne[j] == ',') {
-            printf("%d: %s", i++, ligne); // Afficher la ligne
-            break;
+        i=0;
+        while(ligne[i+1] != '\n' && ligne[i+1] != '\0'){
+            if((ligne[i] == ',' || ligne[i] == ' ' ||) && (ligne[i+1] == ',' || ligne[i+1] == '\n'))
+                printf("%d: %s", i++, ligne); // Afficher la ligne
+            i++;
         }
-        else {
-            while (ligne[j] != '\n' && ligne[j] != '\0') {
-                if (ligne[j] == ',' && ligne[j - 1]){
-                    printf("%d: %s", i++, ligne); // Afficher la ligne
-                    break;
-                }
-            }
-        }
+
     }
 }
 void ajout(FILE* fic){
@@ -116,6 +110,7 @@ void ajout(FILE* fic){
     printf("\nLa ville du client : ");
     fgets(cli.ville,sizeof(cli.ville),stdin);
     retirer_chariot(cli.ville);
+    upper(cli.ville);
     printf("\nLe code postal du client :");
     fgets(cli.codep,sizeof(cli.codep),stdin);
     retirer_chariot(cli.codep);
@@ -147,4 +142,10 @@ void vider_buffer(){
     char trash = fgetc(stdin);
     while(trash != '\n')
         trash = fgetc(stdin);
+}
+void upper(char mot[]){
+    int i=0;
+    while(mot[i] != '\n' && mot[i] != '\0')
+        if(mot[i]> 96 && mot[i]< 123)
+            mot[i]=mot[i]-32;
 }
