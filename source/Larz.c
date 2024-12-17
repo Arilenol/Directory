@@ -84,8 +84,92 @@ void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]){
         }
     }
 
+void lire_carac(FILE* f){
+    char c;
+    c = fgetc(f);
 
+    while(c!=EOF){
+        printf("%c",c);
+        c=fgetc(f);
+    }
+    fclose(f);
 
+}
+void retirerchariot(char mot[]){
+    int i = 0;
+    while (mot[i]!='\n' && mot[i]!='\0'){
+        i++;
+        }
+    
+    mot[i]='\0';
+}
+
+//FONCTION EN DEVELOPPEMENT 
+void modif(FILE* fichier){
+    int nb_ligne = total_lignes(fichier);
+    rewind(fichier);
+    CLIENT tableau[nb_ligne];
+    mot_par_mot(fichier,nb_ligne,tableau);
+    printf("Qui souhaitez vous modifier ? Entrez son prenom : ");
+    char prenom[20];
+    fgets(prenom,21,stdin);
+    retirerchariot(prenom);
+    FILE* fic2 = fopen("../head/fichiertmp.csv","w");
+    for (int i = 0; i<nb_ligne;i++){
+        if (stricmp(prenom, tableau[i].prenom) == 0){
+            fprintf(fic2,"%s,",tableau[i].prenom);
+            fprintf(fic2,"%s,",tableau[i].nom);
+            fprintf(fic2,"%s,",tableau[i].ville);
+            //fprintf(fic2,"%s,",tableau[i].codep);   A RECTIFIER ICI
+            fprintf(fic2,"%s,",tableau[i].tel);
+            fprintf(fic2,"%s,",tableau[i].adrmail);
+            fprintf(fic2,"%s,",tableau[i].profession);
+            fprintf(fic2,"%s\n",tableau[i].date_naissance);
+        }
+
+    }
+    fclose(fic2);
+    FILE* fic = fopen("../head/fichiertmp.csv","r");
+    printf("Entrez le numero de la ligne sur laquelle vous voulez modifier un element\n");
+    lire_carac(fic);
+    /*
+    
+        if (stricmp(option, "prenom") == 0) {
+            
+        } 
+        else if (stricmp(option, "nom") == 0) {
+            
+        } 
+        else if (stricmp(option, "ville") == 0) {
+            
+        
+        } 
+        else if (stricmp(option, "codep") == 0) {
+            
+        } 
+        else if (stricmp(option, "tel") == 0) {
+            
+        } 
+        else if (stricmp(option, "adrmail") == 0) {
+            
+        } 
+    
+        else if (stricmp(option, "profession") == 0) {
+            
+        } 
+        
+        else if (stricmp(option, "date_naissance") == 0) {
+            
+        } 
+    
+        else{
+            printf("Le choix rentré n'est pas possible");
+        }
+
+    }
+        
+*/
+}
 
 int main(void){ 
     
@@ -105,4 +189,3 @@ int main(void){
     return EXIT_SUCCESS;
 }
 
-//fonction modi
