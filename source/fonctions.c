@@ -10,7 +10,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
     }
     printf("\nEntrez le chiffre correspondant au fichier que vous souhaitez ouvrir : ");
     scanf("%d",&choix);
-    while (choix<1 || choix > 6){
+    while (choix<1 || choix > 7){
         printf("Sasie hors plage\nRéessayez : ");
         scanf("%d",&choix);
     }
@@ -22,6 +22,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
                 perror("fopen");
                 exit(EXIT_FAILURE);
             }
+            system("cls");
             break;
         case(2):
             fic = fopen(CINQUANTE,mode);
@@ -30,6 +31,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
                 perror("fopen");
                 exit(EXIT_FAILURE);
             }
+            system("cls");
             break;
         case(3):
             printf("");
@@ -39,6 +41,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
                 perror("fopen");
                 exit(EXIT_FAILURE);
             }
+            system("cls");
             break;
         case(4):
             fic = fopen(CINQ_CENTS,mode);
@@ -47,6 +50,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
                 perror("fopen");
                 exit(EXIT_FAILURE);
             }
+            system("cls");
             break;
         case(5):
             fic = fopen(MILLE,mode);
@@ -55,6 +59,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
                 perror("fopen");
                 exit(EXIT_FAILURE);
             }
+            system("cls");
             break;
         case(6):
             printf("");
@@ -64,6 +69,10 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
                 perror("fopen");
                 exit(EXIT_FAILURE);
             }
+            system("cls");
+            break;
+        case(7):
+            system("cls");
             break;
         default:
             printf("erreur");
@@ -89,7 +98,7 @@ void afficher_manq(FILE* fic){
     while (fgets(ligne, sizeof(ligne), fic) != NULL) {
         i=0;
         while(ligne[i+1] != '\n' && ligne[i+1] != '\0'){
-            if((ligne[i] == ',' || ligne[i] == ' ' ||) && (ligne[i+1] == ',' || ligne[i+1] == '\n'))
+            if((ligne[i] == ',' || ligne[i] == ' ') && (ligne[i+1] == ',' || ligne[i+1] == '\n'))
                 printf("%d: %s", i++, ligne); // Afficher la ligne
             i++;
         }
@@ -145,7 +154,9 @@ void vider_buffer(){
 }
 void upper(char mot[]){
     int i=0;
-    while(mot[i] != '\n' && mot[i] != '\0')
+    while(mot[i] != '\n' && mot[i] != '\0'){
         if(mot[i]> 96 && mot[i]< 123)
             mot[i]=mot[i]-32;
+        i++;
+    }
 }

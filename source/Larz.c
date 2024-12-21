@@ -170,7 +170,8 @@ void modif(FILE* fichier){
         
 */
 }
-
+// T'ammuse pas a mettre des main un pau partout ça fait capauter le compilateur
+/*
 int main(void){ 
     
     FILE* fic = fopen(chemin,"r");
@@ -188,4 +189,4 @@ int main(void){
 
     return EXIT_SUCCESS;
 }
-
+*/

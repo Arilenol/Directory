@@ -9,7 +9,7 @@ int main(void){
     int choix;
     FILE* fic = NULL;
     int nb_ligne;
-    char annuaire[6][30]={"annuaire à 10 entrée","annuaire à 50 entrée","annuaire à 100 entrée","annuaire à 500 entrée","annuaire à 1000 entrée","annuaire à 5000 entrée"};
+    char annuaire[7][30]={"annuaire à 10 entrée","annuaire à 50 entrée","annuaire à 100 entrée","annuaire à 500 entrée","annuaire à 1000 entrée","annuaire à 5000 entrée","revenir en arrière"};
     do {
         printf("\n\nQue voulez-faire parmi les actions suivantes ? \n");
         for (int i = 0; i < 4; i++) {
@@ -24,25 +24,29 @@ int main(void){
 
         switch (choix) {
             case (1):
-                fic = ouverture(6, 30, annuaire, fic, "r");
+                system("cls");
+                fic = ouverture(7, 30, annuaire, fic, "r");
                 afficher(fic);
                 fermeture(fic);
                 break;
 
             case (2):
-                fic = ouverture(6, 30, annuaire, fic, "a+");
+                system("cls");
+                fic = ouverture(7, 30, annuaire, fic, "a+");
                 ajout(fic);
                 afficher(fic);
                 fermeture(fic);
                 break;
 
             case (3):
-                fic = ouverture(6, 30, annuaire, fic, "r");
+                system("cls");
+                fic = ouverture(7, 30, annuaire, fic, "r");
                 afficher_manq(fic);
                 fermeture(fic);
                 break;
 
             case (4):
+                system("cls");
                 printf("Fin du programme");
                 break;
 

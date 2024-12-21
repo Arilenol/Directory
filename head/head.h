@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include "type.h"
 #include <assert.h>
+#include <string.h>
 #define DIX "../benchmark_1/annuaire_10_entrees.csv"
 #define CINQUANTE "../benchmark_1/annuaire_50_entrees.csv"
 #define CENT "../benchmark_1/annuaire_100_entrees.csv"
