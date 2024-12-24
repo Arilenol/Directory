@@ -226,8 +226,7 @@ void modif(FILE* fichier){
 
 }
         
-*/
-}
+
 // T'ammuse pas a mettre des main un pau partout ça fait capauter le compilateur
 // Effectivement, c'était pour test de base, pour moi 
 /*
