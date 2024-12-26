@@ -24,10 +24,10 @@ void affecter_struct(CLIENT *c1, char option[], char mot[]) {
     else if (stricmp(option, "ville") == 0) {
         strcpy(c1->ville, mot);
     } 
-    /*
+
     else if (stricmp(option, "codep") == 0) {
         strcpy(c1->codep, mot);
-    } */
+    }
     else if (stricmp(option, "tel") == 0) {
         strcpy(c1->tel, mot);
     }

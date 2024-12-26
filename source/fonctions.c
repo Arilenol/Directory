@@ -34,7 +34,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
             system("cls");
             break;
         case(3):
-            printf("");
+            printf("i");
             fic = fopen(CENT,mode);
             if (fic == NULL){
                 printf("Echec ouverture fichier\n");
@@ -62,7 +62,7 @@ FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
             system("cls");
             break;
         case(6):
-            printf("");
+            printf("i");
             fic = fopen(CINQ_MILLES,mode);
             if (fic == NULL){
                 printf("Echec ouverture fichier\n");
@@ -83,27 +83,28 @@ void fermeture(FILE* fic){
     fclose(fic);
     printf("\n1Le fichier à bien été fermé");
 }
-void afficher(FILE* fic){
+void afficher(FILE* fic) {
+    int nb_l = total_lignes(fic);
+    CLIENT tab[nb_l];
     rewind(fic);
-    char ligne[464];
-    int i =1;
-    while (fgets(ligne, sizeof(ligne), fic) != NULL) {
-        printf("%d: %s", i++, ligne); // Afficher la ligne
+    mot_par_mot(fic,nb_l,tab);
+    printf("prenom | nom | ville | téléphone | adresse mail | proffession | date de naissance\n");
+    for(int i = 0; i< nb_l;i++){
+    printf(" %d| %s | %s | %s | %s | %s | %s | %s\n",i+1,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].tel,tab[i].adrmail,tab[i].profession,tab[i].date_naissance );
     }
 }
 void afficher_manq(FILE* fic){
+    int nb_l = total_lignes(fic);
+    CLIENT tab[nb_l];
     rewind(fic);
-    char ligne[464];
-    int i =0;
-    while (fgets(ligne, sizeof(ligne), fic) != NULL) {
-        i=0;
-        while(ligne[i+1] != '\n' && ligne[i+1] != '\0'){
-            if((ligne[i] == ',' || ligne[i] == ' ') && (ligne[i+1] == ',' || ligne[i+1] == '\n'))
-                printf("%d: %s", i++, ligne); // Afficher la ligne
-            i++;
+    mot_par_mot(fic,nb_l,tab);
+    printf("prenom | nom | ville | téléphone | adresse mail | proffession | date de naissance\n");
+    for(int i = 0; i< nb_l;i++){
+        if( strcmp(tab[i].prenom,"i") || strcmp(tab[i].nom,"i") || strcmp(tab[i].ville,"i") ||strcmp(tab[i].tel,"i") || strcmp(tab[i].adrmail,"i") || strcmp(tab[i].profession,"i") || strcmp(tab[i].date_naissance,"i")){
+            printf(" %d | %s | %s | %s | %s | %s | %s | %s\n", i + 1,tab[i].prenom, tab[i].nom, tab[i].ville,tab[i].tel, tab[i].adrmail, tab[i].profession, tab[i].date_naissance);
         }
-
     }
+
 }
 void ajout(FILE* fic){
     vider_buffer();

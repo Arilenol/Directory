@@ -63,4 +63,13 @@ void upper(char mot[]);
  * @post affiche toute les ligne ou il manque des informations
  */
 void afficher_manq(FILE* fic);
+/**
+ * @param fic,nb_ligne,tableau
+ * @post renvoie un tableau avec chaque ligne du fichier un élément du tableau
+ */
+void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]);
+/**
+ * @param 
+ */
+void affecter_struct(CLIENT *c1, char option[], char mot[]);
 #endif // HEAD_H_INCLUDED
