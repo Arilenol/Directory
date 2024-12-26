@@ -82,6 +82,7 @@ void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]){
             }
             c=fgetc(fichier);
         }
+        sep_cdp_ville(nb_ligne,tableau);
     }
 
 void lire_carac(FILE* f){

@@ -21,7 +21,6 @@ int main(void){
             printf("Sasie hors plage\nRéessayez : ");
             scanf("%d", &choix);
         }
-
         switch (choix) {
             case (1):
                 system("cls");

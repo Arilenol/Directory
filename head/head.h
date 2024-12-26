@@ -72,4 +72,9 @@ void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]);
  * @param 
  */
 void affecter_struct(CLIENT *c1, char option[], char mot[]);
+/**
+ * @param nb_lignes, tab
+ * @post separe les ville des code de departement
+ */
+void sep_cdp_ville(int nb_lignes,CLIENT tab[nb_lignes]);
 #endif // HEAD_H_INCLUDED
