@@ -4,6 +4,7 @@
 #ifndef TYPE_H_INCLUDED
 #define TYPE_H_INCLUDED
  typedef struct{
+    int id;
     char prenom[76];
     char nom[85];
     char ville[85];

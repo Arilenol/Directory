@@ -1,6 +1,7 @@
 #include "../head/head.h"
 
 int total_lignes(FILE * fichier){
+    rewind(fichier);
     char c;
     int res = 0;
     c = fgetc(fichier);
@@ -58,7 +59,6 @@ void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]){
     while(c!=EOF && ligne<nb_ligne){ 
         if (c=='\n'){
             mot[indice] = '\0';
-            //printf("%s et mot : %s",info[nb_champ],mot);
             affecter_struct(&c1,info[nb_champ],mot);
             tableau[ligne] = c1;
             nb_champ = 0 ;
@@ -81,6 +81,7 @@ void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]){
             
             }
             c=fgetc(fichier);
+            c1.id=ligne+1;
         }
         sep_cdp_ville(nb_ligne,tableau);
     }

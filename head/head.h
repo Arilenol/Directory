@@ -77,4 +77,14 @@ void affecter_struct(CLIENT *c1, char option[], char mot[]);
  * @post separe les ville des code de departement
  */
 void sep_cdp_ville(int nb_lignes,CLIENT tab[nb_lignes]);
+/**
+ * @param
+ * @post affiche la ligne rentré par l'utilisateur;
+ */
+void afficher_ligne(FILE* fic);
+/**
+ * @param fic
+ * @post renvoie un tableau trié selon le critère rentré par l'utilisateur
+ */
+void tri_tableau(FILE* fic);
 #endif // HEAD_H_INCLUDED

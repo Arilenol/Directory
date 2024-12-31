@@ -83,26 +83,34 @@ void fermeture(FILE* fic){
 }
 void afficher(FILE* fic) {
     int nb_l = total_lignes(fic);
+    char suite;
     CLIENT tab[nb_l];
     rewind(fic);
     mot_par_mot(fic,nb_l,tab);
     printf("prenom | nom | ville | téléphone | adresse mail | profession | date de naissance\n");
     for(int i = 0; i< nb_l;i++){
-    printf(" %d|%s|%s|%s|%s|%s|%s|%s|%s\n",i+1,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession,tab[i].date_naissance );
+    printf(" %d|%s|%s|%s|%s|%s|%s|%s|%s\n",tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession,tab[i].date_naissance );
     }
+    vider_buffer();
+    printf("Appuyer sur Entrer pour continuer");
+    scanf("%c",&suite);
 }
 void afficher_manq(FILE* fic){
     int nb_l = total_lignes(fic),comt = 1;
+    char suite;
     CLIENT tab[nb_l];
     rewind(fic);
     mot_par_mot(fic,nb_l,tab);
     printf("num | prenom | nom | ville | téléphone | adresse mail | profession | date de naissance\n");
     for(int i = 0; i< nb_l;i++){
         if( strcmp(tab[i].prenom,"") == 0 || strcmp(tab[i].nom,"") == 0 || strcmp(tab[i].ville,"") == 0 || strcmp(tab[i].codep,"") == 0||strcmp(tab[i].tel,"") == 0 || strcmp(tab[i].adrmail,"") == 0 || strcmp(tab[i].profession,"") == 0 || strcmp(tab[i].date_naissance,"") == 0){
-            printf(" %d|%s|%s|%s|%s|%s|%s|%s\n",comt,tab[i].prenom, tab[i].nom, tab[i].ville,tab[i].tel, tab[i].adrmail, tab[i].profession, tab[i].date_naissance);
+            printf(" %d|%s|%s|%s|%s|%s|%s|%s\n",tab[i].id,tab[i].prenom, tab[i].nom, tab[i].ville,tab[i].tel, tab[i].adrmail, tab[i].profession, tab[i].date_naissance);
             comt++;
         }
     }
+    vider_buffer();
+    printf("Appuyer sur Entrer pour continuer");
+    scanf("%c",&suite);
 }
 void ajout(FILE* fic){
     vider_buffer();
@@ -180,5 +188,62 @@ void sep_cdp_ville(int nb_lignes,CLIENT tab[nb_lignes]) {
             c1 = 0;
             c2 = 0;
         }
+    }
+}
+void afficher_ligne(FILE* fic){
+    int nb_l = total_lignes(fic),choix;
+    CLIENT tab[nb_l];
+    char suite;
+    rewind(fic);
+    mot_par_mot(fic,nb_l,tab);
+    printf("\nQuelle ligne voulez-vous afficher :");
+    scanf("%d",&choix);
+    while(choix < 0 || choix > nb_l){
+        printf("\nSaisie incorrect veuiller resaisir la ligne : ");
+        scanf("%d",&choix);
+    }
+    for(int i = 0; i< nb_l;i++){
+        if(tab[i].id == choix)
+            printf(" %d|%s|%s|%s|%s|%s|%s|%s\n",tab[i].id,tab[i].prenom, tab[i].nom, tab[i].ville,tab[i].tel, tab[i].adrmail, tab[i].profession, tab[i].date_naissance);
+    }
+    vider_buffer();
+    printf("\nAppuyer sur Entrer pour continuer");
+    scanf("%c",&suite);
+}
+void tri_tableau(FILE* fic){
+    int choix;
+    int nb_l = total_lignes(fic);
+    CLIENT tab[nb_l];
+    mot_par_mot(fic,nb_l,tab);
+    char info[8][30] = {"prenom","nom","ville","code postal","téléphone","adresse mail","profession","date de naissance"};
+    printf("Selon quel critère voulez vous triez l'annuaire\n");
+    for(int i=0;i<8;i++){
+        printf("%d) %s\n",i+1,info[i]);
+    }
+    printf("\nEntrez le chiffre correspondant au critère par lequel vous voulez trié le tableau: ");
+    scanf("%d", &choix);
+    while (choix < 1 || choix > 8) {
+        printf("Sasie hors plage\nRéessayez : ");
+        scanf("%d", &choix);
+    }
+    switch(choix){
+        case(1):
+            break;
+        case(2):
+            break;
+        case(3):
+            break;
+        case(4):
+            break;
+        case(5):
+            break;
+        case(6):
+            break;
+        case(7):
+            break;
+        case(8):
+            break;
+        default:
+            printf("Erreur de menu");
     }
 }
