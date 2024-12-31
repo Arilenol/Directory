@@ -2,6 +2,7 @@
 // Created by Aymeric_ONFRAY on 27/11/2024.
 //
 #include "../head/head.h"
+void afficher_tab(int nb_l,CLIENT tab[nb_l]);
 FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
     int choix;
     printf("Quel fichier voulez vous consulter\n");
@@ -85,7 +86,6 @@ void afficher(FILE* fic) {
     int nb_l = total_lignes(fic);
     char suite;
     CLIENT tab[nb_l];
-    rewind(fic);
     mot_par_mot(fic,nb_l,tab);
     printf("prenom | nom | ville | téléphone | adresse mail | profession | date de naissance\n");
     for(int i = 0; i< nb_l;i++){
@@ -99,7 +99,6 @@ void afficher_manq(FILE* fic){
     int nb_l = total_lignes(fic),comt = 1;
     char suite;
     CLIENT tab[nb_l];
-    rewind(fic);
     mot_par_mot(fic,nb_l,tab);
     printf("num | prenom | nom | ville | téléphone | adresse mail | profession | date de naissance\n");
     for(int i = 0; i< nb_l;i++){
@@ -190,6 +189,17 @@ void sep_cdp_ville(int nb_lignes,CLIENT tab[nb_lignes]) {
         }
     }
 }
+void afficher_tab(int nb_l,CLIENT tab[nb_l]) {
+    char suite;
+    printf("prenom | nom | ville | téléphone | adresse mail | profession | date de naissance\n");
+    for (int i = 0; i < nb_l; i++) {
+        printf(" %d|%s|%s|%s|%s|%s|%s|%s|%s\n", tab[i].id, tab[i].prenom, tab[i].nom, tab[i].ville, tab[i].codep,
+               tab[i].tel, tab[i].adrmail, tab[i].profession, tab[i].date_naissance);
+    }
+    vider_buffer();
+    printf("Appuyer sur Entrer pour continuer");
+    scanf("%c", &suite);
+}
 void afficher_ligne(FILE* fic){
     int nb_l = total_lignes(fic),choix;
     CLIENT tab[nb_l];
@@ -210,40 +220,143 @@ void afficher_ligne(FILE* fic){
     printf("\nAppuyer sur Entrer pour continuer");
     scanf("%c",&suite);
 }
+int ordre_alpha(char mot1[],char mot2[]){
+    int i=0;
+    while(mot1[i] == mot2[i] && (mot1[i] != '\0' && mot2[i] != '\0')){
+        i++;
+    }
+    if(mot1[i] <= mot2[i])
+        return 1;
+    else
+        return 2;
+}
+
+void fusion(CLIENT tab[],int debut ,int milieu,int fin,char option[]){
+    int tailleG = milieu - debut +1;
+    int tailleD = fin - milieu;
+    CLIENT gauche[tailleG];
+    CLIENT droite[tailleD];
+    for(int i = 0 ; i < tailleG;i++){
+        gauche[i]=tab[debut+1];
+    }
+    for(int j = 0; j <tailleD;j++){
+        droite[j] = tab[milieu+1+j];
+    }
+    int k = 0,l = 0,m= debut;
+    if (stricmp(option, "prenom") == 0) {
+        while (k < tailleG && l < tailleD) {
+            if (ordre_alpha(gauche[k].prenom, droite[l].prenom) == 1) { // Comparaison lexicographique
+                tab[m] = gauche[k];
+                k++;
+            } else {
+                tab[k] = droite[l];
+                l++;
+            }
+            k++;
+        }
+    }
+    else if (stricmp(option, "nom") == 0) {
+        while (k < tailleG && l < tailleD) {
+            if (ordre_alpha(gauche[k].nom, droite[l].nom) == 1) { // Comparaison lexicographique
+                tab[m] = gauche[k];
+                k++;
+            } else {
+                tab[k] = droite[l];
+                l++;
+            }
+            k++;
+        }
+    }
+    else if (stricmp(option, "ville") == 0) {
+        while (k < tailleG && l < tailleD) {
+            if (ordre_alpha(gauche[k].ville, droite[l].ville) == 1) { // Comparaison lexicographique
+                tab[m] = gauche[k];
+                k++;
+            } else {
+                tab[k] = droite[l];
+                l++;
+            }
+            k++;
+        }
+
+    }
+
+    else if (stricmp(option, "codep") == 0) {
+        while (k < tailleG && l < tailleD) {
+            if (ordre_alpha(gauche[k].codep, droite[l].codep) == 1) { // Comparaison lexicographique
+                tab[m] = gauche[k];
+                k++;
+            } else {
+                tab[k] = droite[l];
+                l++;
+            }
+            k++;
+        }
+    }
+    else if (stricmp(option, "date_naissance") == 0) {
+        while (k < tailleG && l < tailleD) {
+            if (ordre_alpha(gauche[k].date_naissance, droite[l].date_naissance) == 1) { // Comparaison lexicographique
+                tab[m] = gauche[k];
+                k++;
+            } else {
+                tab[k] = droite[l];
+                l++;
+            }
+            k++;
+        }
+    }
+}
+void triFusion(CLIENT tableau[], int debut, int fin, char option[]) {
+    if (debut < fin) {
+        int milieu = debut + (fin - debut) / 2;
+
+        // Diviser le tableau en deux moitiés
+        triFusion(tableau, debut, milieu,option);
+        triFusion(tableau, milieu + 1, fin,option);
+
+        // Fusionner les deux moitiés triées=
+        fusion(tableau, debut, milieu, fin,option);
+    }
+}
 void tri_tableau(FILE* fic){
     int choix;
     int nb_l = total_lignes(fic);
     CLIENT tab[nb_l];
     mot_par_mot(fic,nb_l,tab);
-    char info[8][30] = {"prenom","nom","ville","code postal","téléphone","adresse mail","profession","date de naissance"};
+    afficher_tab(nb_l,tab);
+    char info[5][30] = {"prenom","nom","ville","code postal","date de naissance"};
     printf("Selon quel critère voulez vous triez l'annuaire\n");
-    for(int i=0;i<8;i++){
+    for(int i=0;i<5;i++){
         printf("%d) %s\n",i+1,info[i]);
     }
     printf("\nEntrez le chiffre correspondant au critère par lequel vous voulez trié le tableau: ");
     scanf("%d", &choix);
-    while (choix < 1 || choix > 8) {
+    while (choix < 1 || choix > 5) {
         printf("Sasie hors plage\nRéessayez : ");
         scanf("%d", &choix);
     }
     switch(choix){
         case(1):
+            fusion(tab,0,(nb_l/2)+1,nb_l,"prenom");
             break;
         case(2):
+            fusion(tab,0,(nb_l/2),nb_l,"nom");
             break;
         case(3):
+            fusion(tab,0,(nb_l/2),nb_l,"ville");
             break;
         case(4):
+            fusion(tab,0,(nb_l/2),nb_l,"codep");
             break;
         case(5):
-            break;
-        case(6):
-            break;
-        case(7):
-            break;
-        case(8):
+            fusion(tab,0,(nb_l/2),nb_l,"date_naissance");
             break;
         default:
             printf("Erreur de menu");
     }
+    afficher_tab(nb_l,tab);
 }
+
+
+
+

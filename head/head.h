@@ -87,4 +87,8 @@ void afficher_ligne(FILE* fic);
  * @post renvoie un tableau trié selon le critère rentré par l'utilisateur
  */
 void tri_tableau(FILE* fic);
+/**
+ *
+ */
+int ordre_alpha(char mot1[],char mot2[]);
 #endif // HEAD_H_INCLUDED

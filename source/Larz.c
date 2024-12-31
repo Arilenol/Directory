@@ -48,6 +48,7 @@ void affecter_struct(CLIENT *c1, char option[], char mot[]) {
 
 
 void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]){
+    rewind(fichier);
     char info[7][30] = {"prenom","nom","ville","tel","adrmail","profession","date_naissance"};
     CLIENT c1;
     char c;
