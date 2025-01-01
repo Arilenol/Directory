@@ -220,16 +220,6 @@ void afficher_ligne(FILE* fic){
     printf("\nAppuyer sur Entrer pour continuer");
     scanf("%c",&suite);
 }
-int ordre_alpha(char mot1[],char mot2[]){
-    int i=0;
-    while(mot1[i] == mot2[i] && (mot1[i] != '\0' && mot2[i] != '\0')){
-        i++;
-    }
-    if(mot1[i] <= mot2[i])
-        return 1;
-    else
-        return 2;
-}
 
 void fusion(CLIENT tab[],int debut ,int milieu,int fin,char option[]){
     int tailleG = milieu - debut +1;
@@ -243,21 +233,10 @@ void fusion(CLIENT tab[],int debut ,int milieu,int fin,char option[]){
         droite[j] = tab[milieu+1+j];
     }
     int k = 0,l = 0,m= debut;
-    if (stricmp(option, "prenom") == 0) {
+
+     if (stricmp(option, "nom") == 0) {
         while (k < tailleG && l < tailleD) {
-            if (strcmp(gauche[k].prenom, droite[l].prenom) < 0) { // Comparaison lexicographique
-                tab[m] = gauche[k];
-                k++;
-            } else {
-                tab[m] = droite[l];
-                l++;
-            }
-            m++;
-        }
-    }
-    else if (stricmp(option, "nom") == 0) {
-        while (k < tailleG && l < tailleD) {
-            if (ordre_alpha(gauche[k].nom, droite[l].nom) == 1) { // Comparaison lexicographique
+            if (stricmp(gauche[k].nom, droite[l].nom) <=0) { // Comparaison lexicographique
                 tab[m] = gauche[k];
                 k++;
             } else {
@@ -268,23 +247,9 @@ void fusion(CLIENT tab[],int debut ,int milieu,int fin,char option[]){
         }
 
     }
-    else if (stricmp(option, "ville") == 0) {
-        while (k < tailleG && l < tailleD) {
-            if (ordre_alpha(gauche[k].ville, droite[l].ville) == 1) { // Comparaison lexicographique
-                tab[m] = gauche[k];
-                k++;
-            } else {
-                tab[m] = droite[l];
-                l++;
-            }
-            m++;
-        }
-
-    }
-
     else if (stricmp(option, "codep") == 0) {
         while (k < tailleG && l < tailleD) {
-            if (ordre_alpha(gauche[k].codep, droite[l].codep) == 1) { // Comparaison lexicographique
+            if (stricmp(gauche[k].codep, droite[l].codep) <=0) { // Comparaison lexicographique
                 tab[m] = gauche[k];
                 k++;
             } else {
@@ -294,9 +259,9 @@ void fusion(CLIENT tab[],int debut ,int milieu,int fin,char option[]){
             m++;
         }
     }
-    else if (stricmp(option, "date_naissance") == 0) {
+    else if (stricmp(option, "profession") <= 0) {
         while (k < tailleG && l < tailleD) {
-            if (ordre_alpha(gauche[k].date_naissance, droite[l].date_naissance) == 1) { // Comparaison lexicographique
+            if (stricmp(gauche[k].profession, droite[l].profession) <=0) { // Comparaison lexicographique
                 tab[m] = gauche[k];
                 k++;
             } else {
@@ -306,6 +271,18 @@ void fusion(CLIENT tab[],int debut ,int milieu,int fin,char option[]){
             m++;
         }
     }
+     else if (stricmp(option, "date_naissance") == 0) {
+         while (k < tailleG && l < tailleD) {
+             if (stricmp(gauche[k].date_naissance, droite[l].date_naissance) <=0) { // Comparaison lexicographique
+                 tab[m] = gauche[k];
+                 k++;
+             } else {
+                 tab[m] = droite[l];
+                 l++;
+             }
+             m++;
+         }
+     }
     while(k<tailleG){
         tab[m] = gauche[k];
         k++;
@@ -334,31 +311,28 @@ void tri_tableau(FILE* fic){
     int nb_l = total_lignes(fic);
     CLIENT tab[nb_l];
     mot_par_mot(fic,nb_l,tab);
-    char info[5][30] = {"prenom","nom","ville","code postal","date de naissance"};
+    char info[4][30] = {"nom","code postal","profession","date de naissance"};
     printf("Selon quel critère voulez vous triez l'annuaire\n");
-    for(int i=0;i<5;i++){
+    for(int i=0;i<4;i++){
         printf("%d) %s\n",i+1,info[i]);
     }
     printf("\nEntrez le chiffre correspondant au critère par lequel vous voulez trié le tableau: ");
     scanf("%d", &choix);
-    while (choix < 1 || choix > 5) {
+    while (choix < 1 || choix > 4) {
         printf("Sasie hors plage\nRéessayez : ");
         scanf("%d", &choix);
     }
     switch(choix){
         case(1):
-            triFusion(tab,0,nb_l-1,"prenom");
-            break;
-        case(2):
             triFusion(tab,0,nb_l-1,"nom");
             break;
-        case(3):
-            triFusion(tab,0,nb_l-1,"ville");
-            break;
-        case(4):
+        case(2):
             triFusion(tab,0,nb_l-1,"codep");
             break;
-        case(5):
+        case(3):
+            triFusion(tab,0,nb_l-1,"profession");
+            break;
+        case(4):
             triFusion(tab,0,nb_l-1,"date_naissance");
             break;
         default:
@@ -366,6 +340,7 @@ void tri_tableau(FILE* fic){
     }
     afficher_tab(nb_l,tab);
 }
+
 
 
 

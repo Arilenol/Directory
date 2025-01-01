@@ -5,13 +5,13 @@
 #define TYPE_H_INCLUDED
  typedef struct{
     int id;
-    char prenom[76];
-    char nom[85];
-    char ville[85];
+    char prenom[50];
+    char nom[50];
+    char ville[50];
     char codep[7];
     char tel[16];
-    char adrmail[100];
-    char profession[85];
+    char adrmail[70];
+    char profession[30];
     char date_naissance[11];
 }CLIENT;
 #endif //TYPE_H_INCLUDED
