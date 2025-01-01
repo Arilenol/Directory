@@ -237,22 +237,22 @@ void fusion(CLIENT tab[],int debut ,int milieu,int fin,char option[]){
     CLIENT gauche[tailleG];
     CLIENT droite[tailleD];
     for(int i = 0 ; i < tailleG;i++){
-        gauche[i]=tab[debut+1];
+        gauche[i]=tab[debut+i];
     }
-    for(int j = 0; j <tailleD;j++){
+    for(int j = 0; j < tailleD;j++){
         droite[j] = tab[milieu+1+j];
     }
     int k = 0,l = 0,m= debut;
     if (stricmp(option, "prenom") == 0) {
         while (k < tailleG && l < tailleD) {
-            if (ordre_alpha(gauche[k].prenom, droite[l].prenom) == 1) { // Comparaison lexicographique
+            if (strcmp(gauche[k].prenom, droite[l].prenom) < 0) { // Comparaison lexicographique
                 tab[m] = gauche[k];
                 k++;
             } else {
-                tab[k] = droite[l];
+                tab[m] = droite[l];
                 l++;
             }
-            k++;
+            m++;
         }
     }
     else if (stricmp(option, "nom") == 0) {
@@ -261,11 +261,12 @@ void fusion(CLIENT tab[],int debut ,int milieu,int fin,char option[]){
                 tab[m] = gauche[k];
                 k++;
             } else {
-                tab[k] = droite[l];
+                tab[m] = droite[l];
                 l++;
             }
-            k++;
+            m++;
         }
+
     }
     else if (stricmp(option, "ville") == 0) {
         while (k < tailleG && l < tailleD) {
@@ -273,10 +274,10 @@ void fusion(CLIENT tab[],int debut ,int milieu,int fin,char option[]){
                 tab[m] = gauche[k];
                 k++;
             } else {
-                tab[k] = droite[l];
+                tab[m] = droite[l];
                 l++;
             }
-            k++;
+            m++;
         }
 
     }
@@ -287,10 +288,10 @@ void fusion(CLIENT tab[],int debut ,int milieu,int fin,char option[]){
                 tab[m] = gauche[k];
                 k++;
             } else {
-                tab[k] = droite[l];
+                tab[m] = droite[l];
                 l++;
             }
-            k++;
+            m++;
         }
     }
     else if (stricmp(option, "date_naissance") == 0) {
@@ -299,11 +300,21 @@ void fusion(CLIENT tab[],int debut ,int milieu,int fin,char option[]){
                 tab[m] = gauche[k];
                 k++;
             } else {
-                tab[k] = droite[l];
+                tab[m] = droite[l];
                 l++;
             }
-            k++;
+            m++;
         }
+    }
+    while(k<tailleG){
+        tab[m] = gauche[k];
+        k++;
+        m++;
+    }
+    while(l<tailleD){
+        tab[m]=droite[l];
+        l++;
+        m++;
     }
 }
 void triFusion(CLIENT tableau[], int debut, int fin, char option[]) {
@@ -323,7 +334,6 @@ void tri_tableau(FILE* fic){
     int nb_l = total_lignes(fic);
     CLIENT tab[nb_l];
     mot_par_mot(fic,nb_l,tab);
-    afficher_tab(nb_l,tab);
     char info[5][30] = {"prenom","nom","ville","code postal","date de naissance"};
     printf("Selon quel critère voulez vous triez l'annuaire\n");
     for(int i=0;i<5;i++){
@@ -337,19 +347,19 @@ void tri_tableau(FILE* fic){
     }
     switch(choix){
         case(1):
-            fusion(tab,0,(nb_l/2)+1,nb_l,"prenom");
+            triFusion(tab,0,nb_l-1,"prenom");
             break;
         case(2):
-            fusion(tab,0,(nb_l/2),nb_l,"nom");
+            triFusion(tab,0,nb_l-1,"nom");
             break;
         case(3):
-            fusion(tab,0,(nb_l/2),nb_l,"ville");
+            triFusion(tab,0,nb_l-1,"ville");
             break;
         case(4):
-            fusion(tab,0,(nb_l/2),nb_l,"codep");
+            triFusion(tab,0,nb_l-1,"codep");
             break;
         case(5):
-            fusion(tab,0,(nb_l/2),nb_l,"date_naissance");
+            triFusion(tab,0,nb_l-1,"date_naissance");
             break;
         default:
             printf("Erreur de menu");

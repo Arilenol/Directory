@@ -10,7 +10,7 @@ int main(void){
     FILE* fic = NULL;
     int nb_ligne;
     char annuaire[7][30]={"annuaire à 10 entrée","annuaire à 50 entrée","annuaire à 100 entrée","annuaire à 500 entrée","annuaire à 1000 entrée","annuaire à 5000 entrée","revenir en arrière"};
-    do {
+    do{
         printf("\n\nQue voulez-faire parmi les actions suivantes ? \n");
         for (int i = 0; i < 5; i++) {
             printf("%d) %s\n", i + 1, possible[i]);
