@@ -121,112 +121,156 @@ void poser_curseur(FILE* fichier, int ligne){
 }
 
 //FONCTION terminée, en attente d'un point ensemble pour rectfier 2-3 choses
-void modif(FILE* fichier){
+void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
     int indice[15];
-    int indice2=0;
-    int nb_ligne = total_lignes(fichier);
-    rewind(fichier);
-    CLIENT tableau[nb_ligne];
-    mot_par_mot(fichier,nb_ligne,tableau);
-    printf("Entrez le prenom de la personne : ");
-    char prenom[20];
-    fgets(prenom,21,stdin);
-    retirerchariot(prenom);
-    FILE* fic2 = fopen("../head/fichiertmp.csv","w");
-    for (int i = 0; i<nb_ligne;i++){
-        if (stricmp(prenom, tableau[i].prenom) == 0){
-            indice[indice2]=i+1;
-            indice2++;
-            fprintf(fic2,"%s,",tableau[i].prenom);
-            fprintf(fic2,"%s,",tableau[i].nom);
-            fprintf(fic2,"%s,",tableau[i].ville);
-            //fprintf(fic2,"%s,",tableau[i].codep);   A RECTIFIER ICI
-            fprintf(fic2,"%s,",tableau[i].tel);
-            fprintf(fic2,"%s,",tableau[i].adrmail);
-            fprintf(fic2,"%s,",tableau[i].profession);
-            fprintf(fic2,"%s\n",tableau[i].date_naissance);
+    int indice2 = 0;
+    int select = -1; // Initialisation par défaut
+    printf("Comment voulez-vous modifier ?\n");
+    printf("1) Par son numéro de téléphone (clé primaire) ?\n");
+    printf("2) Par son prénom ?\n");
+    int choix;
+    scanf("%d", &choix);
+    getchar(); // Consomme le caractère '\n' laissé par scanf
+    switch (choix)
+    {
+    case 1:
+        printf("Entrez son numéro de téléphone (espacez les nombres par des points) : ");
+        char num[14];
+        scanf("%s", num);
+        for (int i = 0; i < nb_ligne; i++) {
+            if (stricmp(num, tableau[i].tel) == 0) {
+                select = i;
+            }
         }
 
+        break;
+
+    case 2:
+        printf("Entrez le prénom de la personne : ");
+        char prenom[20];
+        fgets(prenom, 21, stdin);
+        retirerchariot(prenom);
+        FILE* fic2 = fopen("../head/fichiertmp.csv", "w");
+        for (int i = 0; i < nb_ligne; i++) {
+            printf("%s et %s \n",prenom, tableau[i].prenom);
+            if (stricmp(prenom, tableau[i].prenom) == 0) {
+                printf("1");
+                indice[indice2] = i;
+                indice2++;
+                fprintf(fic2, "%s,", tableau[i].prenom);
+                fprintf(fic2, "%s,", tableau[i].nom);
+                fprintf(fic2, "%s,", tableau[i].ville);
+                fprintf(fic2, "%s,", tableau[i].tel);
+                fprintf(fic2, "%s,", tableau[i].adrmail);
+                fprintf(fic2, "%s,", tableau[i].profession);
+                fprintf(fic2, "%s\n", tableau[i].date_naissance);
+            }
+        }
+        fclose(fic2);
+        FILE* fic = fopen("../head/fichiertmp.csv", "r");
+        printf("Parmi ces éléments : \n");
+        lire_carac(fic);
+        fclose(fic);
+        remove("../head/fichiertmp.csv");
+        printf("Entrez le numéro de la ligne sur laquelle vous voulez modifier un élément : ");
+        int ligne;
+        scanf("%d", &ligne);
+        select = indice[ligne - 1];
+        break;
+    default:
+        printf("Erreur lors de la saisie\n");
+        return; // On sort de la fonction si une erreur survient
     }
-    fclose(fic2);
-    FILE* fic = fopen("../head/fichiertmp.csv","r");
-    printf("Parmi ces elements : \n");
-    lire_carac(fic);
-    fclose(fic);
-    remove("../head/fichiertmp.csv");
-    printf("Entrez le numero de la ligne sur laquelle vous voulez modifier un element : ");
-    int ligne;
-    scanf("%d",&ligne);
-    int select = indice[ligne-1];
-    printf("Que voulez vous modifier parmi ses champs ?\n");
-    printf("1) Son prenom\n");
+
+    if (select == -1) {
+        printf("Aucune sélection valide effectuée.\n");
+        return;
+    }
+
+    
+    printf("Que voulez-vous modifier parmi ses champs ?\n");
+    printf("1) Son prénom\n");
     printf("2) Son nom\n");
     printf("3) Sa ville\n");
     printf("4) Le code postal\n");
-    printf("5) num de tel \n");
-    printf("6) adresse mail\n");
-    printf("7) metier \n");
+    printf("5) Num de tel\n");
+    printf("6) Adresse mail\n");
+    printf("7) Métier\n");
     printf("8) Date de naissance\n");
-    printf("Entrez le numero correspondant : ");
+    printf("Entrez le numéro correspondant : ");
     int option;
-    scanf("%d",&option);
+    scanf("%d", &option);
     getchar(); // Pour consommer le caractère '\n' laissé par scanf
     char nouveau[50];
     switch (option)
     {
     case 1:
-        printf("Entrez le nouveau prenom : ");
-        fgets(nouveau,51,stdin);
-        retirerchariot(nouveau); 
-        strcpy(tableau[select].prenom,nouveau);
+        printf("Entrez le nouveau prénom : ");
+        fgets(nouveau, 51, stdin);
+        retirerchariot(nouveau);
+        strcpy(tableau[select].prenom, nouveau);
         break;
     case 2:
         printf("Entrez le nouveau nom : ");
-        fgets(nouveau,51,stdin);
-        retirerchariot(nouveau); 
-        strcpy(tableau[select].nom,nouveau);
+        fgets(nouveau, 51, stdin);
+        retirerchariot(nouveau);
+        strcpy(tableau[select].nom, nouveau);
         break;
     case 3:
         printf("Entrez la nouvelle ville : ");
-        fgets(nouveau,51,stdin);
-        retirerchariot(nouveau); 
-        strcpy(tableau[select].ville,nouveau);
+        fgets(nouveau, 51, stdin);
+        retirerchariot(nouveau);
+        strcpy(tableau[select].ville, nouveau);
         break;
     case 4:
         printf("Entrez le nouveau code postal : ");
-        fgets(nouveau,51,stdin);
-        retirerchariot(nouveau); 
-        strcpy(tableau[select].codep,nouveau);
+        fgets(nouveau, 51, stdin);
+        retirerchariot(nouveau);
+        strcpy(tableau[select].codep, nouveau);
         break;
     case 5:
-        printf("Entrez le nouveau numero de telephone : ");
-        fgets(nouveau,51,stdin);
-        retirerchariot(nouveau); 
-        strcpy(tableau[select].tel,nouveau);
+        printf("Entrez le nouveau numéro de téléphone : ");
+        fgets(nouveau, 51, stdin);
+        retirerchariot(nouveau);
+        strcpy(tableau[select].tel, nouveau);
         break;
     case 6:
         printf("Entrez la nouvelle adresse mail : ");
-        fgets(nouveau,51,stdin);
-        retirerchariot(nouveau); 
-        strcpy(tableau[select].adrmail,nouveau);
+        fgets(nouveau, 51, stdin);
+        retirerchariot(nouveau);
+        strcpy(tableau[select].adrmail, nouveau);
         break;
     case 7:
         printf("Entrez la nouvelle profession : ");
-        fgets(nouveau,51,stdin);    
-        retirerchariot(nouveau); 
-        strcpy(tableau[select].profession,nouveau);
+        fgets(nouveau, 51, stdin);
+        retirerchariot(nouveau);
+        strcpy(tableau[select].profession, nouveau);
         break;
     case 8:
-        printf("Entrez le nouvelle date de naissance : ");
-        fgets(nouveau,51,stdin);
-        retirerchariot(nouveau); 
-        strcpy(tableau[select].date_naissance,nouveau);
+        printf("Entrez la nouvelle date de naissance : ");
+        fgets(nouveau, 51, stdin);
+        retirerchariot(nouveau);
+        strcpy(tableau[select].date_naissance, nouveau);
         break;
     default:
-        printf("Erreur dans la saisie");
+        printf("Erreur dans la saisie\n");
         break;
-    }    
+    }
+}
 
+void list_to_file(int taille, CLIENT c[taille]){
+    FILE* fic = fopen("../head/test.csv","w");
+    for (int i = 0; i<taille;i++){
+        fprintf(fic,"%s,",c[i].prenom);
+        fprintf(fic,"%s,",c[i].nom);
+        fprintf(fic,"%s,",c[i].ville);
+        fprintf(fic,"%s,",c[i].tel);
+        fprintf(fic,"%s,",c[i].adrmail);
+        fprintf(fic,"%s,",c[i].profession);
+        fprintf(fic,"%s",c[i].date_naissance);
+        fprintf(fic, "\n");
+    }
+    fclose(fic);
 }
         
 
