@@ -14,6 +14,8 @@ int total_lignes(FILE * fichier){
     }
     return res;
 }
+
+
 void affecter_struct(CLIENT *c1, char option[], char mot[]) {
     if (stricmp(option, "prenom") == 0) {
         strcpy(c1->prenom, mot);
@@ -513,7 +515,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
         }
     return select;
 }
-/*
+
 void suppression(int* nb_ligne, CLIENT tableau[*nb_ligne]){
     int select = recherche_nom(*nb_ligne,tableau);
     if (select == -1) {
@@ -525,7 +527,7 @@ void suppression(int* nb_ligne, CLIENT tableau[*nb_ligne]){
     }
     *nb_ligne = *nb_ligne - 1;
 }
-*/
+
 
 void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
     int select = recherche(nb_ligne, tableau);
