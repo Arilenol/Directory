@@ -3,6 +3,7 @@
 //
 #include "../head/head.h"
 void afficher_tab(int nb_l,CLIENT tab[nb_l]);
+void calcul_age(char mot[]);
 FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
     int choix;
     printf("Quel fichier voulez vous consulter\n");
@@ -87,26 +88,32 @@ void afficher(FILE* fic) {
     char suite;
     CLIENT tab[nb_l];
     mot_par_mot(fic,nb_l,tab);
-    printf("prenom | nom | ville | téléphone | adresse mail | profession | date de naissance\n");
+    printf("prenom | nom | ville | téléphone | adresse mail | profession | âge\n");
     for(int i = 0; i< nb_l;i++){
-    printf(" %d|%s|%s|%s|%s|%s|%s|%s|%s\n",tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession,tab[i].date_naissance );
+    printf(" %d|%s|%s|%s|%s|%s|%s|%s|",tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession,tab[i].date_naissance );
+        calcul_age(tab[i].date_naissance);
+        printf("\n");
     }
     vider_buffer();
     printf("Appuyer sur Entrer pour continuer");
     scanf("%c",&suite);
 }
 void afficher_manq(FILE* fic){
-    int nb_l = total_lignes(fic),comt = 1;
+    int nb_l = total_lignes(fic);
     char suite;
+    int p;
     CLIENT tab[nb_l];
     mot_par_mot(fic,nb_l,tab);
-    printf("num | prenom | nom | ville | téléphone | adresse mail | profession | date de naissance\n");
+    printf("num | prenom | nom | ville | téléphone | adresse mail | profession | âge\n");
     for(int i = 0; i< nb_l;i++){
         if( strcmp(tab[i].prenom,"") == 0 || strcmp(tab[i].nom,"") == 0 || strcmp(tab[i].ville,"") == 0 || strcmp(tab[i].codep,"") == 0||strcmp(tab[i].tel,"") == 0 || strcmp(tab[i].adrmail,"") == 0 || strcmp(tab[i].profession,"") == 0 || strcmp(tab[i].date_naissance,"") == 0){
-            printf(" %d|%s|%s|%s|%s|%s|%s|%s\n",tab[i].id,tab[i].prenom, tab[i].nom, tab[i].ville,tab[i].tel, tab[i].adrmail, tab[i].profession, tab[i].date_naissance);
-            comt++;
+            printf(" %d|%s|%s|%s|%s|%s|%s|",tab[i].id,tab[i].prenom, tab[i].nom, tab[i].ville,tab[i].tel, tab[i].adrmail, tab[i].profession);
+            calcul_age(tab[i].date_naissance);
+            printf("\n");
+            p++;
         }
     }
+    printf(" Nombre de ligne avec attribut manquant : %d\n",p);
     vider_buffer();
     printf("Appuyer sur Entrer pour continuer");
     scanf("%c",&suite);
@@ -191,10 +198,12 @@ void sep_cdp_ville(int nb_lignes,CLIENT tab[nb_lignes]) {
 }
 void afficher_tab(int nb_l,CLIENT tab[nb_l]) {
     char suite;
-    printf("prenom | nom | ville | téléphone | adresse mail | profession | date de naissance\n");
+    printf("prenom | nom | ville | téléphone | adresse mail | profession | âge\n");
     for (int i = 0; i < nb_l; i++) {
-        printf(" %d|%s|%s|%s|%s|%s|%s|%s|%s\n", tab[i].id, tab[i].prenom, tab[i].nom, tab[i].ville, tab[i].codep,
-               tab[i].tel, tab[i].adrmail, tab[i].profession, tab[i].date_naissance);
+        printf(" %d|%s|%s|%s|%s|%s|%s|%s|", tab[i].id, tab[i].prenom, tab[i].nom, tab[i].ville, tab[i].codep,
+               tab[i].tel, tab[i].adrmail, tab[i].profession);
+        calcul_age(tab[i].date_naissance);
+        printf("\n");
     }
     vider_buffer();
     printf("Appuyer sur Entrer pour continuer");
@@ -208,14 +217,13 @@ void afficher_ligne(FILE* fic){
     mot_par_mot(fic,nb_l,tab);
     printf("\nQuelle ligne voulez-vous afficher :");
     scanf("%d",&choix);
-    while(choix < 0 || choix > nb_l){
+    while(choix < 0 || choix > nb_l) {
         printf("\nSaisie incorrect veuiller resaisir la ligne : ");
-        scanf("%d",&choix);
+        scanf("%d", &choix);
     }
-    for(int i = 0; i< nb_l;i++){
-        if(tab[i].id == choix)
-            printf(" %d|%s|%s|%s|%s|%s|%s|%s\n",tab[i].id,tab[i].prenom, tab[i].nom, tab[i].ville,tab[i].tel, tab[i].adrmail, tab[i].profession, tab[i].date_naissance);
-    }
+    choix = choix-1;
+            printf(" \n %d|%s|%s|%s|%s|%s|%s|",tab[choix].id,tab[choix].prenom, tab[choix].nom, tab[choix].ville,tab[choix].tel, tab[choix].adrmail, tab[choix].profession);
+    calcul_age(tab[choix].date_naissance);
     vider_buffer();
     printf("\nAppuyer sur Entrer pour continuer");
     scanf("%c",&suite);
@@ -311,7 +319,7 @@ void tri_tableau(FILE* fic){
     int nb_l = total_lignes(fic);
     CLIENT tab[nb_l];
     mot_par_mot(fic,nb_l,tab);
-    char info[4][30] = {"nom","code postal","profession","date de naissance"};
+    char info[4][30] = {"nom","code postal","profession","âge"};
     printf("Selon quel critère voulez vous triez l'annuaire\n");
     for(int i=0;i<4;i++){
         printf("%d) %s\n",i+1,info[i]);
@@ -339,6 +347,40 @@ void tri_tableau(FILE* fic){
             printf("Erreur de menu");
     }
     afficher_tab(nb_l,tab);
+
+}
+
+void calcul_age(char mot[]){
+    int jour,mois,annee,jour1,mois1,annee1;
+    char j[3],m[3],a[5];
+    if(mot[0] != '\0'){
+        time_t t = time(NULL);
+        struct tm *date_actuelle = localtime(&t);
+        // Extraire les informations de la date
+        jour = date_actuelle->tm_mday;
+        mois = date_actuelle->tm_mon + 1;    // Les mois commencent à 0
+        annee = date_actuelle->tm_year + 1900; // L'année commence à 1900
+        // recupere les element de la date de naissance
+        j[0]=mot[0];
+        j[1]=mot[1];
+        m[0]=mot[3];
+        m[1]=mot[4];
+        a[0]=mot[6];
+        a[1]=mot[7];
+        a[2]=mot[8];
+        a[3]=mot[9];
+        // convertir en nombre
+        jour1 = strtol(j,NULL,10);
+        mois1 = strtol(m,NULL,10);
+        annee1= strtol(a,NULL,10);
+        if(mois<mois1 && jour1 > jour || (mois==mois1 && jour1 > jour)){// si le mois de naissance n'est pas encore passer ou si le jour de naissance est pas encore passer
+            printf("%d",annee-annee1);// print l'age
+        }
+        else{
+            printf("%d",annee-annee1-1);
+        }
+
+    }
 }
 
 
