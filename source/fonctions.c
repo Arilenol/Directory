@@ -4,90 +4,77 @@
 #include "../head/head.h"
 void afficher_tab(int nb_l,CLIENT tab[nb_l]);
 void calcul_age(char mot[]);
-FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]){
-    int choix;
-    printf("Quel fichier voulez vous consulter\n");
-    for (int i = 0; i<x; i++){
-        printf("%d) %s\n",i+1,annuaires[i]);
+void ouverture(char chemin[]){
+    char possible[5][50]={"Consulter","Ajouter","Consulter les Client avec données manquantes","Consulter un tableau trié","Revenir en arrière"};
+    int choix,ligne;
+    FILE* fic = NULL;
+    fic = fopen(chemin,"r+");
+    if (fic == NULL){
+        printf("Echec ouverture fichier\n");
+        perror("fopen");
+        exit(EXIT_FAILURE);
     }
-    printf("\nEntrez le chiffre correspondant au fichier que vous souhaitez ouvrir : ");
-    scanf("%d",&choix);
-    while (choix<1 || choix > 7){
-        printf("Sasie hors plage\nRéessayez : ");
-        scanf("%d",&choix);
-    }
-    switch(choix){
-        case(1):
-            fic = fopen(DIX,mode);
-            if (fic == NULL){
-                printf("Echec ouverture fichier\n");
-                perror("fopen");
-                exit(EXIT_FAILURE);
-            }
-            system("cls");
-            break;
-        case(2):
-            fic = fopen(CINQUANTE,mode);
-            if (fic == NULL){
-                printf("Echec ouverture fichier\n");
-                perror("fopen");
-                exit(EXIT_FAILURE);
-            }
-            system("cls");
-            break;
-        case(3):
-            fic = fopen(CENT,mode);
-            if (fic == NULL){
-                printf("Echec ouverture fichier\n");
-                perror("fopen");
-                exit(EXIT_FAILURE);
-            }
-            system("cls");
-            break;
-        case(4):
-            fic = fopen(CINQ_CENTS,mode);
-            if (fic == NULL){
-                printf("Echec ouverture fichier\n");
-                perror("fopen");
-                exit(EXIT_FAILURE);
-            }
-            system("cls");
-            break;
-        case(5):
-            fic = fopen(MILLE,mode);
-            if (fic == NULL){
-                printf("Echec ouverture fichier\n");
-                perror("fopen");
-                exit(EXIT_FAILURE);
-            }
-            system("cls");
-            break;
-        case(6):
-            fic = fopen(CINQ_MILLES,mode);
-            if (fic == NULL){
-                printf("Echec ouverture fichier\n");
-                perror("fopen");
-                exit(EXIT_FAILURE);
-            }
-            system("cls");
-            break;
-        case(7):
-            system("cls");
-            break;
-        default:
-            printf("erreur");
-    }
-    return fic;
+    int nb_ligne= total_lignes(fic);
+    CLIENT tab[nb_ligne];
+    mot_par_mot(fic,nb_ligne,tab);
+    do{
+        printf("\n\nQue voulez-faire parmi les actions suivantes ? \n");
+        for (int i = 0; i < 5; i++) {
+            printf("%d) %s\n", i + 1, possible[i]);
+        }
+        printf("\nEntrez le chiffre correspondant à l'action que vous souhaitez réaliser : ");
+        scanf("%d", &choix);
+        while (choix < 1 || choix > 5) {
+            printf("Sasie hors plage\nRéessayez : ");
+            scanf("%d", &choix);
+        }
+        switch (choix) {
+            case (1):
+                system("cls");
+                afficher(nb_ligne,tab);
+                printf("\nVoulez afficher une ligne en particulier\n1) 0ui\n2) Non\n");
+                scanf("%d",&choix);
+                while (choix < 1 || choix > 2) {
+                    printf("Sasie hors plage\nRéessayez : ");
+                    scanf("%d", &choix);
+                }
+                if(choix == 1){
+                    printf("Quelle ligne voulez vous afficher");
+                    scanf("%d",&ligne);
+                    while(ligne < 1 || ligne > nb_ligne-1){
+                        printf("Hors plage veuillez ressayer\n");
+                        scanf("%d",&ligne);
+                    }
+                    afficher_ligne(nb_ligne,tab,ligne);
+                }
+                break;
+
+            case (2):
+                system("cls");
+                ajout(fic);
+                break;
+
+            case (3):
+                system("cls");
+                afficher_manq(nb_ligne,tab);
+                break;
+            case(4):
+                system("cls");
+                tri_tableau(fic);
+                break;
+            case (5):
+                system("cls");
+                break;
+            default:
+                printf("Valeur erronée");
+                break;
+        }
+        system("cls");
+        fclose(fic);
+    }while(choix != 5);
 }
-void fermeture(FILE* fic){
-    fclose(fic);
-    printf("\n1Le fichier à bien été fermé");
-}
-void afficher(FILE* fic) {
-    int nb_l = total_lignes(fic);
+void afficher(int nb_l,CLIENT tab[nb_l]) {
     char suite;
-    CLIENT tab[nb_l];
-    mot_par_mot(fic,nb_l,tab);
     printf("prenom | nom | ville | téléphone | adresse mail | profession | âge\n");
     for(int i = 0; i< nb_l;i++){
     printf(" %d|%s|%s|%s|%s|%s|%s|%s|",tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession,tab[i].date_naissance );
@@ -98,12 +85,9 @@ void afficher(FILE* fic) {
     printf("Appuyer sur Entrer pour continuer");
     scanf("%c",&suite);
 }
-void afficher_manq(FILE* fic){
-    int nb_l = total_lignes(fic);
+void afficher_manq(int nb_l,CLIENT tab[nb_l]) {
     char suite;
-    int p;
-    CLIENT tab[nb_l];
-    mot_par_mot(fic,nb_l,tab);
+    int p=0;
     printf("num | prenom | nom | ville | téléphone | adresse mail | profession | âge\n");
     for(int i = 0; i< nb_l;i++){
         if( strcmp(tab[i].prenom,"") == 0 || strcmp(tab[i].nom,"") == 0 || strcmp(tab[i].ville,"") == 0 || strcmp(tab[i].codep,"") == 0||strcmp(tab[i].tel,"") == 0 || strcmp(tab[i].adrmail,"") == 0 || strcmp(tab[i].profession,"") == 0 || strcmp(tab[i].date_naissance,"") == 0){
@@ -196,32 +180,10 @@ void sep_cdp_ville(int nb_lignes,CLIENT tab[nb_lignes]) {
         }
     }
 }
-void afficher_tab(int nb_l,CLIENT tab[nb_l]) {
+
+void afficher_ligne(int nb_l,CLIENT tab[nb_l],int ligne){
     char suite;
-    printf("prenom | nom | ville | téléphone | adresse mail | profession | âge\n");
-    for (int i = 0; i < nb_l; i++) {
-        printf(" %d|%s|%s|%s|%s|%s|%s|%s|", tab[i].id, tab[i].prenom, tab[i].nom, tab[i].ville, tab[i].codep,
-               tab[i].tel, tab[i].adrmail, tab[i].profession);
-        calcul_age(tab[i].date_naissance);
-        printf("\n");
-    }
-    vider_buffer();
-    printf("Appuyer sur Entrer pour continuer");
-    scanf("%c", &suite);
-}
-void afficher_ligne(FILE* fic){
-    int nb_l = total_lignes(fic),choix;
-    CLIENT tab[nb_l];
-    char suite;
-    rewind(fic);
-    mot_par_mot(fic,nb_l,tab);
-    printf("\nQuelle ligne voulez-vous afficher :");
-    scanf("%d",&choix);
-    while(choix < 0 || choix > nb_l) {
-        printf("\nSaisie incorrect veuiller resaisir la ligne : ");
-        scanf("%d", &choix);
-    }
-    choix = choix-1;
+    int choix = ligne -1;
             printf(" \n %d|%s|%s|%s|%s|%s|%s|",tab[choix].id,tab[choix].prenom, tab[choix].nom, tab[choix].ville,tab[choix].tel, tab[choix].adrmail, tab[choix].profession);
     calcul_age(tab[choix].date_naissance);
     vider_buffer();
@@ -346,7 +308,7 @@ void tri_tableau(FILE* fic){
         default:
             printf("Erreur de menu");
     }
-    afficher_tab(nb_l,tab);
+    afficher(nb_l,tab);
 
 }
 

@@ -10,18 +10,12 @@
 #include <assert.h>
 #include <string.h>
 #include <time.h>
-#define DIX "../benchmark_1/annuaire_10_entrees.csv"
-#define CINQUANTE "../benchmark_1/annuaire_50_entrees.csv"
-#define CENT "../benchmark_1/annuaire_100_entrees.csv"
-#define CINQ_CENTS "../benchmark_1/annuaire_500_entrees.csv"
-#define MILLE "../benchmark_1/annuaire_1000_entrees.csv"
-#define CINQ_MILLES "../benchmark_1/annuaire_5000_entrees.csv"
 /**
  * param[in] int x,y,char[x][y],FILE*,char[]
  * @post : la fonction affiche un menu qui demande à l'utilisateur de
  * choisir parmis les fichier disponible lequel ouvrir
  */
-FILE* ouverture(int x,int y,char annuaires[x][y],FILE* fic,char mode[]);
+void ouverture(char chemin[]);
 /**
  *
  * @param fic
@@ -48,7 +42,7 @@ void retirer_chariot(char* mot);
  * @param fic
  * @post affiche dans le terminal toute les ligne du fichier rentrée en parametre
  */
-void afficher(FILE* fic);
+void afficher(int nb_l,CLIENT tab[nb_l]);
 /**
  * @post decale le curseur du fichier stdin (buffer) pour eviter une lecture involontaire
  * du buffer par fgets
@@ -63,7 +57,7 @@ void upper(char mot[]);
  * @param fic
  * @post affiche toute les ligne ou il manque des informations
  */
-void afficher_manq(FILE* fic);
+void afficher_manq(int nb_l,CLIENT tab[nb_l]);
 /**
  * @param fic,nb_ligne,tableau
  * @post renvoie un tableau avec chaque ligne du fichier un élément du tableau
@@ -82,7 +76,7 @@ void sep_cdp_ville(int nb_lignes,CLIENT tab[nb_lignes]);
  * @param
  * @post affiche la ligne rentré par l'utilisateur;
  */
-void afficher_ligne(FILE* fic);
+void afficher_ligne(int nb_l,CLIENT tab[nb_l],int ligne);
 /**
  * @param fic
  * @post renvoie un tableau trié selon le critère rentré par l'utilisateur
