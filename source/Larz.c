@@ -121,66 +121,372 @@ void poser_curseur(FILE* fichier, int ligne){
 }
 
 //FONCTION terminée, en attente d'un point ensemble pour rectfier 2-3 choses
-void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
-    int indice[15];
+int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
+    int indice[nb_ligne];
     int indice2 = 0;
-    int select = -1; // Initialisation par défaut
-    printf("Comment voulez-vous modifier ?\n");
-    printf("1) Par son numéro de téléphone (clé primaire) ?\n");
-    printf("2) Par son prénom ?\n");
+    int select = -1; //initialisation par défaut
     int choix;
+    int verification = nb_ligne;
+    char prenom[40], nom[40], code[40], mail[40], numero[40], metier[40], date[20];
+    int value;
+    CLIENT tab[nb_ligne];
+    FILE* fic2;
+    FILE* fic;
+    printf("Par quel moyen voulez-vous retrouver la personne\n");
+    printf("1) Son prénom ?\n");
+    printf("2) Son nom ?\n");
+    printf("3) Son numero de telephone ?\n");
+    printf("4) Son mail ?\n");
+    printf("5) Par cumul d'info ?\n");
+    printf("Entrez votre choix ici : ");
     scanf("%d", &choix);
-    getchar(); // Consomme le caractère '\n' laissé par scanf
-    switch (choix)
-    {
-    case 1:
-        printf("Entrez son numéro de téléphone (espacez les nombres par des points) : ");
-        char num[14];
-        scanf("%s", num);
-        for (int i = 0; i < nb_ligne; i++) {
-            if (stricmp(num, tableau[i].tel) == 0) {
-                select = i;
-            }
-        }
+    getchar(); //avale le \n laissé par scanf
 
-        break;
 
-    case 2:
-        printf("Entrez le prénom de la personne : ");
-        char prenom[20];
-        fgets(prenom, 21, stdin);
-        retirerchariot(prenom);
-        FILE* fic2 = fopen("../head/fichiertmp.csv", "w");
-        for (int i = 0; i < nb_ligne; i++) {
-            printf("%s et %s \n",prenom, tableau[i].prenom);
-            if (stricmp(prenom, tableau[i].prenom) == 0) {
-                printf("1");
-                indice[indice2] = i;
-                indice2++;
-                fprintf(fic2, "%s,", tableau[i].prenom);
-                fprintf(fic2, "%s,", tableau[i].nom);
-                fprintf(fic2, "%s,", tableau[i].ville);
-                fprintf(fic2, "%s,", tableau[i].tel);
-                fprintf(fic2, "%s,", tableau[i].adrmail);
-                fprintf(fic2, "%s,", tableau[i].profession);
-                fprintf(fic2, "%s\n", tableau[i].date_naissance);
+    switch (choix) {
+        case 1:
+            printf("Entrez le prénom de la personne : ");
+            fgets(prenom, 41, stdin);
+            retirerchariot(prenom);
+            fic2 = fopen("../head/fichiertmp.csv", "w");
+            for (int i = 0; i < nb_ligne; i++) {
+                if (stricmp(prenom, tableau[i].prenom) == 0) {
+                    indice[indice2++] = i;
+                    fprintf(fic2, "%s,%s,%s,%s,%s,%s,%s\n",
+                            tableau[i].prenom, tableau[i].nom,
+                            tableau[i].ville, tableau[i].tel,
+                            tableau[i].adrmail, tableau[i].profession,
+                            tableau[i].date_naissance);
+                }
             }
-        }
-        fclose(fic2);
-        FILE* fic = fopen("../head/fichiertmp.csv", "r");
-        printf("Parmi ces éléments : \n");
-        lire_carac(fic);
-        fclose(fic);
-        remove("../head/fichiertmp.csv");
+            fclose(fic2);
+            // Si aucun résultat n'a été trouvé, select reste à -1
+            if (indice2 == 0) {
+                printf("Aucun client trouvé avec ce prénom.\n");
+                remove("../head/fichiertmp.csv");
+                return select; // Retourne -1
+            }
+            fic = fopen("../head/fichiertmp.csv", "r");
+            printf("Parmi ces éléments : \n");
+            lire_carac(fic);
+            fclose(fic);
+            remove("../head/fichiertmp.csv");
+            break;
+        
+        case 2:
+            printf("Entrez le nom de la personne : ");
+            fgets(nom, 41, stdin);
+            retirerchariot(nom);
+            fic2 = fopen("../head/fichiertmp.csv", "w");
+            for (int i = 0; i < nb_ligne; i++) {
+                if (stricmp(nom, tableau[i].nom) == 0) {
+                    indice[indice2++] = i;
+                    fprintf(fic2, "%s,%s,%s,%s,%s,%s,%s\n",
+                            tableau[i].prenom, tableau[i].nom,
+                            tableau[i].ville, tableau[i].tel,
+                            tableau[i].adrmail, tableau[i].profession,
+                            tableau[i].date_naissance);
+                }
+            }
+            fclose(fic2);
+            // Si aucun résultat n'a été trouvé, select reste à -1
+            if (indice2 == 0) {
+                printf("Aucun client trouvé avec ce nom.\n");
+                remove("../head/fichiertmp.csv");
+                return select; // Retourne -1
+            }
+            fic = fopen("../head/fichiertmp.csv", "r");
+            printf("Parmi ces éléments : \n");
+            lire_carac(fic);
+            fclose(fic);
+            remove("../head/fichiertmp.csv");
+            break;
+
+        case 3:
+            value = 1;
+            printf("Entrez le numero de telephone de la personne : ");
+            fgets(numero, 41, stdin);
+            retirerchariot(numero);
+            for (int i = 0; i < nb_ligne && value; i++) {
+                if (stricmp(numero, tableau[i].tel) == 0) {
+                    value = 0;
+                    indice[indice2++] = i;
+                    fprintf(fic2, "%s,%s,%s,%s,%s,%s,%s\n",
+                            tableau[i].prenom, tableau[i].nom,
+                            tableau[i].ville, tableau[i].tel,
+                            tableau[i].adrmail, tableau[i].profession,
+                            tableau[i].date_naissance);
+                }
+            }
+            // Si aucun résultat n'a été trouvé, select reste à -1
+            if (indice2 == 0) {
+                printf("Aucun client trouvé avec ce numéro de téléphone.\n");
+                remove("../head/fichiertmp.csv");
+                return select; // Retourne -1
+            }
+            select = indice[0];
+            break;
+        case 4:
+            printf("Entrez le mail de la personne : ");
+            fgets(mail, 41, stdin);
+            retirerchariot(mail);
+            fic2 = fopen("../head/fichiertmp.csv", "w");
+            for (int i = 0; i < nb_ligne; i++) {
+                if (stricmp(mail, tableau[i].adrmail) == 0) {
+                    indice[indice2++] = i;
+                    fprintf(fic2, "%s,%s,%s,%s,%s,%s,%s\n",
+                            tableau[i].prenom, tableau[i].nom,
+                            tableau[i].ville, tableau[i].tel,
+                            tableau[i].adrmail, tableau[i].profession,
+                            tableau[i].date_naissance);
+                }
+            }
+            fclose(fic2);
+            // Si aucun résultat n'a été trouvé, select reste à -1
+            if (indice2 == 0) {
+                printf("Aucun client trouvé avec ce mail.\n");
+                remove("../head/fichiertmp.csv");
+                return select; // Retourne -1
+            }
+            fic = fopen("../head/fichiertmp.csv", "r");
+            printf("Parmi ces éléments : \n");
+            lire_carac(fic);
+            fclose(fic);
+            remove("../head/fichiertmp.csv");
+            break;
+        case 5:
+            
+            printf("Entrez le prénom de la personne : ");
+            fgets(prenom, 41, stdin);
+            retirerchariot(prenom);
+            if (prenom[0]!='\0'){
+                for (int i = 0; i < nb_ligne; i++) {
+                    if (stricmp(prenom, tableau[i].prenom) == 0) {
+                        tab[indice2] = tableau[i];
+                        indice[indice2] = i; 
+                        indice2++;
+                    }
+                    verification = indice2;
+                }       
+            }
+            
+            printf("Entrez le nom de la personne : ");
+            fgets(nom, 41, stdin);
+            retirerchariot(nom);
+            if (nom[0]!='\0' && verification==nb_ligne){
+                for (int i = 0; i < nb_ligne; i++) {
+                    if (stricmp(nom, tableau[i].nom) == 0) {
+                        tab[indice2] = tableau[i];
+                        indice[indice2] = i;
+                        indice2++;
+                    }
+                    verification = indice2;
+                } 
+            } 
+            else if (nom[0]!='\0' && verification!=nb_ligne){
+                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+                    if (stricmp(nom, tab[i].nom) != 0) {
+                        // Décaler les éléments suivants pour supprimer l'élément courant
+                        for (int j = i; j < verification - 1; j++) {
+                            tab[j] = tab[j + 1];
+                            indice[j] = indice[j+1];
+                            
+                        }
+                        verification--; // Réduire la taille logique
+                        // Ne pas incrémenter i pour revérifier l'élément décalé
+                    } else {
+                        i++; 
+                    }
+                }
+
+            }
+            printf("Entrez la ville suivie du code postal de la personne : ");
+            fgets(code, 41, stdin);
+            retirerchariot(code);
+            if (code[0]!='\0' && verification==nb_ligne){
+                for (int i = 0; i < nb_ligne; i++) {
+                    //printf("%s et %s\n", code, tableau[i].ville);
+                    if (stricmp(code, tableau[i].ville) == 0) {
+                        tab[indice2] = tableau[i];
+                        indice[indice2] = i;
+                        indice2++;
+                    }
+                    verification = indice2;
+                } 
+            } 
+            else if (code[0]!='\0' && verification!=nb_ligne){
+                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+                    if (stricmp(code, tab[i].ville) != 0) {
+                        // Décaler les éléments suivants pour supprimer l'élément courant
+                        for (int j = i; j < verification - 1; j++) {
+                            tab[j] = tab[j + 1];
+                            indice[j] = indice[j+1];
+
+                        }
+                        verification--; // Réduire la taille logique
+                        // Ne pas incrémenter i pour revérifier l'élément décalé
+                    } else {
+                        i++; 
+                    }
+                }
+
+            }
+            printf("Entrez le numéro de téléphone : ");
+            fgets(numero, 41, stdin);
+            retirerchariot(numero);
+            if (numero[0]!='\0' && verification==nb_ligne){
+                for (int i = 0; i < nb_ligne; i++) {
+                    if (stricmp(numero, tableau[i].tel) == 0) {
+                        tab[indice2] = tableau[i];
+                        indice[indice2] = i;
+                        indice2++;
+                    }
+                    verification = indice2;
+                } 
+            } 
+            else if (numero[0]!='\0' && verification!=nb_ligne){
+                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+                    if (stricmp(numero, tab[i].tel) != 0) {
+                        // Décaler les éléments suivants pour supprimer l'élément courant
+                        for (int j = i; j < verification - 1; j++) {
+                            tab[j] = tab[j + 1];
+                            indice[j] = indice[j+1];
+                        }
+                        verification--; // Réduire la taille logique
+                        // Ne pas incrémenter i pour revérifier l'élément décalé
+                    } else {
+                        i++; 
+                    }
+                }
+
+            }
+            printf("Entrez l'adresse mail : ");
+            fgets(mail, 41, stdin);
+            retirerchariot(mail);
+            if (mail[0]!='\0' && verification==nb_ligne){
+                for (int i = 0; i < nb_ligne; i++) {
+                    if (stricmp(mail, tableau[i].adrmail) == 0) {
+                        tab[indice2] = tableau[i];
+                        indice[indice2] = i;
+                        indice2++;
+                    }
+                    verification = indice2;
+                } 
+            } 
+            else if (mail[0]!='\0' && verification!=nb_ligne){
+                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+                    if (stricmp(mail, tab[i].adrmail) != 0) {
+                        // Décaler les éléments suivants pour supprimer l'élément courant
+                        for (int j = i; j < verification - 1; j++) {
+                            tab[j] = tab[j + 1];
+                            indice[j] = indice[j+1];
+                        }
+                        verification--; // Réduire la taille logique
+                        // Ne pas incrémenter i pour revérifier l'élément décalé
+                    } else {
+                        i++; 
+                    }
+                }
+
+            }
+            printf("Entrez le métier : ");
+            fgets(metier, 21, stdin);
+            retirerchariot(metier);
+            if (metier[0]!='\0' && verification==nb_ligne){
+                for (int i = 0; i < nb_ligne; i++) {
+                    if (stricmp(metier, tableau[i].profession) == 0) {
+                        tab[indice2] = tableau[i];
+                        indice[indice2] = i;
+                        indice2++;
+                    }
+                    verification = indice2;
+                } 
+            } 
+            else if (metier[0]!='\0' && verification!=nb_ligne){
+                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+                    if (stricmp(metier, tab[i].profession) != 0) {
+                        // Décaler les éléments suivants pour supprimer l'élément courant
+                        for (int j = i; j < verification - 1; j++) {
+                            tab[j] = tab[j + 1];
+                            indice[j] = indice[j+1];
+                        }
+                        verification--; // Réduire la taille logique
+                        // Ne pas incrémenter i pour revérifier l'élément décalé
+                    } else {
+                        i++; 
+                    }
+                }
+
+            }
+            printf("Entrez la date de naissance : ");
+            fgets(date, 21, stdin);
+            retirerchariot(date);
+            if (date[0]!='\0' && verification==nb_ligne){
+                for (int i = 0; i < nb_ligne; i++) {
+                    if (stricmp(date, tableau[i].date_naissance) == 0) {
+                        tab[indice2] = tableau[i];
+                        indice[indice2] = i;
+                        indice2++;
+                    }
+                    verification = indice2;
+                } 
+            } 
+            else if (date[0]!='\0' && verification!=nb_ligne){
+                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+                    if (stricmp(date, tab[i].date_naissance) != 0) {
+                        // Décaler les éléments suivants pour supprimer l'élément courant
+                        for (int j = i; j < verification - 1; j++) {
+                            tab[j] = tab[j + 1];
+                            indice[j] = indice[j+1];
+                        }
+                        verification--; // Réduire la taille logique
+                        // Ne pas incrémenter i pour revérifier l'élément décalé
+                    } else {
+                        i++; 
+                    }
+                }
+
+            }
+
+            if (numero[0]!='\0'){
+                return indice[0];
+            }
+            else{
+                fic = fopen("../head/fichiertmp.csv", "w");
+                for (int i = 0; i<verification;i++){
+                    fprintf(fic, "%s,%s,%s,%s,%s,%s,%s\n",
+                            tab[i].prenom, tab[i].nom,
+                            tab[i].ville, tab[i].tel,
+                            tab[i].adrmail, tab[i].profession,
+                            tab[i].date_naissance);
+                }
+            }
+            fclose(fic);
+            fic = fopen("../head/fichiertmp.csv", "r");
+            printf("Parmi ces éléments : \n");
+            lire_carac(fic);
+            fclose(fic);
+            remove("../head/fichiertmp.csv");
+            
+
+            break;
+
+        default:
+            printf("Choix incorrect\n");
+            break;
+    }
+    if (choix!=3){
         printf("Entrez le numéro de la ligne sur laquelle vous voulez modifier un élément : ");
         int ligne;
         scanf("%d", &ligne);
         select = indice[ligne - 1];
-        break;
-    default:
-        printf("Erreur lors de la saisie\n");
-        return; // On sort de la fonction si une erreur survient
-    }
+        }
+    return select;
+}
+
+
+void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
+    int select = recherche(nb_ligne, tableau);
 
     if (select == -1) {
         printf("Aucune sélection valide effectuée.\n");
@@ -257,6 +563,9 @@ void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
         break;
     }
 }
+
+
+
 
 void list_to_file(int taille, CLIENT c[taille]){
     FILE* fic = fopen("../head/test.csv","w");
