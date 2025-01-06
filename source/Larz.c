@@ -15,6 +15,30 @@ int total_lignes(FILE * fichier){
     return res;
 }
 
+void sep_cdp_ville(int nb_lignes,CLIENT tab[nb_lignes]) {
+    char tab_carac[100];
+    int c1 =0 ;
+    int c2 =0;
+    for (int i = 0; i < nb_lignes; i++) {
+        strcpy(tab_carac, tab[i].ville);
+        if(*(tab_carac) != '\0') {
+            while ((*(tab_carac + c1 + 1) < '0' || *(tab_carac + c1 + 1) > '9') && *(tab_carac + c1 + 1) != '\0') {
+                c1++;
+            }
+            tab[i].ville[c1] = '\0';
+            c1++;
+            while (*(tab_carac + c1) != '\0' || c2<6) {
+                tab[i].codep[c2] = *(tab_carac + c1);
+                tab[i].ville[c1] = '\0';
+                c1++;
+                c2++;
+            }
+            c1 = 0;
+            c2 = 0;
+        }
+    }
+}
+
 void affecter_struct(CLIENT *c1, char option[], char mot[]) {
     if (stricmp(option, "prenom") == 0) {
         strcpy(c1->prenom, mot);
@@ -140,7 +164,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     printf("5) Par cumul d'info ?\n");
     printf("Entrez votre choix ici : ");
     scanf("%d", &choix);
-    getchar(); //avale le \n laissé par scanf
+    vider_buffer(); //avale le \n laissé par scanf
 
 
     switch (choix) {
@@ -484,6 +508,18 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     return select;
 }
 
+void suppression(int* nb_ligne, CLIENT tableau[*nb_ligne]){
+    int select = recherche_nom(*nb_ligne,tableau);
+    if (select == -1) {
+        printf("Aucune sélection valide effectuée.\n");
+        return ;
+    }
+    for (int i = select; i<((*nb_ligne)-1);i++){
+        tableau[i] = tableau[i+1];
+    }
+    *nb_ligne = *nb_ligne - 1;
+}
+
 
 void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
     int select = recherche(nb_ligne, tableau);
@@ -570,37 +606,13 @@ void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
 void list_to_file(int taille, CLIENT c[taille]){
     FILE* fic = fopen("../head/test.csv","w");
     for (int i = 0; i<taille;i++){
-        fprintf(fic,"%s,",c[i].prenom);
-        fprintf(fic,"%s,",c[i].nom);
-        fprintf(fic,"%s,",c[i].ville);
-        fprintf(fic,"%s,",c[i].tel);
-        fprintf(fic,"%s,",c[i].adrmail);
-        fprintf(fic,"%s,",c[i].profession);
-        fprintf(fic,"%s",c[i].date_naissance);
-        fprintf(fic, "\n");
+            fprintf(fic, "%s,%s,%s %s,%s,%s,%s,%s\n",
+                    c[i].prenom, c[i].nom,
+                    c[i].ville,c[i].codep, c[i].tel,
+                    c[i].adrmail, c[i].profession,
+                    c[i].date_naissance);
+                
     }
     fclose(fic);
 }
-        
 
-// T'ammuse pas a mettre des main un pau partout ça fait capauter le compilateur
-// Effectivement, c'était pour test de base, pour moi 
-/*
-int main(void){ 
-    
-    FILE* fic = fopen(chemin,"r");
-    if (fic==NULL){
-        printf("Echec ouverture du fichier \n");
-        exit(EXIT_FAILURE);
-    }
-      
-    CLIENT tableau[500];
-    mot_par_mot(fic,500,tableau);
-    printf("%s",tableau[499].prenom);
-    
-    
-    fclose(fic);
-
-    return EXIT_SUCCESS;
-}
-*/

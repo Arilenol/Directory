@@ -91,5 +91,4 @@ void tri_tableau(FILE* fic);
 /**
  *
  */
-int ordre_alpha(char mot1[],char mot2[]);
 #endif // HEAD_H_INCLUDED

@@ -2,6 +2,7 @@
 // Created by Leny_ARIZZI on 27/11/2024.
 //
 #include "../head/head.h"
+/*
 int main(void){
     system("chcp 65001");
     system("cls");
@@ -70,3 +71,5 @@ int main(void){
     }while(choix != 5);
     return 0;
 }
+
+*/
