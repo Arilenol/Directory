@@ -121,7 +121,7 @@ void poser_curseur(FILE* fichier, int ligne){
 }
 
 //FONCTION terminée, en attente d'un point ensemble pour rectfier 2-3 choses
-int recherche_nom(int nb_ligne, CLIENT tableau[nb_ligne]) {
+int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     int indice[nb_ligne];
     int indice2 = 0;
     int select = -1; //initialisation par défaut
