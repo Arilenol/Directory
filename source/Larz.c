@@ -15,29 +15,6 @@ int total_lignes(FILE * fichier){
     return res;
 }
 
-void sep_cdp_ville(int nb_lignes,CLIENT tab[nb_lignes]) {
-    char tab_carac[100];
-    int c1 =0 ;
-    int c2 =0;
-    for (int i = 0; i < nb_lignes; i++) {
-        strcpy(tab_carac, tab[i].ville);
-        if(*(tab_carac) != '\0') {
-            while ((*(tab_carac + c1 + 1) < '0' || *(tab_carac + c1 + 1) > '9') && *(tab_carac + c1 + 1) != '\0') {
-                c1++;
-            }
-            tab[i].ville[c1] = '\0';
-            c1++;
-            while (*(tab_carac + c1) != '\0' || c2<6) {
-                tab[i].codep[c2] = *(tab_carac + c1);
-                tab[i].ville[c1] = '\0';
-                c1++;
-                c2++;
-            }
-            c1 = 0;
-            c2 = 0;
-        }
-    }
-}
 
 void affecter_struct(CLIENT *c1, char option[], char mot[]) {
     if (stricmp(option, "prenom") == 0) {
