@@ -121,13 +121,13 @@ void poser_curseur(FILE* fichier, int ligne){
 }
 
 //FONCTION terminée, en attente d'un point ensemble pour rectfier 2-3 choses
-int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
+int recherche_nom(int nb_ligne, CLIENT tableau[nb_ligne]) {
     int indice[nb_ligne];
     int indice2 = 0;
     int select = -1; //initialisation par défaut
     int choix;
     int verification = nb_ligne;
-    char prenom[40], nom[40], code[40], mail[40], numero[40], metier[40], date[20];
+    char prenom[40], nom[40], ville[40], code[40], mail[40], numero[40], metier[40], date[20];
     int value;
     CLIENT tab[nb_ligne];
     FILE* fic2;
@@ -300,13 +300,13 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                 }
 
             }
-            printf("Entrez la ville suivie du code postal de la personne : ");
-            fgets(code, 41, stdin);
-            retirerchariot(code);
-            if (code[0]!='\0' && verification==nb_ligne){
+            printf("Entrez la ville de la personne : ");
+            fgets(ville, 41, stdin);
+            retirerchariot(ville);
+            if (ville[0]!='\0' && verification==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
-                    //printf("%s et %s\n", code, tableau[i].ville);
-                    if (stricmp(code, tableau[i].ville) == 0) {
+                    printf("%s\n", tableau[i].tel);
+                    if (stricmp(ville, tableau[i].ville) == 0) {
                         tab[indice2] = tableau[i];
                         indice[indice2] = i;
                         indice2++;
@@ -314,9 +314,9 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                     verification = indice2;
                 } 
             } 
-            else if (code[0]!='\0' && verification!=nb_ligne){
+            else if (ville[0]!='\0' && verification!=nb_ligne){
                 for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
-                    if (stricmp(code, tab[i].ville) != 0) {
+                    if (stricmp(ville, tab[i].ville) != 0) {
                         // Décaler les éléments suivants pour supprimer l'élément courant
                         for (int j = i; j < verification - 1; j++) {
                             tab[j] = tab[j + 1];
@@ -331,9 +331,40 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                 }
 
             }
+            printf("Entrez le code postal de la personne : ");
+            fgets(code, 41, stdin);
+            retirerchariot(code);
+
+            if (code[0]!='\0' && verification==nb_ligne){
+                for (int i = 0; i < nb_ligne; i++) {
+                    if (stricmp(code, tableau[i].codep) == 0) {
+                        tab[indice2] = tableau[i];
+                        indice[indice2] = i;
+                        indice2++;
+                    }
+                    verification = indice2;
+                } 
+            } 
+            else if (code[0]!='\0' && verification!=nb_ligne){
+                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+                    if (stricmp(code, tab[i].codep) != 0) {
+                        // Décaler les éléments suivants pour supprimer l'élément courant
+                        for (int j = i; j < verification - 1; j++) {
+                            tab[j] = tab[j + 1];
+                            indice[j] = indice[j+1];
+                        }
+                        verification--; // Réduire la taille logique
+                        // Ne pas incrémenter i pour revérifier l'élément décalé
+                    } else {
+                        i++; 
+                    }
+                }
+
+            }
             printf("Entrez le numéro de téléphone : ");
             fgets(numero, 41, stdin);
             retirerchariot(numero);
+
             if (numero[0]!='\0' && verification==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(numero, tableau[i].tel) == 0) {
@@ -454,9 +485,9 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             else{
                 fic = fopen("../head/fichiertmp.csv", "w");
                 for (int i = 0; i<verification;i++){
-                    fprintf(fic, "%s,%s,%s,%s,%s,%s,%s\n",
+                    fprintf(fic, "%s,%s,%s,%s,%s,%s,%s,%s\n",
                             tab[i].prenom, tab[i].nom,
-                            tab[i].ville, tab[i].tel,
+                            tab[i].ville,tab[i].codep, tab[i].tel,
                             tab[i].adrmail, tab[i].profession,
                             tab[i].date_naissance);
                 }
