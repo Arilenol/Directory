@@ -5,9 +5,10 @@
 void afficher_tab(int nb_l,CLIENT tab[nb_l]);
 void calcul_age(char mot[]);
 void ouverture(char chemin[]){
-    char possible[5][50]={"Consulter","Ajouter","Consulter les Client avec données manquantes","Consulter un tableau trié","Revenir en arrière"};
+    char possible[7][50]={"Consulter","Ajouter","Consulter les Client avec données manquantes","Consulter un tableau trié","Rechercher","Modifier","Revenir en arrière"};
     int choix,ligne;
     FILE* fic = NULL;
+    do{
     fic = fopen(chemin,"r+");
     if (fic == NULL){
         printf("Echec ouverture fichier\n");
@@ -17,14 +18,14 @@ void ouverture(char chemin[]){
     int nb_ligne= total_lignes(fic);
     CLIENT tab[nb_ligne];
     mot_par_mot(fic,nb_ligne,tab);
-    do{
+
         printf("\n\nQue voulez-faire parmi les actions suivantes ? \n");
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 7; i++) {
             printf("%d) %s\n", i + 1, possible[i]);
         }
         printf("\nEntrez le chiffre correspondant à l'action que vous souhaitez réaliser : ");
         scanf("%d", &choix);
-        while (choix < 1 || choix > 5) {
+        while (choix < 1 || choix > 7) {
             printf("Sasie hors plage\nRéessayez : ");
             scanf("%d", &choix);
         }
@@ -64,6 +65,14 @@ void ouverture(char chemin[]){
                 break;
             case (5):
                 system("cls");
+                recherche(nb_ligne,tab);
+                break;
+            case (6):
+                modif(nb_ligne,tab);
+                system("cls");
+                break;
+            case (7):
+                system("cls");
                 break;
             default:
                 printf("Valeur erronée");
@@ -71,14 +80,14 @@ void ouverture(char chemin[]){
         }
         system("cls");
         fclose(fic);
-    }while(choix != 5);
+    }while(choix != 7);
 }
 void afficher(int nb_l,CLIENT tab[nb_l]) {
     char suite;
     //printf("prenom | nom | ville | téléphone | adresse mail | profession | âge\n");
-    printf(" %-5s|%-15s|%-25s|%-15s|%-15s|%-25s|%-40s|%-25s|%-25s\n","id","prenom","nom","ville","Code postal","téléphone","adresse mail", "profession", "âge");
+    printf(" %-5s|%-15s|%-25s|%-15s|%-15s|%-15s|%-35s|%-25s|%-10s\n\n","id","prenom","nom","ville","Code postal","téléphone","adresse mail", "profession", "âge");
     for(int i = 0; i< nb_l;i++){
-    printf(" %-5d|%-15s|%-25s|%-15s|%-15s|%-25s|%-40s|%-25s|",tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession,tab[i].date_naissance );
+    printf(" %-5d|%-15s|%-25s|%-15s|%-15s|%-15s|%-35s|%-25s|",tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession,tab[i].date_naissance );
         calcul_age(tab[i].date_naissance);
         printf("\n");
     }
@@ -89,10 +98,10 @@ void afficher(int nb_l,CLIENT tab[nb_l]) {
 void afficher_manq(int nb_l,CLIENT tab[nb_l]) {
     char suite;
     int p=0;
-    printf("num | prenom | nom | ville | téléphone | adresse mail | profession | âge\n");
+    printf(" %-5s|%-15s|%-25s|%-15s|%-15s|%-15s|%-35s|%-25s|%-10s\n\n","id","prenom","nom","ville","Code postal","téléphone","adresse mail", "profession", "âge");
     for(int i = 0; i< nb_l;i++){
         if( strcmp(tab[i].prenom,"") == 0 || strcmp(tab[i].nom,"") == 0 || strcmp(tab[i].ville,"") == 0 || strcmp(tab[i].codep,"") == 0||strcmp(tab[i].tel,"") == 0 || strcmp(tab[i].adrmail,"") == 0 || strcmp(tab[i].profession,"") == 0 || strcmp(tab[i].date_naissance,"") == 0){
-            printf(" %d|%s|%s|%s|%s|%s|%s|",tab[i].id,tab[i].prenom, tab[i].nom, tab[i].ville,tab[i].tel, tab[i].adrmail, tab[i].profession);
+            printf(" %-5d|%-15s|%-25s|%-15s|%-15s|%-15s|%-35s|%-25s|",tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession,tab[i].date_naissance );
             calcul_age(tab[i].date_naissance);
             printf("\n");
             p++;
@@ -185,7 +194,7 @@ void sep_cdp_ville(int nb_lignes,CLIENT tab[nb_lignes]) {
 void afficher_ligne(int nb_l,CLIENT tab[nb_l],int ligne){
     char suite;
     int choix = ligne -1;
-            printf(" \n %d|%s|%s|%s|%s|%s|%s|",tab[choix].id,tab[choix].prenom, tab[choix].nom, tab[choix].ville,tab[choix].tel, tab[choix].adrmail, tab[choix].profession);
+    printf(" %-5d|%-15s|%-25s|%-15s|%-15s|%-15s|%-35s|%-25s|",tab[choix].id,tab[choix].prenom,tab[choix].nom,tab[choix].ville,tab[choix].codep,tab[choix].tel,tab[choix].adrmail,tab[choix].profession,tab[choix].date_naissance );
     calcul_age(tab[choix].date_naissance);
     vider_buffer();
     printf("\nAppuyer sur Entrer pour continuer");

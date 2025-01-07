@@ -84,6 +84,12 @@ void afficher_ligne(int nb_l,CLIENT tab[nb_l],int ligne);
  */
 void tri_tableau(FILE* fic);
 /**
+ *@param tableau nb_ligne
+ * @post
+ */
+int recherche(int nb_ligne, CLIENT tableau[nb_ligne]);
+/**
  *
  */
+void modif(int nb_ligne, CLIENT tableau[nb_ligne]);
 #endif // HEAD_H_INCLUDED

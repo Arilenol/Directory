@@ -52,18 +52,16 @@ void enlever_espace_fin(char mot[]){
         length--;
     }
 }
-
-
 void affecter_struct(CLIENT *c1, char option[], char mot[]) {
     if (stricmp(option, "prenom") == 0) {
         strcpy(c1->prenom, mot);
-    } 
+    }
     else if (stricmp(option, "nom") == 0) {
         strcpy(c1->nom, mot);
-    } 
+    }
     else if (stricmp(option, "ville") == 0) {
         strcpy(c1->ville, mot);
-    } 
+    }
 
     else if (stricmp(option, "codep") == 0) {
         strcpy(c1->codep, mot);
@@ -73,7 +71,7 @@ void affecter_struct(CLIENT *c1, char option[], char mot[]) {
     }
      else if (stricmp(option, "adrmail") == 0) {
         strcpy(c1->adrmail, mot);
-    } 
+    }
     else if (stricmp(option, "profession") == 0) {
         strcpy(c1->profession, mot);
     }
@@ -96,7 +94,7 @@ void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]){
     int nb_champ = 0;
     char mot[50];
     c = fgetc(fichier);
-    while(c!=EOF && ligne<nb_ligne){ 
+    while(c!=EOF && ligne<nb_ligne){
         if (c=='\n'){
             mot[indice] = '\0';
             affecter_struct(&c1,info[nb_champ],mot);
@@ -118,7 +116,7 @@ void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]){
         else {
             mot[indice] = c;
             indice++;
-            
+
             }
             c=fgetc(fichier);
             c1.id=ligne+1;
@@ -142,7 +140,7 @@ void retirerchariot(char mot[]){
     while (mot[i]!='\n' && mot[i]!='\0'){
         i++;
         }
-    
+
     mot[i]='\0';
 }
 
@@ -156,7 +154,7 @@ void poser_curseur(FILE* fichier, int ligne){
         }
         c=fgetc(fichier);
     }
-    
+
 }
 
 //FONCTION terminée, en attente d'un point ensemble pour rectfier 2-3 choses
@@ -164,7 +162,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     int indice[nb_ligne];
     int indice2 = 0;
     int select = -1; //initialisation par défaut
-    int choix;
+    int choix,nb_l;
     int verification = nb_ligne;
     char prenom[40], nom[40], ville[40], code[40], mail[40], numero[40], metier[40], date[20];
     int value;
@@ -213,7 +211,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             fclose(fic);
             remove("../head/fichiertmp.csv");
             break;
-        
+
         case 2:
             printf("Entrez le nom de la personne : ");
             fgets(nom, 41, stdin);
@@ -302,7 +300,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             remove("../head/fichiertmp.csv");
             break;
         case 5:
-            
+
             printf("Entrez le prénom de la personne : ");
             fgets(prenom, 41, stdin);
             retirerchariot(prenom);
@@ -312,13 +310,13 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(prenom, tableau[i].prenom) == 0) {
                         tab[indice2] = tableau[i];
-                        indice[indice2] = i; 
+                        indice[indice2] = i;
                         indice2++;
                     }
                     verification = indice2;
-                }       
+                }
             }
-            
+
             printf("Entrez le nom de la personne : ");
             fgets(nom, 41, stdin);
             retirerchariot(nom);
@@ -332,8 +330,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         indice2++;
                     }
                     verification = indice2;
-                } 
-            } 
+                }
+            }
             else if (nom[0]!='\0' && verification!=nb_ligne){
                 for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(nom, tab[i].nom) != 0) {
@@ -341,12 +339,12 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         for (int j = i; j < verification - 1; j++) {
                             tab[j] = tab[j + 1];
                             indice[j] = indice[j+1];
-                            
+
                         }
                         verification--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
-                        i++; 
+                        i++;
                     }
                 }
 
@@ -365,8 +363,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         indice2++;
                     }
                     verification = indice2;
-                } 
-            } 
+                }
+            }
             else if (ville[0]!='\0' && verification!=nb_ligne){
                 for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(ville, tab[i].ville) != 0) {
@@ -379,7 +377,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         verification--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
-                        i++; 
+                        i++;
                     }
                 }
 
@@ -398,8 +396,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         indice2++;
                     }
                     verification = indice2;
-                } 
-            } 
+                }
+            }
             else if (code[0]!='\0' && verification!=nb_ligne){
                 for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(code, tab[i].codep) != 0) {
@@ -411,7 +409,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         verification--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
-                        i++; 
+                        i++;
                     }
                 }
 
@@ -430,8 +428,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         indice2++;
                     }
                     verification = indice2;
-                } 
-            } 
+                }
+            }
             else if (numero[0]!='\0' && verification!=nb_ligne){
                 for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(numero, tab[i].tel) != 0) {
@@ -443,7 +441,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         verification--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
-                        i++; 
+                        i++;
                     }
                 }
 
@@ -461,8 +459,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         indice2++;
                     }
                     verification = indice2;
-                } 
-            } 
+                }
+            }
             else if (mail[0]!='\0' && verification!=nb_ligne){
                 for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(mail, tab[i].adrmail) != 0) {
@@ -474,7 +472,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         verification--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
-                        i++; 
+                        i++;
                     }
                 }
 
@@ -492,8 +490,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         indice2++;
                     }
                     verification = indice2;
-                } 
-            } 
+                }
+            }
             else if (metier[0]!='\0' && verification!=nb_ligne){
                 for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(metier, tab[i].profession) != 0) {
@@ -505,7 +503,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         verification--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
-                        i++; 
+                        i++;
                     }
                 }
 
@@ -523,8 +521,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         indice2++;
                     }
                     verification = indice2;
-                } 
-            } 
+                }
+            }
             else if (date[0]!='\0' && verification!=nb_ligne){
                 for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(date, tab[i].date_naissance) != 0) {
@@ -536,7 +534,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                         verification--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
-                        i++; 
+                        i++;
                     }
                 }
 
@@ -561,8 +559,6 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             lire_carac(fic);
             fclose(fic);
             remove("../head/fichiertmp.csv");
-            
-
             break;
 
         default:
@@ -577,7 +573,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
         }
     return select;
 }
-
+/*
 void suppression(int* nb_ligne, CLIENT tableau[*nb_ligne]){
     int select = recherche(*nb_ligne,tableau);
     if (select == -1) {
@@ -589,7 +585,7 @@ void suppression(int* nb_ligne, CLIENT tableau[*nb_ligne]){
     }
     *nb_ligne = *nb_ligne - 1;
 }
-
+*/
 
 void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
     int select = recherche(nb_ligne, tableau);
