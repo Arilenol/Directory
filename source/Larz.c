@@ -15,6 +15,44 @@ int total_lignes(FILE * fichier){
     return res;
 }
 
+void enlever_espace_debut(char mot[]){
+    int value = 1;
+    int indice;
+    int lenght = strlen(mot);
+    if (!(isalpha((mot[0])))){
+        for (int i = 1; i<lenght && value;i++){
+            if(isalpha(mot[i])){
+                indice = i;
+                value = 0;
+            }
+    }
+    for (int i = 0;i<lenght;i++){
+        mot[i]=mot[indice];
+        indice++;
+    }
+    }
+
+}
+
+void enlever_espace_fin(char mot[]){
+    int indice = 0;
+    int value = 1;
+    int length = strlen(mot)-1;
+    for (int i = length; i>=0 && value;i--){
+    
+        if (isalpha(mot[i])){
+            indice = i;
+            value = 0;
+        }
+    }
+    for (int i = indice ;i>=0;i--){
+        int tmp = mot[i];
+        mot[i]=' ';
+        mot[length] = tmp;
+        length--;
+    }
+}
+
 
 void affecter_struct(CLIENT *c1, char option[], char mot[]) {
     if (stricmp(option, "prenom") == 0) {
@@ -149,6 +187,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le prénom de la personne : ");
             fgets(prenom, 41, stdin);
             retirerchariot(prenom);
+            enlever_espace_fin(prenom);
+            enlever_espace_debut(prenom);
             fic2 = fopen("../head/fichiertmp.csv", "w");
             for (int i = 0; i < nb_ligne; i++) {
                 if (stricmp(prenom, tableau[i].prenom) == 0) {
@@ -178,6 +218,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le nom de la personne : ");
             fgets(nom, 41, stdin);
             retirerchariot(nom);
+            enlever_espace_fin(nom);
+            enlever_espace_debut(nom);
             fic2 = fopen("../head/fichiertmp.csv", "w");
             for (int i = 0; i < nb_ligne; i++) {
                 if (stricmp(nom, tableau[i].nom) == 0) {
@@ -208,6 +250,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le numero de telephone de la personne : ");
             fgets(numero, 41, stdin);
             retirerchariot(numero);
+            enlever_espace_fin(numero);
+            enlever_espace_debut(numero);
             for (int i = 0; i < nb_ligne && value; i++) {
                 if (stricmp(numero, tableau[i].tel) == 0) {
                     value = 0;
@@ -231,6 +275,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le mail de la personne : ");
             fgets(mail, 41, stdin);
             retirerchariot(mail);
+            enlever_espace_fin(mail);
+            enlever_espace_debut(mail);
             fic2 = fopen("../head/fichiertmp.csv", "w");
             for (int i = 0; i < nb_ligne; i++) {
                 if (stricmp(mail, tableau[i].adrmail) == 0) {
@@ -260,6 +306,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le prénom de la personne : ");
             fgets(prenom, 41, stdin);
             retirerchariot(prenom);
+            enlever_espace_fin(prenom);
+            enlever_espace_debut(prenom);
             if (prenom[0]!='\0'){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(prenom, tableau[i].prenom) == 0) {
@@ -274,6 +322,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le nom de la personne : ");
             fgets(nom, 41, stdin);
             retirerchariot(nom);
+            enlever_espace_fin(nom);
+            enlever_espace_debut(nom);
             if (nom[0]!='\0' && verification==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(nom, tableau[i].nom) == 0) {
@@ -304,6 +354,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez la ville de la personne : ");
             fgets(ville, 41, stdin);
             retirerchariot(ville);
+            enlever_espace_fin(ville);
+            enlever_espace_debut(ville);
             if (ville[0]!='\0' && verification==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     printf("%s\n", tableau[i].tel);
@@ -335,6 +387,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le code postal de la personne : ");
             fgets(code, 41, stdin);
             retirerchariot(code);
+            enlever_espace_fin(code);
+            enlever_espace_debut(code);
 
             if (code[0]!='\0' && verification==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
@@ -365,6 +419,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le numéro de téléphone : ");
             fgets(numero, 41, stdin);
             retirerchariot(numero);
+            enlever_espace_fin(numero);
+            enlever_espace_debut(numero);
 
             if (numero[0]!='\0' && verification==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
@@ -395,6 +451,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez l'adresse mail : ");
             fgets(mail, 41, stdin);
             retirerchariot(mail);
+            enlever_espace_fin(mail);
+            enlever_espace_debut(mail);
             if (mail[0]!='\0' && verification==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(mail, tableau[i].adrmail) == 0) {
@@ -424,6 +482,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le métier : ");
             fgets(metier, 21, stdin);
             retirerchariot(metier);
+            enlever_espace_fin(metier);
+            enlever_espace_debut(metier);
             if (metier[0]!='\0' && verification==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(metier, tableau[i].profession) == 0) {
@@ -453,6 +513,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez la date de naissance : ");
             fgets(date, 21, stdin);
             retirerchariot(date);
+            enlever_espace_fin(date);
+            enlever_espace_debut(date);
             if (date[0]!='\0' && verification==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(date, tableau[i].date_naissance) == 0) {

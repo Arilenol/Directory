@@ -9,6 +9,7 @@
 #include "type.h"
 #include <assert.h>
 #include <string.h>
+#include <ctype.h>
 #include <time.h>
 /**
  * param[in] int x,y,char[x][y],FILE*,char[]
