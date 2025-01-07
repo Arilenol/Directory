@@ -8,7 +8,7 @@
     char prenom[50];
     char nom[50];
     char ville[50];
-    char codep[7];
+    char codep[8];
     char tel[16];
     char adrmail[70];
     char profession[30];

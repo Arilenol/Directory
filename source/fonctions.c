@@ -75,10 +75,11 @@ void ouverture(char chemin[]){
 }
 void afficher(int nb_l,CLIENT tab[nb_l]) {
     char suite;
-    printf("prenom | nom | ville | téléphone | adresse mail | profession | âge\n");
+    //printf("prenom | nom | ville | téléphone | adresse mail | profession | âge\n");
+    printf(" %-5s|%-15s|%-25s|%-15s|%-15s|%-25s|%-40s|%-25s|%-25s\n","id","prenom","nom","ville","Code postal","téléphone","adresse mail", "profession", "âge");
     for(int i = 0; i< nb_l;i++){
-    printf(" %d|%s|%s|%s|%s|%s|%s|%s|",tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession,tab[i].date_naissance );
-        calcul_age(tab[i].date_naissance);
+    printf(" %-5d|%-15s|%-25s|%-15s|%-15s|%-25s|%-40s|%-25s",tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession,tab[i].date_naissance );
+        //calcul_age(tab[i].date_naissance);
         printf("\n");
     }
     vider_buffer();
