@@ -92,4 +92,15 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]);
  *
  */
 void modif(int nb_ligne, CLIENT tableau[nb_ligne]);
+/**
+ *
+ */
+void list_to_file(char chemin[],int taille, CLIENT c[taille]);
+/**
+ *
+ */
+void suppression(int* nb_ligne, CLIENT tableau[*nb_ligne]);
+/**
+ *
+ */
 #endif // HEAD_H_INCLUDED

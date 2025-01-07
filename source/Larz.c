@@ -566,14 +566,16 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             break;
     }
     if (choix!=3){
-        printf("Entrez le numéro de la ligne sur laquelle vous voulez modifier un élément : ");
+        printf("Entrez le numéro de la ligne sur laquelle vous voulez modifier un élément sinon tapez 0 : ");
         int ligne;
         scanf("%d", &ligne);
+        if (ligne!=0){
         select = indice[ligne - 1];
-        }
+        }}
+        
     return select;
 }
-/*
+
 void suppression(int* nb_ligne, CLIENT tableau[*nb_ligne]){
     int select = recherche(*nb_ligne,tableau);
     if (select == -1) {
@@ -585,7 +587,7 @@ void suppression(int* nb_ligne, CLIENT tableau[*nb_ligne]){
     }
     *nb_ligne = *nb_ligne - 1;
 }
-*/
+
 
 void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
     int select = recherche(nb_ligne, tableau);
@@ -667,10 +669,8 @@ void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
 }
 
 
-
-
-void list_to_file(int taille, CLIENT c[taille]){
-    FILE* fic = fopen("../head/test.csv","w");
+void list_to_file(char chemin[],int taille, CLIENT c[taille]){
+    FILE* fic = fopen(chemin,"w");
     for (int i = 0; i<taille;i++){
             fprintf(fic, "%s,%s,%s %s,%s,%s,%s,%s\n",
                     c[i].prenom, c[i].nom,
