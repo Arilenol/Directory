@@ -579,7 +579,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
 }
 
 void suppression(int* nb_ligne, CLIENT tableau[*nb_ligne]){
-    int select = recherche_nom(*nb_ligne,tableau);
+    int select = recherche(*nb_ligne,tableau);
     if (select == -1) {
         printf("Aucune sélection valide effectuée.\n");
         return ;
