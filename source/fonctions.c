@@ -5,7 +5,7 @@
 void afficher_tab(int nb_l,CLIENT tab[nb_l]);
 void calcul_age(char mot[]);
 void ouverture(char chemin[]){
-    char possible[7][50]={"Consulter","Ajouter","Consulter les Client avec données manquantes","Consulter un tableau trié","Rechercher","Modifier","Revenir en arrière"};
+    char possible[8][50]={"Consulter","Ajouter","Consulter les Client avec données manquantes","Consulter un tableau trié","Suppresion","Modifier","Revenir en arrière","Sauvegarder"};
     int choix,ligne;
     FILE* fic = NULL;
     do{
@@ -20,7 +20,7 @@ void ouverture(char chemin[]){
     mot_par_mot(fic,nb_ligne,tab);
 
         printf("\n\nQue voulez-faire parmi les actions suivantes ? \n");
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 8; i++) {
             printf("%d) %s\n", i + 1, possible[i]);
         }
         printf("\nEntrez le chiffre correspondant à l'action que vous souhaitez réaliser : ");
@@ -65,22 +65,25 @@ void ouverture(char chemin[]){
                 break;
             case (5):
                 system("cls");
-                recherche(nb_ligne,tab);
+                suppression(&nb_ligne,tab);
+                //list_to_file(chemin,nb_ligne,tab);
                 break;
             case (6):
-                modif(nb_ligne,tab);
                 system("cls");
+                modif(nb_ligne,tab);
                 break;
             case (7):
                 system("cls");
                 break;
+            case (8):
+                list_to_file(chemin,nb_ligne,tab);
             default:
                 printf("Valeur erronée");
                 break;
         }
         system("cls");
         fclose(fic);
-    }while(choix != 7);
+    }while(choix != 8);
 }
 void afficher(int nb_l,CLIENT tab[nb_l]) {
     char suite;
