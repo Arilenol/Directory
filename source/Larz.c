@@ -159,14 +159,14 @@ void poser_curseur(FILE* fichier, int ligne){
 
 //FONCTION terminée, en attente d'un point ensemble pour rectfier 2-3 choses
 int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
-    int indice[nb_ligne];
+    int indice[70];
     int indice2 = 0;
     int select = -1; //initialisation par défaut
     int choix,nb_l;
     int verification = nb_ligne;
     char prenom[40], nom[40], ville[40], code[40], mail[40], numero[40], metier[40], date[20];
     int value;
-    CLIENT tab[nb_ligne];
+    CLIENT tab[70];
     FILE* fic2;
     FILE* fic;
     printf("Par quel moyen voulez-vous retrouver la personne\n");
