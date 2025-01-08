@@ -610,7 +610,7 @@ void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
     printf("Entrez le numéro correspondant : ");
     int option;
     scanf("%d", &option);
-    getchar(); // Pour consommer le caractère '\n' laissé par scanf
+    vider_buffer(); // Pour consommer le caractère '\n' laissé par scanf
     char nouveau[50];
     switch (option)
     {
@@ -669,16 +669,23 @@ void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
 }
 
 
-void list_to_file(char chemin[],int taille, CLIENT c[taille]){
-    FILE* fic = fopen(chemin,"w");
+void list_to_file(FILE* file,int taille, CLIENT c[taille]){
     for (int i = 0; i<taille;i++){
-            fprintf(fic, "%s,%s,%s %s,%s,%s,%s,%s\n",
+        if (strlen(c[i].ville)<=0){
+            fprintf(file, "%s,%s,,%s,%s,%s,%s\n",
+                    c[i].prenom, c[i].nom,
+                    c[i].tel,
+                    c[i].adrmail, c[i].profession,
+                    c[i].date_naissance);
+            }
+        else{
+            fprintf(file, "%s,%s,%s %s,%s,%s,%s,%s\n",
                     c[i].prenom, c[i].nom,
                     c[i].ville,c[i].codep, c[i].tel,
                     c[i].adrmail, c[i].profession,
                     c[i].date_naissance);
+        }
                 
     }
-    fclose(fic);
 }
 

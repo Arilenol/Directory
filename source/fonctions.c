@@ -5,10 +5,10 @@
 void afficher_tab(int nb_l,CLIENT tab[nb_l]);
 void calcul_age(char mot[]);
 void ouverture(char chemin[]){
-    char possible[8][50]={"Consulter","Ajouter","Consulter les Client avec données manquantes","Consulter un tableau trié","Suppresion","Modifier","Revenir en arrière","Sauvegarder"};
+    char possible[8][50]={"Consulter","Ajouter","Consulter les Client avec données manquantes","Consulter un tableau trié","Suppresion","Modifier","Terminer","Sauvegarder"};
     int choix,ligne;
     FILE* fic = NULL;
-    do{
+    FILE* fic2;
     fic = fopen(chemin,"r+");
     if (fic == NULL){
         printf("Echec ouverture fichier\n");
@@ -18,6 +18,8 @@ void ouverture(char chemin[]){
     int nb_ligne= total_lignes(fic);
     CLIENT tab[nb_ligne];
     mot_par_mot(fic,nb_ligne,tab);
+    do{
+
 
         printf("\n\nQue voulez-faire parmi les actions suivantes ? \n");
         for (int i = 0; i < 8; i++) {
@@ -25,7 +27,7 @@ void ouverture(char chemin[]){
         }
         printf("\nEntrez le chiffre correspondant à l'action que vous souhaitez réaliser : ");
         scanf("%d", &choix);
-        while (choix < 1 || choix > 7) {
+        while (choix < 1 || choix > 8) {
             printf("Sasie hors plage\nRéessayez : ");
             scanf("%d", &choix);
         }
@@ -66,7 +68,6 @@ void ouverture(char chemin[]){
             case (5):
                 system("cls");
                 suppression(&nb_ligne,tab);
-                //list_to_file(chemin,nb_ligne,tab);
                 break;
             case (6):
                 system("cls");
@@ -74,16 +75,27 @@ void ouverture(char chemin[]){
                 break;
             case (7):
                 system("cls");
-                break;
+                return;
             case (8):
-                list_to_file(chemin,nb_ligne,tab);
+                fclose(fic);
+                fic2 = fopen(chemin,"w");
+                printf("%s",tab[5].prenom);
+                list_to_file(fic2,nb_ligne,tab);
+                break;
             default:
                 printf("Valeur erronée");
                 break;
         }
-        system("cls");
+        if (choix!=8){
+        //system("cls");
         fclose(fic);
-    }while(choix != 8);
+        }
+        else{
+        //system("cls");
+        fclose(fic2);  
+        }
+
+    }while(choix != 9);
 }
 void afficher(int nb_l,CLIENT tab[nb_l]) {
     char suite;

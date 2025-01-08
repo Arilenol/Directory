@@ -95,7 +95,7 @@ void modif(int nb_ligne, CLIENT tableau[nb_ligne]);
 /**
  *
  */
-void list_to_file(char chemin[],int taille, CLIENT c[taille]);
+void list_to_file(FILE* file,int taille, CLIENT c[taille]);
 /**
  *
  */
