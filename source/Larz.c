@@ -15,6 +15,8 @@ int total_lignes(FILE * fichier){
     return res;
 }
 
+// " Bonjour"
+
 void enlever_espace_debut(char mot[]) {
     int indice = 0; // Trouver le premier caractère non-espace
     int length = strlen(mot);
@@ -29,7 +31,6 @@ void enlever_espace_debut(char mot[]) {
         for (int i = 0; i <= length - indice; i++) {
             mot[i] = mot[i + indice];
         }
-        mot[length - indice] = '\0'; // Ajouter le terminateur de chaîne
     }
 }
 
@@ -127,9 +128,41 @@ void retirerchariot(char mot[]){
     mot[i]='\0';
 }
 
+int stristr(char mot[],  char motif[]) {
+    // Si le motif est vide, on considère que la recherche est toujours réussie
+    if (motif[0] == '\0') {
+        return 0;  // Retourne 0 car une chaîne vide est toujours trouvée en début de la chaîne principale
+    }
+
+    // Longueur du motif
+    int motif_len = strlen(motif);
+
+    // Parcours de la chaîne principale (mot)
+    for (int i = 0; mot[i] != '\0'; i++) {
+        // Comparaison caractère par caractère, en ignorant la casse
+        if (tolower(mot[i]) == tolower(motif[0])) {
+            // Si le premier caractère correspond, on vérifie le reste de la chaîne
+            int j = 0;
+            while (mot[i + j] != '\0' && motif[j] != '\0' && tolower(mot[i + j]) == tolower(motif[j])) {
+                j++;
+            }
+
+            // Si on a trouvé toute la sous-chaîne (fin de motif)
+            if (motif[j] == '\0') {
+                return 1;  // Retourne l'indice où la sous-chaîne a été trouvée
+            }
+        }
+    }
+
+    // Si le motif n'a pas été trouvé
+    return -1;  // Retourne -1 pour indiquer que le motif n'a pas été trouvé
+}
+
+
+/*
 int filtre(const char motif[], int taille, CLIENT tab[taille] ){
     int choix;
-    char motif[40];
+    //char motif[40];
     CLIENT tableau[70];
     printf("Comment voulez-vous filtrer l'annuaire ?\n");
     printf("1) Son prénom ?\n");
@@ -151,7 +184,7 @@ int filtre(const char motif[], int taille, CLIENT tab[taille] ){
         break;
     }
 }
-
+*/
 //FONCTION terminée, en attente d'un point ensemble pour rectfier 2-3 choses
 int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     int indice[100];
@@ -353,11 +386,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le code postal de la personne : ");
             fgets(code, 41, stdin);
             retirerchariot(code);
-            printf("%s",code);
             enlever_espace_fin(code);
-            printf("\n%s",code);
             enlever_espace_debut(code);
-            printf("\n%s",code);
             if (code[0]!='\0' && verification==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(code, tableau[i].codep) == 0) {
