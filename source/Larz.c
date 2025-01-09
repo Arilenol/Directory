@@ -15,43 +15,37 @@ int total_lignes(FILE * fichier){
     return res;
 }
 
-void enlever_espace_debut(char mot[]){
-    int value = 1;
-    int indice;
-    int lenght = strlen(mot);
-    if (!(isalpha((mot[0])))){
-        for (int i = 1; i<lenght && value;i++){
-            if(isalpha(mot[i])){
-                indice = i;
-                value = 0;
-            }
-    }
-    for (int i = 0;i<lenght;i++){
-        mot[i]=mot[indice];
+void enlever_espace_debut(char mot[]) {
+    int indice = 0; // Trouver le premier caractère non-espace
+    int length = strlen(mot);
+
+    // Parcours pour trouver le premier caractère alphabétique ou autre non-espace
+    while (indice < length && mot[indice] == ' ') {
         indice++;
     }
-    }
 
+    // Décaler la chaîne si des espaces ont été trouvés
+    if (indice > 0) {
+        for (int i = 0; i <= length - indice; i++) {
+            mot[i] = mot[i + indice];
+        }
+        mot[length - indice] = '\0'; // Ajouter le terminateur de chaîne
+    }
 }
 
-void enlever_espace_fin(char mot[]){
-    int indice = 0;
-    int value = 1;
-    int length = strlen(mot)-1;
-    for (int i = length; i>=0 && value;i--){
-    
-        if (isalpha(mot[i])){
-            indice = i;
-            value = 0;
-        }
-    }
-    for (int i = indice ;i>=0;i--){
-        int tmp = mot[i];
-        mot[i]=' ';
-        mot[length] = tmp;
+
+void enlever_espace_fin(char mot[]) {
+    int length = strlen(mot) - 1;
+
+    // Parcourir la chaîne à l'envers pour trouver le dernier caractère non espace
+    while (length >= 0 && mot[length] == ' ') {
         length--;
     }
+
+    // Ajouter le terminateur de chaîne après le dernier caractère non espace
+    mot[length + 1] = '\0';
 }
+
 void affecter_struct(CLIENT *c1, char option[], char mot[]) {
     if (stricmp(option, "prenom") == 0) {
         strcpy(c1->prenom, mot);
@@ -124,17 +118,6 @@ void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]){
         sep_cdp_ville(nb_ligne,tableau);
     }
 
-void lire_carac(FILE* f){
-    char c;
-    c = fgetc(f);
-
-    while(c!=EOF){
-        printf("%c",c);
-        c=fgetc(f);
-    }
-    fclose(f);
-
-}
 void retirerchariot(char mot[]){
     int i = 0;
     while (mot[i]!='\n' && mot[i]!='\0'){
@@ -144,22 +127,34 @@ void retirerchariot(char mot[]){
     mot[i]='\0';
 }
 
-void poser_curseur(FILE* fichier, int ligne){
-    char c;
-    int indice = 1;
-    c = fgetc(fichier);
-    while(c!=EOF && indice < ligne){
-        if (c=='\n'){
-            indice++;
-        }
-        c=fgetc(fichier);
-    }
+int filtre(const char motif[], int taille, CLIENT tab[taille] ){
+    int choix;
+    char motif[40];
+    CLIENT tableau[70];
+    printf("Comment voulez-vous filtrer l'annuaire ?\n");
+    printf("1) Son prénom ?\n");
+    printf("2) Son nom ?\n");
+    printf("3) Son numero de telephone ?\n");
+    printf("4) Son mail ?\n");
+    printf("Entrez votre choix ici : ");
+    scanf("%d", &choix);
+    getchar();
+    switch (choix)
+    {
+    case 1:
+        printf("Entrez un motif : ");
+        fgets(motif,41,stdin);
 
+        break;
+    
+    default:
+        break;
+    }
 }
 
 //FONCTION terminée, en attente d'un point ensemble pour rectfier 2-3 choses
 int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
-    int indice[70];
+    int indice[100];
     int indice2 = 0;
     int select = -1; //initialisation par défaut
     int option,nb_l;
@@ -167,7 +162,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     int verification = nb_ligne;
     char prenom[40], nom[40], ville[40], code[40], mail[40], numero[40], metier[40], date[20];
     int value;
-    CLIENT tab[70];
+    CLIENT tab[100];
     FILE* fic2;
     FILE* fic;
     printf("Par quel moyen voulez-vous retrouver la personne\n");
@@ -193,22 +188,17 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             retirerchariot(prenom);
             enlever_espace_fin(prenom);
             enlever_espace_debut(prenom);
-            fic2 = fopen("../head/fichiertmp.csv", "w");
             for (int i = 0; i < nb_ligne; i++) {
                 if (stricmp(prenom, tableau[i].prenom) == 0) {
-                    indice[indice2++] = i;
-                    fprintf(fic2, "%s,%s,%s %s,%s,%s,%s,%s\n",
-                            tableau[i].prenom, tableau[i].nom,
-                            tableau[i].ville,tableau[i].codep, tableau[i].tel,
-                            tableau[i].adrmail, tableau[i].profession,
-                            tableau[i].date_naissance);
+                    indice[indice2] = i;
+                    tab[indice2] = tableau[i];
+                    indice2++;
+
                 }
             }
-            fclose(fic2);
             // Si aucun résultat n'a été trouvé, select reste à -1
             if (indice2 == 0) {
                 printf("Aucun client trouvé avec ce prénom.\n");
-                remove("../head/fichiertmp.csv");
                 return select; // Retourne -1
             }
             break;
@@ -219,22 +209,17 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             retirerchariot(nom);
             enlever_espace_fin(nom);
             enlever_espace_debut(nom);
-            fic2 = fopen("../head/fichiertmp.csv", "w");
             for (int i = 0; i < nb_ligne; i++) {
                 if (stricmp(nom, tableau[i].nom) == 0) {
-                    indice[indice2++] = i;
-                    fprintf(fic2, "%s,%s,%s %s,%s,%s,%s,%s\n",
-                            tableau[i].prenom, tableau[i].nom,
-                            tableau[i].ville,tableau[i].codep, tableau[i].tel,
-                            tableau[i].adrmail, tableau[i].profession,
-                            tableau[i].date_naissance);
+                    indice[indice2] = i;
+                    tab[indice2] = tableau[i];
+                    indice2++;
+
                 }
             }
-            fclose(fic2);
             // Si aucun résultat n'a été trouvé, select reste à -1
             if (indice2 == 0) {
-                printf("Aucun client trouvé avec ce nom.\n");
-                remove("../head/fichiertmp.csv");
+                printf("Aucun client trouvé avec ce prénom.\n");
                 return select; // Retourne -1
             }
             break;
@@ -246,22 +231,19 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             retirerchariot(numero);
             enlever_espace_fin(numero);
             enlever_espace_debut(numero);
-            fic2 = fopen("../head/fichiertmp.csv", "w");
             for (int i = 0; i < nb_ligne && value; i++) {
                 if (stricmp(numero, tableau[i].tel) == 0) {
                     value = 0;
-                    indice[indice2++] = i;
-                    fprintf(fic2, "%s,%s,%s %s,%s,%s,%s,%s\n",
-                            tableau[i].prenom, tableau[i].nom,
-                            tableau[i].ville,tableau[i].codep, tableau[i].tel,
-                            tableau[i].adrmail, tableau[i].profession,
-                            tableau[i].date_naissance);
+                    indice[indice2] = i;
+                    tab[indice2] = tableau[i];
+                    indice2++;
+
                 }
             }
+                
             // Si aucun résultat n'a été trouvé, select reste à -1
             if (indice2 == 0) {
-                printf("Aucun client trouvé avec ce numéro de téléphone.\n");
-                remove("../head/fichiertmp.csv");
+                printf("Aucun client trouvé avec ce prénom.\n");
                 return select; // Retourne -1
             }
             select = indice[0];
@@ -272,22 +254,17 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             retirerchariot(mail);
             enlever_espace_fin(mail);
             enlever_espace_debut(mail);
-            fic2 = fopen("../head/fichiertmp.csv", "w");
             for (int i = 0; i < nb_ligne; i++) {
                 if (stricmp(mail, tableau[i].adrmail) == 0) {
-                    indice[indice2++] = i;
-                    fprintf(fic2, "%s,%s,%s %s,%s,%s,%s,%s\n",
-                            tableau[i].prenom, tableau[i].nom,
-                            tableau[i].ville,tableau[i].codep, tableau[i].tel,
-                            tableau[i].adrmail, tableau[i].profession,
-                            tableau[i].date_naissance);
+                    indice[indice2] = i;
+                    tab[indice2] = tableau[i];
+                    indice2++;
+
                 }
             }
-            fclose(fic2);
             // Si aucun résultat n'a été trouvé, select reste à -1
             if (indice2 == 0) {
-                printf("Aucun client trouvé avec ce mail.\n");
-                remove("../head/fichiertmp.csv");
+                printf("Aucun client trouvé avec ce prénom.\n");
                 return select; // Retourne -1
             }
             break;
@@ -348,7 +325,6 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             enlever_espace_debut(ville);
             if (ville[0]!='\0' && verification==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
-                    printf("%s\n", tableau[i].tel);
                     if (stricmp(ville, tableau[i].ville) == 0) {
                         tab[indice2] = tableau[i];
                         indice[indice2] = i;
@@ -377,8 +353,11 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le code postal de la personne : ");
             fgets(code, 41, stdin);
             retirerchariot(code);
+            printf("%s",code);
             enlever_espace_fin(code);
+            printf("\n%s",code);
             enlever_espace_debut(code);
+            printf("\n%s",code);
             if (code[0]!='\0' && verification==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(code, tableau[i].codep) == 0) {
@@ -534,35 +513,27 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                 return indice[0];
             }
             else{
-                fic2 = fopen("../head/fichiertmp.csv", "w");
-                for (int i = 0; i<verification;i++){
-                    fprintf(fic2, "%s,%s,%s %s,%s,%s,%s,%s\n",
-                            tab[i].prenom, tab[i].nom,
-                            tab[i].ville,tab[i].codep, tab[i].tel,
-                            tab[i].adrmail, tab[i].profession,
-                            tab[i].date_naissance);
-                }
+                afficher(verification,tab);
             }
-            fclose(fic2);
+            
             break;
         default:
             printf("Choix incorrect\n");
             break;
     }
-    fic2 = fopen("../head/fichiertmp.csv", "r");
-    nb_l= total_lignes(fic2);
-    CLIENT tabl[nb_l];
-    mot_par_mot(fic2,nb_l,tabl);
-    afficher(nb_l,tabl);
-    fclose(fic2);
+    if (option!=5)
+    afficher(indice2,tab);
     if (option!=3){
         printf("Entrez le numéro de la ligne sur laquelle vous voulez modifier un élément sinon tapez 0 : ");
         int ligne;
         choix[0] = fgetc(stdin);
         ligne = atoi(choix);
-        while (choix[0] < '1' || choix[0] > '5') {
+        while (choix[0] < '0' || choix[0] > '5') {
             printf("Sasie hors plage\nRéessayez : ");
             choix[0] = fgetc(stdin);
+        }
+        if (choix[0] = '0'){
+            return select;
         }
         ligne = atoi(choix);
         vider_buffer();

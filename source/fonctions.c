@@ -92,8 +92,6 @@ void ouverture(char chemin[]){
                 printf("Valeur erronée");
                 break;
         }
-        system("cls");
-        //vider_buffer();
     }while(option != 8);
 
 }
@@ -122,7 +120,7 @@ void afficher_manq(int nb_l,CLIENT tab[nb_l]) {
         }
     }
     printf(" Nombre de ligne avec attribut manquant : %d\n",p);
-    printf("Appuyer sur Entrer pour continuer");// permet d'attendre un saisie utilisateur pour changer de page
+    //printf("Appuyer sur Entrer pour continuer");// permet d'attendre un saisie utilisateur pour changer de page
     scanf("%c",&suite);
 }
 void ajout(FILE* fic){
