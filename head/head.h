@@ -11,10 +11,17 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+
+#if defined(_WIN32)
+ #define  CLOSE "cls"
+#else if defined(__linux__)
+    #define CLOSE "clear"
+#endif
 /**
  * param[in] int x,y,char[x][y],FILE*,char[]
  * @post : la fonction affiche un menu qui demande à l'utilisateur de
  * choisir parmis les fichier disponible lequel ouvrir
+ * @author AYmeric
  */
 void ouverture(char chemin[]);
 /**
@@ -22,6 +29,7 @@ void ouverture(char chemin[]);
  * @param fic
  * @post: demande a l'utilisateur de saisir les informations du nouveau client et les rentre a la fin du
  * fichier
+ * @author AYmeric
  */
 void ajout(FILE* fic);
 /**
@@ -30,11 +38,6 @@ void ajout(FILE* fic);
  */
 int total_lignes(FILE * fichier);
 /**
- * @param fic
- * @post ferme le fichier dont le pointeur est rentré en parametre
- */
-void fermeture(FILE* fic);
-/**
  * @param mot
  * @post prend la chaine mot et supprime la premiere ocurrence de '\n'
  */
@@ -42,21 +45,23 @@ void retirer_chariot(char* mot);
 /**
  * @param fic
  * @post affiche dans le terminal toute les ligne du fichier rentrée en parametre
+ * @author AYmeric
  */
 void afficher(int nb_l,CLIENT tab[nb_l]);
 /**
  * @post decale le curseur du fichier stdin (buffer) pour eviter une lecture involontaire
  * du buffer par fgets
+ * @author AYmeric
  */
 void vider_buffer();
 /**
  * @param mot
- * @post transforme toute les lettre minuscule en majuscule
  */
-void upper(char mot[]);
+void retirer_chariot(char mot[]);
 /**
  * @param fic
  * @post affiche toute les ligne ou il manque des informations
+ * @author AYmeric
  */
 void afficher_manq(int nb_l,CLIENT tab[nb_l]);
 /**
@@ -71,18 +76,26 @@ void affecter_struct(CLIENT *c1, char option[], char mot[]);
 /**
  * @param nb_lignes, tab
  * @post separe les ville des code de departement
+ * @author AYmeric
  */
 void sep_cdp_ville(int nb_lignes,CLIENT tab[nb_lignes]);
 /**
  * @param
  * @post affiche la ligne rentré par l'utilisateur;
+ * @author AYmeric
  */
 void afficher_ligne(int nb_l,CLIENT tab[nb_l],int ligne);
 /**
  * @param fic
  * @post renvoie un tableau trié selon le critère rentré par l'utilisateur
+ * @author AYmeric
  */
 void tri_tableau(FILE* fic);
+/**
+ * @param
+ * @post renvoie l'age de la perssonne au moment de la saisie
+ */
+void calcul_age(char mot[]);
 /**
  *@param tableau nb_ligne
  * @post
