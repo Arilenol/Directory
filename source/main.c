@@ -5,8 +5,9 @@
 
 int main(void) {
     system("chcp 65001");
-    system("cls");
-    int choix;
+    system(CLOSE);
+    char  choix[2];
+    int option;
     char annuaire[7][30] = {"annuaire à 10 entrée", "annuaire à 50 entrée", "annuaire à 100 entrée",
                             "annuaire à 500 entrée", "annuaire à 1000 entrée", "annuaire à 5000 entrée",
                             "Terminer"};
@@ -16,42 +17,46 @@ int main(void) {
         printf("%d) %s\n", i + 1, annuaire[i]);
     }
     printf("\nEntrez le chiffre correspondant au fichier que vous souhaitez ouvrir : ");
-    scanf("%d", &choix);
-    while (choix < 1 || choix > 7) {
+    scanf("%c", &choix);
+    option = atoi(choix);
+    while (choix[0] < '1' || choix[0] > '7' ) {
+        vider_buffer();
         printf("Sasie hors plage\nRéessayez : ");
-        scanf("%d", &choix);
+        scanf("%c", &choix);
+        option = atoi(choix);
     }
-    switch (choix) {
+    vider_buffer();
+    switch (option) {
         case (1):
-            system("cls");
+            system(CLOSE);
             ouverture("../benchmark_1/annuaire_10_entrees.csv");
             break;
         case (2):
-            system("cls");
+            system(CLOSE);
             ouverture("../benchmark_1/annuaire_50_entrees.csv");
             break;
         case (3):
-            system("cls");
+            system(CLOSE);
             ouverture("../benchmark_1/annuaire_100_entrees.csv");
             break;
         case (4):
-            system("cls");
+            system(CLOSE);
             ouverture("../benchmark_1/annuaire_500_entrees.csv");
             break;
         case (5):
-            system("cls");
+            system(CLOSE);
             ouverture("../benchmark_1/annuaire_1000_entrees.csv");
             break;
         case (6):
-            system("cls");
+            system(CLOSE);
             ouverture("../benchmark_1/annuaire_5000_entrees.csv");
             break;
         case (7):
-            system("cls");
+            system(CLOSE);
             break;
         default:
             printf("erreur");
     }
-}while(choix != 7);
+}while(option != 7);
     return 0;
 }

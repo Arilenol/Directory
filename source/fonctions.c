@@ -2,13 +2,13 @@
 // Created by Aymeric_ONFRAY on 27/11/2024.
 //
 #include "../head/head.h"
-void afficher_tab(int nb_l,CLIENT tab[nb_l]);
-void calcul_age(char mot[]);
 void ouverture(char chemin[]){
-    char possible[8][50]={"Consulter","Ajouter","Consulter les Client avec données manquantes","Consulter un tableau trié","Suppresion","Modifier","Revenir en arrière","Sauvegarder"};
-    int choix,ligne;
-    FILE* fic = NULL;
+    char possible[8][50]={"Consulter","Ajouter","Consulter les Client avec données manquantes","Consulter un tableau trié","Suppresion","Modifier","Sauvegarder","Revenir en arrière"};
+    int ligne;
+    char choix[2];
+    int option;
     do{
+    FILE* fic = NULL;
     fic = fopen(chemin,"r+");
     if (fic == NULL){
         printf("Echec ouverture fichier\n");
@@ -18,28 +18,33 @@ void ouverture(char chemin[]){
     int nb_ligne= total_lignes(fic);
     CLIENT tab[nb_ligne];
     mot_par_mot(fic,nb_ligne,tab);
-
+        fclose(fic);
         printf("\n\nQue voulez-faire parmi les actions suivantes ? \n");
         for (int i = 0; i < 8; i++) {
             printf("%d) %s\n", i + 1, possible[i]);
         }
         printf("\nEntrez le chiffre correspondant à l'action que vous souhaitez réaliser : ");
-        scanf("%d", &choix);
-        while (choix < 1 || choix > 7) {
+        choix[0] = fgetc(stdin);
+        option = atoi(choix);
+        while (choix[0] < '1' || choix[0] > '8') {
+            vider_buffer();
             printf("Sasie hors plage\nRéessayez : ");
-            scanf("%d", &choix);
+            choix[0] = fgetc(stdin);
         }
-        switch (choix) {
+        option = atoi(choix);
+        vider_buffer();
+        switch (option) {
             case (1):
                 system("cls");
                 afficher(nb_ligne,tab);
                 printf("\nVoulez afficher une ligne en particulier\n1) 0ui\n2) Non\n");
-                scanf("%d",&choix);
-                while (choix < 1 || choix > 2) {
+                choix[0] = fgetc(stdin);
+                while (choix[0] < '1' || choix[0] > '2') {
                     printf("Sasie hors plage\nRéessayez : ");
-                    scanf("%d", &choix);
+                    choix[0] = fgetc(stdin);
                 }
-                if(choix == 1){
+                ligne =  atoi(choix);
+                if(ligne == 1){
                     printf("Quelle ligne voulez vous afficher");
                     scanf("%d",&ligne);
                     while(ligne < 1 || ligne > nb_ligne-1){
@@ -49,10 +54,11 @@ void ouverture(char chemin[]){
                     afficher_ligne(nb_ligne,tab,ligne);
                 }
                 break;
-
             case (2):
                 system("cls");
+                fic= fopen(chemin,"a");
                 ajout(fic);
+                fclose(fic);
                 break;
 
             case (3):
@@ -61,7 +67,7 @@ void ouverture(char chemin[]){
                 break;
             case(4):
                 system("cls");
-                tri_tableau(fic);
+                tri_tableau(nb_ligne,tab);
                 break;
             case (5):
                 system("cls");
@@ -74,27 +80,30 @@ void ouverture(char chemin[]){
                 break;
             case (7):
                 system("cls");
+                fic= fopen(chemin,"w");
+                list_to_file(fic,nb_ligne,tab);
+                fclose(fic);
                 break;
             case (8):
-                list_to_file(chemin,nb_ligne,tab);
+                system("cls");
             default:
                 printf("Valeur erronée");
                 break;
         }
         system("cls");
-        fclose(fic);
-    }while(choix != 8);
+        vider_buffer();
+    }while(option != 8);
+
 }
 void afficher(int nb_l,CLIENT tab[nb_l]) {
     char suite;
     //printf("prenom | nom | ville | téléphone | adresse mail | profession | âge\n");
-    printf(" %-5s|%-15s|%-25s|%-15s|%-15s|%-15s|%-35s|%-25s|%-10s\n\n","id","prenom","nom","ville","Code postal","téléphone","adresse mail", "profession", "âge");
+    printf(" %-5s|%-20s|%-25s|%-20s|%-11s|%-14s|%-35s|%-15s|%-10s\n\n","id","prenom","nom","ville","Code postal","téléphone","adresse mail", "profession", "âge");
     for(int i = 0; i< nb_l;i++){
-    printf(" %-5d|%-15s|%-25s|%-15s|%-15s|%-15s|%-35s|%-25s|",tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession,tab[i].date_naissance );
+    printf(" %-5d|%-20s|%-25s|%-20s|%-11s|%-14s|%-40s|%-15s|",tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession);
         calcul_age(tab[i].date_naissance);
         printf("\n");
     }
-    vider_buffer();
     printf("Appuyer sur Entrer pour continuer");
     scanf("%c",&suite);
 }
@@ -104,14 +113,13 @@ void afficher_manq(int nb_l,CLIENT tab[nb_l]) {
     printf(" %-5s|%-15s|%-25s|%-15s|%-15s|%-15s|%-35s|%-25s|%-10s\n\n","id","prenom","nom","ville","Code postal","téléphone","adresse mail", "profession", "âge");
     for(int i = 0; i< nb_l;i++){
         if( strcmp(tab[i].prenom,"") == 0 || strcmp(tab[i].nom,"") == 0 || strcmp(tab[i].ville,"") == 0 || strcmp(tab[i].codep,"") == 0||strcmp(tab[i].tel,"") == 0 || strcmp(tab[i].adrmail,"") == 0 || strcmp(tab[i].profession,"") == 0 || strcmp(tab[i].date_naissance,"") == 0){
-            printf(" %-5d|%-15s|%-25s|%-15s|%-15s|%-15s|%-35s|%-25s|",tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession,tab[i].date_naissance );
+            printf(" %-5d|%-15s|%-25s|%-15s|%-15s|%-15s|%-35s|%-25s|",tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession);
             calcul_age(tab[i].date_naissance);
             printf("\n");
             p++;
         }
     }
     printf(" Nombre de ligne avec attribut manquant : %d\n",p);
-    vider_buffer();
     printf("Appuyer sur Entrer pour continuer");
     scanf("%c",&suite);
 }
@@ -129,7 +137,6 @@ void ajout(FILE* fic){
     printf("\nLa ville du client : ");
     fgets(cli.ville,sizeof(cli.ville),stdin);
     retirer_chariot(cli.ville);
-    upper(cli.ville);
     printf("\nLe code postal du client :");
     fgets(cli.codep,sizeof(cli.codep),stdin);
     retirer_chariot(cli.codep);
@@ -161,14 +168,6 @@ void vider_buffer(){
     char trash = fgetc(stdin);
     while(trash != '\n')
         trash = fgetc(stdin);
-}
-void upper(char mot[]){
-    int i=0;
-    while(mot[i] != '\n' && mot[i] != '\0'){
-        if(mot[i]> 96 && mot[i]< 123)
-            mot[i]=mot[i]-32;
-        i++;
-    }
 }
 void sep_cdp_ville(int nb_lignes,CLIENT tab[nb_lignes]) {
     char tab_carac[100];
@@ -289,23 +288,23 @@ void triFusion(CLIENT tableau[], int debut, int fin, char option[]) {
         fusion(tableau, debut, milieu, fin,option);
     }
 }
-void tri_tableau(FILE* fic){
-    int choix;
-    int nb_l = total_lignes(fic);
-    CLIENT tab[nb_l];
-    mot_par_mot(fic,nb_l,tab);
+void tri_tableau(int nb_l,CLIENT tab[nb_l]){
+    char choix[2];
+    int option;
     char info[4][30] = {"nom","code postal","profession","âge"};
     printf("Selon quel critère voulez vous triez l'annuaire\n");
     for(int i=0;i<4;i++){
         printf("%d) %s\n",i+1,info[i]);
     }
     printf("\nEntrez le chiffre correspondant au critère par lequel vous voulez trié le tableau: ");
-    scanf("%d", &choix);
-    while (choix < 1 || choix > 4) {
+    choix[0] = fgetc(stdin);
+    while (choix[0] < '1' || choix[0] > '4') {
         printf("Sasie hors plage\nRéessayez : ");
-        scanf("%d", &choix);
+        choix[0] = fgetc(stdin);
     }
-    switch(choix){
+    option = atoi(choix);
+    vider_buffer();
+    switch(option){
         case(1):
             triFusion(tab,0,nb_l-1,"nom");
             break;
@@ -322,7 +321,6 @@ void tri_tableau(FILE* fic){
             printf("Erreur de menu");
     }
     afficher(nb_l,tab);
-
 }
 
 void calcul_age(char mot[]){
