@@ -555,7 +555,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     mot_par_mot(fic2,nb_l,tabl);
     afficher(nb_l,tabl);
     fclose(fic2);
-    if (choix!=3){
+    if (option!=3){
         printf("Entrez le numéro de la ligne sur laquelle vous voulez modifier un élément sinon tapez 0 : ");
         int ligne;
         choix[0] = fgetc(stdin);
