@@ -11,10 +11,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
-#define CLOSE "clear"
-#if defined(_WIN32)
- #define  CLOSE "cls"
-#endif
 /**
  * param[in] int x,y,char[x][y],FILE*,char[]
  * @post : la fonction affiche un menu qui demande à l'utilisateur de
