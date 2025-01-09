@@ -7,18 +7,19 @@ void ouverture(char chemin[]){
     int ligne;
     char choix[2];
     int option;
+    FILE* fic = NULL;//ouverture du fichier
+    fic = fopen(chemin,"r+");
+    if (fic == NULL){
+        printf("Echec ouverture fichier\n");
+        perror("fopen");
+        exit(EXIT_FAILURE);
+    }
+    int nb_ligne= total_lignes(fic);
+    CLIENT tab[nb_ligne];//creation du tableau
+    mot_par_mot(fic,nb_ligne,tab);
+    fclose(fic);
     do{
-        FILE* fic = NULL;//ouverture du fichier
-        fic = fopen(chemin,"r+");
-        if (fic == NULL){
-            printf("Echec ouverture fichier\n");
-            perror("fopen");
-            exit(EXIT_FAILURE);
-        }
-        int nb_ligne= total_lignes(fic);
-        CLIENT tab[nb_ligne];//creation du tableau
-        mot_par_mot(fic,nb_ligne,tab);
-        fclose(fic);
+
         printf("\n\nQue voulez-faire parmi les actions suivantes ? \n");//affichage des option
         for (int i = 0; i < 8; i++) {
             printf("%d) %s\n", i + 1, possible[i]);
@@ -86,12 +87,13 @@ void ouverture(char chemin[]){
                 break;
             case (8):
                 system("cls");
+                break;
             default:
                 printf("Valeur erronée");
                 break;
         }
         system("cls");
-        vider_buffer();
+        //vider_buffer();
     }while(option != 8);
 
 }
