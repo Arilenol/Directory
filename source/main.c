@@ -5,7 +5,7 @@
 
 int main(void) {
     system("chcp 65001");
-    system(CLOSE);
+    system("cls");
     char  choix[2];
     int option;
     char annuaire[7][30] = {"annuaire à 10 entrée", "annuaire à 50 entrée", "annuaire à 100 entrée",
@@ -28,31 +28,31 @@ int main(void) {
     vider_buffer();
     switch (option) {
         case (1):
-            system(CLOSE);
+            system("cls");
             ouverture("../benchmark_1/annuaire_10_entrees.csv");
             break;
         case (2):
-            system(CLOSE);
+            system("cls");
             ouverture("../benchmark_1/annuaire_50_entrees.csv");
             break;
         case (3):
-            system(CLOSE);
+            system("cls");
             ouverture("../benchmark_1/annuaire_100_entrees.csv");
             break;
         case (4):
-            system(CLOSE);
+            system("cls");
             ouverture("../benchmark_1/annuaire_500_entrees.csv");
             break;
         case (5):
-            system(CLOSE);
+            system("cls");
             ouverture("../benchmark_1/annuaire_1000_entrees.csv");
             break;
         case (6):
-            system(CLOSE);
+            system("cls");
             ouverture("../benchmark_1/annuaire_5000_entrees.csv");
             break;
         case (7):
-            system(CLOSE);
+            system("cls");
             break;
         default:
             printf("erreur");
