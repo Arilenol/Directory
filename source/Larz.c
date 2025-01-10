@@ -1,15 +1,18 @@
 #include "../head/head.h"
 
 int total_lignes(FILE * fichier){
+    // Remise à zéro du curseur du fichier pour s'assurer de commencer au début
     rewind(fichier);
     char c;
     int res = 0;
+    // Lecture du premier caractère du fichier
     c = fgetc(fichier);
     while (c!=EOF)
-    {   
+    {   // Si un caractère de nouvelle ligne est trouvé, on incrémente le compteur de lignes
         if(c=='\n'){
             res++;
         }
+        // Lecture du caractère suivant
         c = fgetc(fichier);
     }
     return res;
@@ -45,6 +48,7 @@ void enlever_espace_fin(char mot[]) {
 }
 
 void affecter_struct(CLIENT *c1, char option[], char mot[]) {
+    // on compare à chaque fois si option est égale à l'autre champ demandé.
     if (stricmp(option, "prenom") == 0) {
         strcpy(c1->prenom, mot);
     }
@@ -77,16 +81,19 @@ void affecter_struct(CLIENT *c1, char option[], char mot[]) {
 
 
 void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]){
+    // Remise à zéro du curseur du fichier pour s'assurer de commencer au début
     rewind(fichier);
     char info[7][30] = {"prenom","nom","ville","tel","adrmail","profession","date_naissance"};
-    CLIENT c1;
-    char c;
-    int indice = 0;
-    int ligne = 0;
-    int nb_champ = 0;
-    char mot[50];
+    CLIENT c1;  // Structure CLIENT qui sera remplie avec les informations lues
+    char c;     // Variable pour stocker les caractères lus du fichier
+    int indice = 0;  // Indice pour suivre la position dans le mot actuel
+    int ligne = 0;   // Compteur pour les lignes lues
+    int nb_champ = 0; // Compteur pour suivre quel champ (prénom, nom, etc.) est actuellement rempli
+    char mot[50];    // Tableau pour stocker un mot (ou champ) à chaque étape de la lecture
+    // Lecture du premier caractère du fichier
     c = fgetc(fichier);
     while(c!=EOF && ligne<nb_ligne){
+        // Si un retour à la ligne est rencontré
         if (c=='\n'){
             mot[indice] = '\0';
             affecter_struct(&c1,info[nb_champ],mot);
@@ -97,22 +104,25 @@ void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]){
             ligne++;
             CLIENT c1;
         }
+        // Si une virgule est rencontrée (séparateur entre les champs)
         else if (c==','){
             mot[indice] = '\0';
-            //printf("info : %s et mot : %s\n",info[nb_champ],mot);
             affecter_struct(&c1,info[nb_champ],mot);
             nb_champ++;
             char mot[50];
             indice = 0 ;
             }
+        // Sinon, ajouter le caractère au mot actuel
         else {
             mot[indice] = c;
             indice++;
 
             }
+            // Lecture du caractère suivant
             c=fgetc(fichier);
             c1.id=ligne+1;
         }
+        // Séparation des champs 'ville' et 'code postal'
         sep_cdp_ville(nb_ligne,tableau);
     }
 
@@ -170,6 +180,7 @@ int filtre(int taille, CLIENT tab[taille] ){
     CLIENT tableau[100];
     printf("Entrez un champ approximatif : ");
     fgets(motif,41,stdin);
+    // Nettoie la chaîne de caractères (espaces, sauts de ligne)
     nettoyer_char(motif);
     printf("Dans quel champ voulez-vous filtrer l'annuaire ?\n");
     printf("1) Son prénom ?\n");
@@ -178,7 +189,9 @@ int filtre(int taille, CLIENT tab[taille] ){
     printf("4) Son mail ?\n");
     printf("Entrez votre choix ici : ");
     choix[0] = fgetc(stdin);
+    // Conversion en entier pour les choix
     option = atoi(choix);
+    // Vérifie si le choix est dans la plage correcte, sinon redemande
     while (choix[0] < '1' || choix[0] > '4') {
         printf("Sasie hors plage\nRéessayez : ");
         choix[0] = fgetc(stdin);
@@ -187,8 +200,10 @@ int filtre(int taille, CLIENT tab[taille] ){
     getchar();
     switch (option)
     {
-    case 1:
+    // Filtrage par prénom
+    case 1: 
         for (int i = 0; i<taille;i++){
+            // Si le prenom contient le motif
             if (stristr(tab[i].prenom,motif)==1){
                     indice[indice2] = i;
                     tableau[indice2] = tab[i];
@@ -196,8 +211,10 @@ int filtre(int taille, CLIENT tab[taille] ){
             }
         }
         break;
+    // Filtrage par nom
     case 2:
         for (int i = 0; i<taille;i++){
+            // Si le nom contient le motif
             if (stristr(tab[i].nom,motif)){
                     indice[indice2] = i;
                     tab[indice2] = tableau[i];
@@ -205,9 +222,10 @@ int filtre(int taille, CLIENT tab[taille] ){
             }
         }
         break;
-    
+    // Filtrage par numéro de téléphone
     case 3:
         for (int i = 0; i<taille;i++){
+            // Si le téléphone contient le motif
             if (stristr(tab[i].tel,motif)){
                     indice[indice2] = i;
                     tab[indice2] = tableau[i];
@@ -215,9 +233,10 @@ int filtre(int taille, CLIENT tab[taille] ){
             }
         }
         break;
-    
+    // Filtrage par adresse mail
     case 4:
         for (int i = 0; i<taille;i++){
+            // Si l'adresse mail contient le motif
             if (stristr(tab[i].adrmail,motif)){
                     indice[indice2] = i;
                     tab[indice2] = tableau[i];
@@ -226,33 +245,36 @@ int filtre(int taille, CLIENT tab[taille] ){
         }
         break;
     
-    default:
+    default: 
+        // Gestion d'une saisie incorrecte
         printf("Erreur de valeur");
         break;
     }
     afficher(indice2,tableau);
+    // Demande à l'utilisateur quel élément de la liste il veut modifier
     printf("Entrez le numéro de la ligne sur laquelle vous voulez modifier un élément sinon tapez 0 : ");
     int ligne_choisie;
     scanf("%d",&ligne_choisie);
     if (ligne_choisie ==0){
         return select;
     }
+    // Si un numéro valide est saisi, sélectionne l'élément correspondant
     if (ligne_choisie!=0){
-    select = indice[ligne_choisie - 1];
+        select = indice[ligne_choisie - 1];
         }
-    printf("%d",select);
+
     return select;
 
     
 }
 
 int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
-    int indice[100];
+    int indice_temporaire[100];
     int indice2 = 0;
-    int select = -1; //initialisation par défaut
+    int indice_final = -1; //l'indice est init à -1 en cas de CLIENT non trouvé
     int option,nb_l;
     char choix[2];
-    int verification = nb_ligne;
+    int nb_ligne_change = nb_ligne;
     char prenom[40], nom[40], ville[40], code[40], mail[40], numero[40], metier[40], date[20];
     int value;
     CLIENT tab[100];
@@ -263,144 +285,156 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     printf("4) Son mail ?\n");
     printf("5) Par cumul d'info ?\n");
     printf("Entrez votre choix ici : ");
-    //vider_buffer(); //avale le \n laissé par scanf
+    // Lecture du premier caractère de l'entrée utilisateur en cas d'erreur de saisi, c'est seulement le premier élément qui est retenu
     choix[0] = fgetc(stdin);
     while (choix[0] < '1' || choix[0] > '5') {
+        // Si la saisie est hors plage (c'est-à-dire en dehors des chiffres 1-5),
+        // un message d'erreur est affiché et une nouvelle saisie est demandée
         printf("Sasie hors plage\nRéessayez : ");
         choix[0] = fgetc(stdin);
     }
     option = atoi(choix);
     vider_buffer();
     switch (option) {
+        //recherche avec le prénom
         case 1:
             printf("Entrez le prénom de la personne : ");
             fgets(prenom, 41, stdin);
-            retirerchariot(prenom);
-            enlever_espace_fin(prenom);
-            enlever_espace_debut(prenom);
+            nettoyer_char(prenom);
             for (int i = 0; i < nb_ligne; i++) {
+                // Comparaison du nom saisi avec le nom de la personne dans le tableau
+                // stricmp permet une comparaison sans tenir compte de la casse des caractères
                 if (stricmp(prenom, tableau[i].prenom) == 0) {
-                    indice[indice2] = i;
+                    // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                    indice_temporaire[indice2] = i;
+                    // On copie l'élément correspondant dans le tableau temporaire
                     tab[indice2] = tableau[i];
+                    // On incrémente l'indice pour le tableau temporaire
                     indice2++;
 
                 }
             }
-            // Si aucun résultat n'a été trouvé, select reste à -1
+            // Si aucun résultat n'a été trouvé, indice_final reste à -1
             if (indice2 == 0) {
                 printf("Aucun client trouvé avec ce prénom.\n");
-                return select; // Retourne -1
+                return indice_final; // Retourne -1
             }
             break;
-
+        //recherche avec le nom
         case 2:
             printf("Entrez le nom de la personne : ");
             fgets(nom, 41, stdin);
-            retirerchariot(nom);
-            enlever_espace_fin(nom);
-            enlever_espace_debut(nom);
+            nettoyer_char(nom);
             for (int i = 0; i < nb_ligne; i++) {
                 if (stricmp(nom, tableau[i].nom) == 0) {
-                    indice[indice2] = i;
+                    // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                    indice_temporaire[indice2] = i;
+                    // On copie l'élément correspondant dans le tableau temporaire
                     tab[indice2] = tableau[i];
+                    // On incrémente l'indice pour le tableau temporaire
                     indice2++;
 
                 }
             }
-            // Si aucun résultat n'a été trouvé, select reste à -1
+            // Si aucun résultat n'a été trouvé, indice_final reste à -1
             if (indice2 == 0) {
                 printf("Aucun client trouvé avec ce prénom.\n");
-                return select; // Retourne -1
+                return indice_final; // Retourne -1
             }
             break;
-
+        //recherche avec numéro de téléphone
         case 3:
             value = 1;
             printf("Entrez le numero de telephone de la personne : ");
             fgets(numero, 41, stdin);
-            retirerchariot(numero);
-            enlever_espace_fin(numero);
-            enlever_espace_debut(numero);
+            nettoyer_char(numero);
             for (int i = 0; i < nb_ligne && value; i++) {
                 if (stricmp(numero, tableau[i].tel) == 0) {
-                    value = 0;
-                    indice[indice2] = i;
+                    // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                    indice_temporaire[indice2] = i;
+                    // On copie l'élément correspondant dans le tableau temporaire
                     tab[indice2] = tableau[i];
+                    // On incrémente l'indice pour le tableau temporaire
                     indice2++;
 
                 }
             }
                 
-            // Si aucun résultat n'a été trouvé, select reste à -1
+            // Si aucun résultat n'a été trouvé, indice_final reste à -1
             if (indice2 == 0) {
                 printf("Aucun client trouvé avec ce prénom.\n");
-                return select; // Retourne -1
+                return indice_final; // Retourne -1
             }
-            select = indice[0];
+            indice_final = indice_temporaire[0];
             break;
+        //recherche avec mail
         case 4:
             printf("Entrez le mail de la personne : ");
             fgets(mail, 41, stdin);
-            retirerchariot(mail);
-            enlever_espace_fin(mail);
-            enlever_espace_debut(mail);
+            nettoyer_char(mail);
             for (int i = 0; i < nb_ligne; i++) {
                 if (stricmp(mail, tableau[i].adrmail) == 0) {
-                    indice[indice2] = i;
+                    // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                    indice_temporaire[indice2] = i;
+                    // On copie l'élément correspondant dans le tableau temporaire
                     tab[indice2] = tableau[i];
+                    // On incrémente l'indice pour le tableau temporaire
                     indice2++;
 
                 }
             }
-            // Si aucun résultat n'a été trouvé, select reste à -1
+            // Si aucun résultat n'a été trouvé, indice_final reste à -1
             if (indice2 == 0) {
                 printf("Aucun client trouvé avec ce prénom.\n");
-                return select; // Retourne -1
+                return indice_final; // Retourne -1
             }
             break;
-        case 5:
+        //recherche avec cumul d'infos
+        case 5: 
 
             printf("Entrez le prénom de la personne : ");
             fgets(prenom, 41, stdin);
-            retirerchariot(prenom);
-            enlever_espace_fin(prenom);
-            enlever_espace_debut(prenom);
+            nettoyer_char(prenom);
             if (prenom[0]!='\0'){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(prenom, tableau[i].prenom) == 0) {
+                        // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                        indice_temporaire[indice2] = i;
+                        // On copie l'élément correspondant dans le tableau temporaire
                         tab[indice2] = tableau[i];
-                        indice[indice2] = i;
+                        // On incrémente l'indice pour le tableau temporaire
                         indice2++;
                     }
-                    verification = indice2;
+                    nb_ligne_change = indice2;
                 }
             }
 
             printf("Entrez le nom de la personne : ");
             fgets(nom, 41, stdin);
-            retirerchariot(nom);
-            enlever_espace_fin(nom);
-            enlever_espace_debut(nom);
-            if (nom[0]!='\0' && verification==nb_ligne){
+            nettoyer_char(nom);
+            if (nom[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(nom, tableau[i].nom) == 0) {
+                        // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                        indice_temporaire[indice2] = i;
+                        // On copie l'élément correspondant dans le tableau temporaire
                         tab[indice2] = tableau[i];
-                        indice[indice2] = i;
+                        // On incrémente l'indice pour le tableau temporaire
                         indice2++;
                     }
-                    verification = indice2;
+                    nb_ligne_change = indice2;
                 }
             }
-            else if (nom[0]!='\0' && verification!=nb_ligne){
-                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+            else if (nom[0]!='\0' && nb_ligne_change!=nb_ligne){
+                for (int i = 0; i < nb_ligne_change; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(nom, tab[i].nom) != 0) {
                         // Décaler les éléments suivants pour supprimer l'élément courant
-                        for (int j = i; j < verification - 1; j++) {
+                        for (int j = i; j < nb_ligne_change - 1; j++) {
                             tab[j] = tab[j + 1];
-                            indice[j] = indice[j+1];
+                            indice_temporaire[j] = indice_temporaire[j+1];
 
                         }
-                        verification--; // Réduire la taille logique
+                        nb_ligne_change--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
                         i++;
@@ -410,29 +444,30 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             }
             printf("Entrez la ville de la personne : ");
             fgets(ville, 41, stdin);
-            retirerchariot(ville);
-            enlever_espace_fin(ville);
-            enlever_espace_debut(ville);
-            if (ville[0]!='\0' && verification==nb_ligne){
+            nettoyer_char(ville);
+            if (ville[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(ville, tableau[i].ville) == 0) {
+                        // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                        indice_temporaire[indice2] = i;
+                        // On copie l'élément correspondant dans le tableau temporaire
                         tab[indice2] = tableau[i];
-                        indice[indice2] = i;
+                        // On incrémente l'indice pour le tableau temporaire
                         indice2++;
                     }
-                    verification = indice2;
+                    nb_ligne_change = indice2;
                 }
             }
-            else if (ville[0]!='\0' && verification!=nb_ligne){
-                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+            else if (ville[0]!='\0' && nb_ligne_change!=nb_ligne){
+                for (int i = 0; i < nb_ligne_change; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(ville, tab[i].ville) != 0) {
                         // Décaler les éléments suivants pour supprimer l'élément courant
-                        for (int j = i; j < verification - 1; j++) {
+                        for (int j = i; j < nb_ligne_change - 1; j++) {
                             tab[j] = tab[j + 1];
-                            indice[j] = indice[j+1];
+                            indice_temporaire[j] = indice_temporaire[j+1];
 
                         }
-                        verification--; // Réduire la taille logique
+                        nb_ligne_change--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
                         i++;
@@ -442,28 +477,29 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             }
             printf("Entrez le code postal de la personne : ");
             fgets(code, 41, stdin);
-            retirerchariot(code);
-            enlever_espace_fin(code);
-            enlever_espace_debut(code);
-            if (code[0]!='\0' && verification==nb_ligne){
+            nettoyer_char(code);
+            if (code[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(code, tableau[i].codep) == 0) {
+                        // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                        indice_temporaire[indice2] = i;
+                        // On copie l'élément correspondant dans le tableau temporaire
                         tab[indice2] = tableau[i];
-                        indice[indice2] = i;
+                        // On incrémente l'indice pour le tableau temporaire
                         indice2++;
                     }
-                    verification = indice2;
+                    nb_ligne_change = indice2;
                 }
             }
-            else if (code[0]!='\0' && verification!=nb_ligne){
-                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+            else if (code[0]!='\0' && nb_ligne_change!=nb_ligne){
+                for (int i = 0; i < nb_ligne_change; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(code, tab[i].codep) != 0) {
                         // Décaler les éléments suivants pour supprimer l'élément courant
-                        for (int j = i; j < verification - 1; j++) {
+                        for (int j = i; j < nb_ligne_change - 1; j++) {
                             tab[j] = tab[j + 1];
-                            indice[j] = indice[j+1];
+                            indice_temporaire[j] = indice_temporaire[j+1];
                         }
-                        verification--; // Réduire la taille logique
+                        nb_ligne_change--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
                         i++;
@@ -473,28 +509,29 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             }
             printf("Entrez le numéro de téléphone : ");
             fgets(numero, 41, stdin);
-            retirerchariot(numero);
-            enlever_espace_fin(numero);
-            enlever_espace_debut(numero);
-            if (numero[0]!='\0' && verification==nb_ligne){
+            nettoyer_char(numero);
+            if (numero[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(numero, tableau[i].tel) == 0) {
+                        // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                        indice_temporaire[indice2] = i;
+                        // On copie l'élément correspondant dans le tableau temporaire
                         tab[indice2] = tableau[i];
-                        indice[indice2] = i;
+                        // On incrémente l'indice pour le tableau temporaire
                         indice2++;
                     }
-                    verification = indice2;
+                    nb_ligne_change = indice2;
                 }
             }
-            else if (numero[0]!='\0' && verification!=nb_ligne){
-                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+            else if (numero[0]!='\0' && nb_ligne_change!=nb_ligne){
+                for (int i = 0; i < nb_ligne_change; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(numero, tab[i].tel) != 0) {
                         // Décaler les éléments suivants pour supprimer l'élément courant
-                        for (int j = i; j < verification - 1; j++) {
+                        for (int j = i; j < nb_ligne_change - 1; j++) {
                             tab[j] = tab[j + 1];
-                            indice[j] = indice[j+1];
+                            indice_temporaire[j] = indice_temporaire[j+1];
                         }
-                        verification--; // Réduire la taille logique
+                        nb_ligne_change--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
                         i++;
@@ -504,28 +541,29 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             }
             printf("Entrez l'adresse mail : ");
             fgets(mail, 41, stdin);
-            retirerchariot(mail);
-            enlever_espace_fin(mail);
-            enlever_espace_debut(mail);
-            if (mail[0]!='\0' && verification==nb_ligne){
+            nettoyer_char(mail);
+            if (mail[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(mail, tableau[i].adrmail) == 0) {
+                        // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                        indice_temporaire[indice2] = i;
+                        // On copie l'élément correspondant dans le tableau temporaire
                         tab[indice2] = tableau[i];
-                        indice[indice2] = i;
+                        // On incrémente l'indice pour le tableau temporaire
                         indice2++;
                     }
-                    verification = indice2;
+                    nb_ligne_change = indice2;
                 }
             }
-            else if (mail[0]!='\0' && verification!=nb_ligne){
-                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+            else if (mail[0]!='\0' && nb_ligne_change!=nb_ligne){
+                for (int i = 0; i < nb_ligne_change; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(mail, tab[i].adrmail) != 0) {
                         // Décaler les éléments suivants pour supprimer l'élément courant
-                        for (int j = i; j < verification - 1; j++) {
+                        for (int j = i; j < nb_ligne_change - 1; j++) {
                             tab[j] = tab[j + 1];
-                            indice[j] = indice[j+1];
+                            indice_temporaire[j] = indice_temporaire[j+1];
                         }
-                        verification--; // Réduire la taille logique
+                        nb_ligne_change--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
                         i++;
@@ -535,28 +573,29 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             }
             printf("Entrez le métier : ");
             fgets(metier, 21, stdin);
-            retirerchariot(metier);
-            enlever_espace_fin(metier);
-            enlever_espace_debut(metier);
-            if (metier[0]!='\0' && verification==nb_ligne){
+            nettoyer_char(metier);
+            if (metier[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(metier, tableau[i].profession) == 0) {
+                        // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                        indice_temporaire[indice2] = i;
+                        // On copie l'élément correspondant dans le tableau temporaire
                         tab[indice2] = tableau[i];
-                        indice[indice2] = i;
+                        // On incrémente l'indice pour le tableau temporaire
                         indice2++;
                     }
-                    verification = indice2;
+                    nb_ligne_change = indice2;
                 }
             }
-            else if (metier[0]!='\0' && verification!=nb_ligne){
-                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+            else if (metier[0]!='\0' && nb_ligne_change!=nb_ligne){
+                for (int i = 0; i < nb_ligne_change; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(metier, tab[i].profession) != 0) {
                         // Décaler les éléments suivants pour supprimer l'élément courant
-                        for (int j = i; j < verification - 1; j++) {
+                        for (int j = i; j < nb_ligne_change - 1; j++) {
                             tab[j] = tab[j + 1];
-                            indice[j] = indice[j+1];
+                            indice_temporaire[j] = indice_temporaire[j+1];
                         }
-                        verification--; // Réduire la taille logique
+                        nb_ligne_change--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
                         i++;
@@ -566,28 +605,29 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             }
             printf("Entrez la date de naissance : ");
             fgets(date, 21, stdin);
-            retirerchariot(date);
-            enlever_espace_fin(date);
-            enlever_espace_debut(date);
-            if (date[0]!='\0' && verification==nb_ligne){
+            nettoyer_char(date);
+            if (date[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(date, tableau[i].date_naissance) == 0) {
+                        // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                        indice_temporaire[indice2] = i;
+                        // On copie l'élément correspondant dans le tableau temporaire
                         tab[indice2] = tableau[i];
-                        indice[indice2] = i;
+                        // On incrémente l'indice pour le tableau temporaire
                         indice2++;
                     }
-                    verification = indice2;
+                    nb_ligne_change = indice2;
                 }
             }
-            else if (date[0]!='\0' && verification!=nb_ligne){
-                for (int i = 0; i < verification; ) { // pas de i++ car bug avec le décalage
+            else if (date[0]!='\0' && nb_ligne_change!=nb_ligne){
+                for (int i = 0; i < nb_ligne_change; ) { // pas de i++ car bug avec le décalage
                     if (stricmp(date, tab[i].date_naissance) != 0) {
                         // Décaler les éléments suivants pour supprimer l'élément courant
-                        for (int j = i; j < verification - 1; j++) {
+                        for (int j = i; j < nb_ligne_change - 1; j++) {
                             tab[j] = tab[j + 1];
-                            indice[j] = indice[j+1];
+                            indice_temporaire[j] = indice_temporaire[j+1];
                         }
-                        verification--; // Réduire la taille logique
+                        nb_ligne_change--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
                         i++;
@@ -597,10 +637,10 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             }
 
             if (numero[0]!='\0'){
-                return indice[0];
+                return indice_temporaire[0];
             }
             else{
-                afficher(verification,tab);
+                afficher(nb_ligne_change,tab);
             }
             
             break;
@@ -610,28 +650,33 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     }
     if (option!=5)
     afficher(indice2,tab);
-    printf("%d",indice[0]);
+    printf("%d",indice_temporaire[0]);
     if (option!=3){
         printf("Entrez le numéro de la ligne sur laquelle vous voulez modifier un élément sinon tapez 0 : ");
         int ligne;
         scanf("%d",&ligne);
         if (ligne != 0){
-        select = indice[ligne - 1];
+        indice_final = indice_temporaire[ligne - 1];
             }
         }
         
-    return select;
+    return indice_final;
 }
 
 void suppression(int* nb_ligne, CLIENT tableau[*nb_ligne]){
+    // Appel à la fonction de recherche pour obtenir l'élément à supprimer
     int select = recherche(*nb_ligne,tableau);
     if (select == -1) {
         printf("Aucune sélection valide effectuée.\n");
+        // On quitte la fonction sans rien faire
         return ;
     }
+    // Déplacement des éléments après l'élément sélectionné pour combler l'espace
+    // Le tableau est réorganisé pour "supprimer" l'élément
     for (int i = select; i<((*nb_ligne)-1);i++){
         tableau[i] = tableau[i+1];
     }
+    // Réduction de la taille du tableau (enlevant l'élément)
     *nb_ligne = *nb_ligne - 1;
 }
 
@@ -688,49 +733,49 @@ void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
     case 1:
         printf("Entrez le nouveau prénom : ");
         fgets(nouveau, 51, stdin);
-        retirerchariot(nouveau);
+        nettoyer_char(nouveau);
         strcpy(tableau[select].prenom, nouveau);
         break;
     case 2:
         printf("Entrez le nouveau nom : ");
         fgets(nouveau, 51, stdin);
-        retirerchariot(nouveau);
+        nettoyer_char(nouveau);
         strcpy(tableau[select].nom, nouveau);
         break;
     case 3:
         printf("Entrez la nouvelle ville : ");
         fgets(nouveau, 51, stdin);
-        retirerchariot(nouveau);
+        nettoyer_char(nouveau);
         strcpy(tableau[select].ville, nouveau);
         break;
     case 4:
         printf("Entrez le nouveau code postal : ");
         fgets(nouveau, 51, stdin);
-        retirerchariot(nouveau);
+        nettoyer_char(nouveau);
         strcpy(tableau[select].codep, nouveau);
         break;
     case 5:
         printf("Entrez le nouveau numéro de téléphone : ");
         fgets(nouveau, 51, stdin);
-        retirerchariot(nouveau);
+        nettoyer_char(nouveau);
         strcpy(tableau[select].tel, nouveau);
         break;
     case 6:
         printf("Entrez la nouvelle adresse mail : ");
         fgets(nouveau, 51, stdin);
-        retirerchariot(nouveau);
+        nettoyer_char(nouveau);
         strcpy(tableau[select].adrmail, nouveau);
         break;
     case 7:
         printf("Entrez la nouvelle profession : ");
         fgets(nouveau, 51, stdin);
-        retirerchariot(nouveau);
+        nettoyer_char(nouveau);
         strcpy(tableau[select].profession, nouveau);
         break;
     case 8:
         printf("Entrez la nouvelle date de naissance : ");
         fgets(nouveau, 51, stdin);
-        retirerchariot(nouveau);
+        nettoyer_char(nouveau);
         strcpy(tableau[select].date_naissance, nouveau);
         break;
     default:
