@@ -110,4 +110,9 @@ void suppression(int* nb_ligne, CLIENT tableau[*nb_ligne]);
 /**
  *
  */
+
+/// @brief 
+/// @param mot 
+void nettoyer_char(char mot[]);
+
 #endif // HEAD_H_INCLUDED
