@@ -166,6 +166,7 @@ int filtre(const char motif[], int taille, CLIENT tab[taille] ){
     CLIENT tableau[70];
     printf("Comment voulez-vous filtrer l'annuaire ?\n");
     printf("1) Son prénom ?\n");
+
     printf("2) Son nom ?\n");
     printf("3) Son numero de telephone ?\n");
     printf("4) Son mail ?\n");
@@ -196,8 +197,6 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     char prenom[40], nom[40], ville[40], code[40], mail[40], numero[40], metier[40], date[20];
     int value;
     CLIENT tab[100];
-    FILE* fic2;
-    FILE* fic;
     printf("Par quel moyen voulez-vous retrouver la personne\n");
     printf("1) Son prénom ?\n");
     printf("2) Son nom ?\n");
