@@ -15,7 +15,7 @@ int total_lignes(FILE * fichier){
     return res;
 }
 
-// " Bonjour"
+
 
 void enlever_espace_debut(char mot[]) {
     int indice = 0; // Trouver le premier caractère non-espace
@@ -128,6 +128,12 @@ void retirerchariot(char mot[]){
     mot[i]='\0';
 }
 
+void nettoyer_char(char mot[]){
+    retirerchariot(mot);
+    enlever_espace_fin(mot);
+    enlever_espace_debut(mot);
+}
+
 int stristr(char mot[],  char motif[]) {
     // Si le motif est vide, on considère que la recherche est toujours réussie
     if (motif[0] == '\0') {
@@ -159,33 +165,89 @@ int stristr(char mot[],  char motif[]) {
 }
 
 
-/*
-int filtre(const char motif[], int taille, CLIENT tab[taille] ){
-    int choix;
-    //char motif[40];
-    CLIENT tableau[70];
-    printf("Comment voulez-vous filtrer l'annuaire ?\n");
+int filtre(int taille, CLIENT tab[taille] ){
+    char choix[2],select = -1,option;
+    int indice[100];
+    int indice2 = 0;
+    char motif[40];
+    CLIENT tableau[100];
+    printf("Entrez un champ approximatif : ");
+    fgets(motif,41,stdin);
+    nettoyer_char(motif);
+    printf("Dans quel champ voulez-vous filtrer l'annuaire ?\n");
     printf("1) Son prénom ?\n");
-
     printf("2) Son nom ?\n");
     printf("3) Son numero de telephone ?\n");
     printf("4) Son mail ?\n");
     printf("Entrez votre choix ici : ");
-    scanf("%d", &choix);
+    choix[0] = fgetc(stdin);
+    option = atoi(choix);
+    while (choix[0] < '1' || choix[0] > '4') {
+        printf("Sasie hors plage\nRéessayez : ");
+        choix[0] = fgetc(stdin);
+    }
+    option = atoi(choix);
     getchar();
-    switch (choix)
+    switch (option)
     {
     case 1:
-        printf("Entrez un motif : ");
-        fgets(motif,41,stdin);
-
+        for (int i = 0; i<taille;i++){
+            if (stristr(tab[i].prenom,motif)==1){
+                    indice[indice2] = i;
+                    tableau[indice2] = tab[i];
+                    indice2++;
+            }
+        }
+        break;
+    case 2:
+        for (int i = 0; i<taille;i++){
+            if (stristr(tab[i].nom,motif)){
+                    indice[indice2] = i;
+                    tab[indice2] = tableau[i];
+                    indice2++;
+            }
+        }
+        break;
+    
+    case 3:
+        for (int i = 0; i<taille;i++){
+            if (stristr(tab[i].tel,motif)){
+                    indice[indice2] = i;
+                    tab[indice2] = tableau[i];
+                    indice2++;
+            }
+        }
+        break;
+    
+    case 4:
+        for (int i = 0; i<taille;i++){
+            if (stristr(tab[i].adrmail,motif)){
+                    indice[indice2] = i;
+                    tab[indice2] = tableau[i];
+                    indice2++;
+            }
+        }
         break;
     
     default:
+        printf("Erreur de valeur");
         break;
     }
+    afficher(indice2,tableau);
+    printf("Entrez le numéro de la ligne sur laquelle vous voulez modifier un élément sinon tapez 0 : ");
+    int ligne_choisie;
+    scanf("%d",&ligne_choisie);
+    if (ligne_choisie ==0){
+        return select;
+    }
+    if (ligne_choisie!=0){
+    select = indice[ligne_choisie - 1];
+        }
+    printf("%d",select);
+    return select;
+
+    
 }
-*/
 //FONCTION terminée, en attente d'un point ensemble pour rectfier 2-3 choses
 int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     int indice[100];
@@ -206,7 +268,6 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     printf("Entrez votre choix ici : ");
     //vider_buffer(); //avale le \n laissé par scanf
     choix[0] = fgetc(stdin);
-    option = atoi(choix);
     while (choix[0] < '1' || choix[0] > '5') {
         printf("Sasie hors plage\nRéessayez : ");
         choix[0] = fgetc(stdin);
@@ -587,7 +648,31 @@ void suppression(int* nb_ligne, CLIENT tableau[*nb_ligne]){
 
 
 void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
-    int select = recherche(nb_ligne, tableau);
+    char choix[2];
+    int select = -1, vrai_choix;
+    printf("Comment voulez-vous retrouver la personne ?\n");
+    printf("1) Par recherche (avec un champ précis)\n");
+    printf("2) Par filtre (avec un champ approximatif)\n");
+    printf("Entrez votre choix : ");
+    choix[0] = fgetc(stdin);
+    while (choix[0] < '1' || choix[0] > '2') {
+        printf("Sasie hors plage\nRéessayez : ");
+        choix[0] = fgetc(stdin);
+    }
+    vrai_choix = atoi(choix);
+    vider_buffer();
+    switch (vrai_choix)
+    {
+    case 1:
+        select = recherche(nb_ligne, tableau);
+        break;
+    case 2:
+        select = filtre(nb_ligne, tableau);
+        break;
+    default:
+        printf("Erreur dans la valeur");
+        break;
+    }
 
     if (select == -1) {
         printf("Aucune sélection valide effectuée.\n");

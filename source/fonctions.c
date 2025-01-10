@@ -8,7 +8,7 @@ void ouverture(char chemin[]){
     char choix[2];
     int option;
     FILE* fic = NULL;//ouverture du fichier
-    fic = fopen(chemin,"r+");
+    fic = fopen(chemin,"r");
     if (fic == NULL){
         printf("Echec ouverture fichier\n");
         perror("fopen");
