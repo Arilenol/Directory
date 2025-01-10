@@ -15,8 +15,6 @@ int total_lignes(FILE * fichier){
     return res;
 }
 
-
-
 void enlever_espace_debut(char mot[]) {
     int indice = 0; // Trouver le premier caractère non-espace
     int length = strlen(mot);
@@ -33,7 +31,6 @@ void enlever_espace_debut(char mot[]) {
         }
     }
 }
-
 
 void enlever_espace_fin(char mot[]) {
     int length = strlen(mot) - 1;
@@ -102,7 +99,7 @@ void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]){
         }
         else if (c==','){
             mot[indice] = '\0';
-            //printf("info : %s et mot : ",info[nb_champ],mot);
+            //printf("info : %s et mot : %s\n",info[nb_champ],mot);
             affecter_struct(&c1,info[nb_champ],mot);
             nb_champ++;
             char mot[50];
@@ -248,7 +245,7 @@ int filtre(int taille, CLIENT tab[taille] ){
 
     
 }
-//FONCTION terminée, en attente d'un point ensemble pour rectfier 2-3 choses
+
 int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     int indice[100];
     int indice2 = 0;
@@ -613,23 +610,15 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     }
     if (option!=5)
     afficher(indice2,tab);
+    printf("%d",indice[0]);
     if (option!=3){
         printf("Entrez le numéro de la ligne sur laquelle vous voulez modifier un élément sinon tapez 0 : ");
         int ligne;
-        choix[0] = fgetc(stdin);
-        ligne = atoi(choix);
-        while (choix[0] < '0' || choix[0] > '5') {
-            printf("Sasie hors plage\nRéessayez : ");
-            choix[0] = fgetc(stdin);
-        }
-        if (choix[0] = '0'){
-            return select;
-        }
-        ligne = atoi(choix);
-        vider_buffer();
-        if (ligne!=0){
+        scanf("%d",&ligne);
+        if (ligne != 0){
         select = indice[ligne - 1];
-        }}
+            }
+        }
         
     return select;
 }

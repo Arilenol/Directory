@@ -18,8 +18,8 @@ void ouverture(char chemin[]){
     CLIENT tab[nb_ligne];//creation du tableau
     mot_par_mot(fic,nb_ligne,tab);
     fclose(fic);
+    
     do{
-
         printf("\n\nQue voulez-faire parmi les actions suivantes ? \n");//affichage des option
         for (int i = 0; i < 8; i++) {
             printf("%d) %s\n", i + 1, possible[i]);
@@ -135,12 +135,20 @@ void ajout(FILE* fic){
     printf("\nLa ville du client : ");
     fgets(cli.ville,sizeof(cli.ville),stdin);
     nettoyer_char(cli.ville);
+    if (cli.ville[0]!='\0'){
     printf("\nLe code postal du client : ");
     fgets(cli.codep,sizeof(cli.codep),stdin);
     nettoyer_char(cli.codep);
+    }
     printf("\nLe numero de téléphone du client : ");
     fgets(cli.tel,sizeof(cli.tel),stdin);
     nettoyer_char(cli.tel);
+    while(cli.tel[0]=='\0'){
+        printf("\nLe numero de téléphone est une clé primaire, vous êtes obligés de la renseigner\n");
+        printf("\nLe numero de téléphone du client : ");
+        fgets(cli.tel,sizeof(cli.tel),stdin);
+        nettoyer_char(cli.tel);
+    }
     printf("\nL'adresse mail du client : ");
     fgets(cli.adrmail,sizeof(cli.adrmail),stdin);
     nettoyer_char(cli.adrmail);

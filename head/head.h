@@ -29,16 +29,11 @@ void ouverture(char chemin[]);
 void ajout(FILE* fic);
 
 /**
- * @param fichier
+ * @author Leny
+ * @param pointeur de fichier
  * @return le nombre de ligne contenant du texte d'un fichier
  */
 int total_lignes(FILE * fichier);
-
-/**
- * @param mot
- * @post prend la chaine mot et supprime la premiere ocurrence de '\n'
- */
-void retirer_chariot(char* mot);
 
 /**
  * @param fic
@@ -56,7 +51,8 @@ void vider_buffer();
 
 /**
  * @author Leny
- * @param mot
+ * @brief enlève le \n laissé par fgets
+ * @param une chaine de caractères
  */
 void retirer_chariot(char mot[]);
 
@@ -69,14 +65,22 @@ void afficher_manq(int nb_l,CLIENT tab[nb_l]);
 
 /**
  * @author Leny
- * @param fic,nb_ligne,tableau
- * @post renvoie un tableau avec chaque ligne du fichier un élément du tableau
+ * @brief Remplit la liste de structures `CLIENT` avec les données extraites d'un fichier.
+ * @param fichier Pointeur vers un fichier ouvert en mode lecture (`r`). Ce fichier 
+ *               doit contenir les informations à assigner aux structures `CLIENT`.
+ * @param nb_ligne Le nombre de clients (taille de la liste) à traiter dans la liste.
+ * @param tableau Tableau de structures `CLIENT` à remplir avec les données du fichier.
  */
 void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]);
 
 /**
  * @author Leny
- * @param 
+ * @brief Affecte des valeurs aux champs d'une structure `CLIENT` en fonction de l'option et du mot donnés.
+ * @param c1 Pointeur vers la structure `CLIENT` à modifier.
+ * @param option Chaîne de caractères représentant l'option qui détermine quel champ 
+ *               de la structure `CLIENT` sera modifié.
+ * @param mot Chaîne de caractères contenant la valeur à affecter au champ sélectionné 
+ *            de la structure `CLIENT`.
  */
 void affecter_struct(CLIENT *c1, char option[], char mot[]);
 
@@ -109,19 +113,28 @@ void calcul_age(char mot[]);
 
 /**
  * @author Leny
- *@param tableau nb_ligne
- * @post
+ * @brief Recherche un individu dans un tableau de structures `CLIENT`.
+ * @param nb_ligne Le nombre d'éléments dans le tableau `tableau`.
+ * @param tableau Un tableau de `CLIENT` dans lequel la recherche sera effectuée.
+ * @return La position de l'individu recherché dans le tableau, ou `-1` si l'individu n'est pas trouvé.
  */
 int recherche(int nb_ligne, CLIENT tableau[nb_ligne]);
 
 /**
  * @author Leny
+ * @brief Modifie un ou plusieurs champs d'une structure `CLIENT` dans un tableau.
+ * @param nb_ligne Le nombre de clients dans le tableau `tableau`.
+ * @param tableau Un tableau de `CLIENT` à modifier, avec `nb_ligne` éléments.
+ * @return Aucun retour. La fonction modifie les éléments directement dans le tableau.
  */
 void modif(int nb_ligne, CLIENT tableau[nb_ligne]);
 
 /**
  * @author Leny
- *
+ * @brief Converti une liste de CLIENT en fichier csv
+ * @param prend un pointeur de fichier
+ * @param prend la taille d'un tableau
+ * @param prend un tableau de taille 'taille'
  */
 void list_to_file(FILE* file,int taille, CLIENT c[taille]);
 
