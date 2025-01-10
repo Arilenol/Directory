@@ -740,21 +740,21 @@ void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
 }
 
 
-void list_to_file(FILE* file,int taille, CLIENT c[taille]){
+void list_to_file(FILE* file,int taille, CLIENT tableau[taille]){
     for (int i = 0; i<taille;i++){
-        if (strlen(c[i].ville)<=0){
+        if (strlen(tableau[i].ville)<=0){
             fprintf(file, "%s,%s,,%s,%s,%s,%s\n",
-                    c[i].prenom, c[i].nom,
-                    c[i].tel,
-                    c[i].adrmail, c[i].profession,
-                    c[i].date_naissance);
+                    tableau[i].prenom, tableau[i].nom,
+                    tableau[i].tel,
+                    tableau[i].adrmail, tableau[i].profession,
+                    tableau[i].date_naissance);
             }
         else{
             fprintf(file, "%s,%s,%s %s,%s,%s,%s,%s\n",
-                    c[i].prenom, c[i].nom,
-                    c[i].ville,c[i].codep, c[i].tel,
-                    c[i].adrmail, c[i].profession,
-                    c[i].date_naissance);
+                    tableau[i].prenom, tableau[i].nom,
+                    tableau[i].ville,tableau[i].codep, tableau[i].tel,
+                    tableau[i].adrmail, tableau[i].profession,
+                    tableau[i].date_naissance);
         }
                 
     }

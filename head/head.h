@@ -125,31 +125,70 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]);
  * @brief Modifie un ou plusieurs champs d'une structure `CLIENT` dans un tableau.
  * @param nb_ligne Le nombre de clients dans le tableau `tableau`.
  * @param tableau Un tableau de `CLIENT` à modifier, avec `nb_ligne` éléments.
- * @return Aucun retour. La fonction modifie les éléments directement dans le tableau.
  */
 void modif(int nb_ligne, CLIENT tableau[nb_ligne]);
 
 /**
  * @author Leny
- * @brief Converti une liste de CLIENT en fichier csv
- * @param prend un pointeur de fichier
- * @param prend la taille d'un tableau
- * @param prend un tableau de taille 'taille'
+ * @brief Convertit une liste de `CLIENT` en un fichier CSV.
+ * @param file Pointeur vers un fichier ouvert en mode écriture où les données 
+ *             seront sauvegardées au format CSV.
+ * @param taille Nombre d'éléments dans le tableau `c`, représentant le nombre de 
+ *              clients à convertir en fichier CSV.
+ * @param c Tableau de `CLIENT` contenant les informations à écrire dans le fichier.
  */
-void list_to_file(FILE* file,int taille, CLIENT c[taille]);
+void list_to_file(FILE* file,int taille, CLIENT tableau[taille]);
 
 /**
  * @author Leny
- * @brief supprime un élément dans un tableau après recherche ou filtre
- * @param prend un pointeur d'entier
- * @param prend un tableau de CLIENT
+ * @brief Supprime un élément dans un tableau de `CLIENT` après recherche ou filtre.
+ * @param nb_ligne Pointeur vers le nombre d'éléments dans le tableau `tableau`. Ce 
+ *                 nombre sera mis à jour après la suppression.
+ * @param tableau Un tableau de `CLIENT` à partir duquel un élément sera supprimé. 
+ *                Le tableau sera réorganisé après la suppression.
  */
 void suppression(int* nb_ligne, CLIENT tableau[*nb_ligne]);
 
 /**
  * @author Leny
- * @brief enlève les espaces avant, après le mot et enlève \n généré par fgets
- * @param prend une chaine de caractères 
+ * @brief Supprime les espaces superflus avant et après une chaîne, et enlève le caractère de nouvelle ligne `\n` généré par `fgets`.
+ * @param mot Chaîne de caractères à modifier. Les espaces au début et à la fin de la chaîne 
+ *            seront supprimés, ainsi que le caractère `\n` généré par `fgets`. 
+ *            La chaîne est modifiée en place.
  */
 void nettoyer_char(char mot[]);
+
+
+/**
+ * @author Leny
+ * @brief Recherche un sous-ensemble de chaîne (`motif`) dans une autre chaîne (`mot`), insensible à la casse.
+ * @param mot Chaîne de caractères dans laquelle la recherche du motif est effectuée.
+ * @param motif Chaîne de caractères que l'on recherche dans `mot`.
+ * @return True si motif est dans `mot`, ou -1 si le motif n'est pas trouvé, ou 0 si motif est vide.
+ */
+int stristr(char mot[],  char motif[]);
+
+/**
+ * @author Leny
+ * @brief Demande à l'utilisateur de sélectionner un motif puis un champ avant de recherche le motif dans ce champ dans la liste de CLIENT
+ * @param taille Le nombre d'éléments dans le tableau `tableau`.
+ * @param tableau Un tableau de `CLIENT` dans lequel la recherche sera effectuée.
+ * @return La position de l'individu recherché dans le tableau, ou `-1` si l'individu n'est pas trouvé.
+ */
+int filtre(int taille, CLIENT tab[taille] );
+
+
+/**
+ * @author Leny
+ * @brief Supprime les espaces à la fin d'une chaîne de caractères.
+ * @param mot Chaîne de caractères dont les espaces à la fin seront supprimés. La chaîne est modifiée directement.
+ */
+void enlever_espace_fin(char mot[]) ;
+
+/**
+ * @author Leny
+ * @brief Supprime les espaces au début d'une chaîne de caractères.
+ * @param mot Chaîne de caractères dont les espaces au début seront supprimés. La chaîne est modifiée directement.
+ */
+void enlever_espace_debut(char mot[]);
 #endif // HEAD_H_INCLUDED
