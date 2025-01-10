@@ -57,7 +57,7 @@ void ouverture(char chemin[]){
                 break;
             case (2)://ajout d'utilisateur
                 system("cls");
-                fic= fopen(chemin,"a");
+                fic = fopen(chemin,"a");
                 ajout(fic);
                 fclose(fic);
                 break;
@@ -73,7 +73,6 @@ void ouverture(char chemin[]){
             case (5):// suppression de ligne
                 system("cls");
                 suppression(&nb_ligne,tab);
-                //list_to_file(chemin,nb_ligne,tab);
                 break;
             case (6)://modification du fichier
                 system("cls");
@@ -124,46 +123,37 @@ void afficher_manq(int nb_l,CLIENT tab[nb_l]) {
     scanf("%c",&suite);
 }
 void ajout(FILE* fic){
-    vider_buffer();
-    fseek(fic,SEEK_END,1);
-    CLIENT cli;// création d'une occurence de la structure
+    CLIENT cli;
+    printf("** VOUS POURREZ VOIR LES CHANGEMENTS QU'APRÈS AVOIR CLIQUÉ SUR TERMINER\n");
     printf("Rentrez les information du client a rajouter");
     printf("\nLe prenom du client : ");// saisie utilisateur de toute les information
     fgets(cli.prenom,sizeof(cli.prenom),stdin);
-    retirer_chariot(cli.prenom);
-    printf("\nLe nom du client :");
+    nettoyer_char(cli.prenom);
+    printf("\nLe nom du client : ");
     fgets(cli.nom,sizeof(cli.nom),stdin);
-    retirer_chariot(cli.nom);
+    nettoyer_char(cli.nom);
     printf("\nLa ville du client : ");
     fgets(cli.ville,sizeof(cli.ville),stdin);
-    retirer_chariot(cli.ville);
-    printf("\nLe code postal du client :");
+    nettoyer_char(cli.ville);
+    printf("\nLe code postal du client : ");
     fgets(cli.codep,sizeof(cli.codep),stdin);
-    retirer_chariot(cli.codep);
-    printf("\nLe numero de téléphone du client :");
-    vider_buffer();
+    nettoyer_char(cli.codep);
+    printf("\nLe numero de téléphone du client : ");
     fgets(cli.tel,sizeof(cli.tel),stdin);
-    retirer_chariot(cli.tel);
-    printf("\nL'adresse mail du client :");
+    nettoyer_char(cli.tel);
+    printf("\nL'adresse mail du client : ");
     fgets(cli.adrmail,sizeof(cli.adrmail),stdin);
-    retirer_chariot(cli.adrmail);
-    printf("\nLa profession du client :");
+    nettoyer_char(cli.adrmail);
+    printf("\nLa profession du client : ");
     fgets(cli.profession,sizeof(cli.profession),stdin);
-    retirer_chariot(cli.profession);
-    printf("\nLa date de naissance du client :");
+    nettoyer_char(cli.profession);
+    printf("\nLa date de naissance du client : ");
     fgets(cli.date_naissance,sizeof(cli.date_naissance),stdin);
-    retirer_chariot(cli.date_naissance);
+    nettoyer_char(cli.date_naissance);
     fprintf(fic,"%s,%s,%s %s,%s,%s,%s,%s\n",cli.prenom,cli.nom,cli.ville,cli.codep,cli.tel,cli.adrmail,cli.profession,cli.date_naissance);// on print la structure a la fin du fichier
+
 }
-void retirer_chariot(char mot[]){
-    int i = 0;
-    if(mot[0] == '\n')
-        mot[0] = '\0';
-    while(mot[i] != '\n' && mot[i] != '\0') {
-        i++;
-    }
-    mot[i] = '\0';
-}
+
 void vider_buffer(){// permet de vider le buffer pour eviter les bug de scanf
     char trash = fgetc(stdin);
     while(trash != '\n')// permet de vider le
