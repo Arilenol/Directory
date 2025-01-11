@@ -54,35 +54,42 @@ void ouverture(char chemin[]){
                     }
                     afficher_ligne(nb_ligne,tab,ligne);
                 }
+                vider_buffer();
                 break;
             case (2)://ajout d'utilisateur
                 system("cls");
                 fic = fopen(chemin,"a");
                 ajout(fic);
                 fclose(fic);
+                vider_buffer();
                 break;
 
             case (3)://
                 system("cls");
                 afficher_manq(nb_ligne,tab);
+                vider_buffer();
                 break;
             case(4):// tri du tableau
                 system("cls");
                 tri_tableau(nb_ligne,tab);
+                vider_buffer();
                 break;
             case (5):// suppression de ligne
                 system("cls");
                 suppression(&nb_ligne,tab);
+                vider_buffer();
                 break;
             case (6)://modification du fichier
                 system("cls");
                 modif(nb_ligne,tab);
+                vider_buffer();
                 break;
             case (7)://enregistrement des modifications
                 system("cls");
                 fic= fopen(chemin,"w");
                 list_to_file(fic,nb_ligne,tab);
                 fclose(fic);
+                vider_buffer();
                 break;
             case (8):
                 system("cls");
