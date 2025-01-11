@@ -218,6 +218,7 @@ int filtre(int taille, CLIENT tab[taille] ){
     {
     // Filtrage par prénom
     case 1: 
+        nb_op_filtre = 0;
         for (int i = 0; i<taille;i++){
             // Si le prenom contient le motif
             if (stristr(tab[i].prenom,motif)==1){
