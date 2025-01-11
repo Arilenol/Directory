@@ -143,24 +143,40 @@ void nettoyer_char(char mot[]){
 
 int stristr(char mot[],  char motif[]) {
     // Si le motif est vide, on considère que la recherche est toujours réussie
+    //on calcule motif[0] et on le compare
+    nb_op_filtre = nb_op_filtre + 2 ; 
     if (motif[0] == '\0') {
         return 0;  // Retourne 0 car une chaîne vide est toujours trouvée en début de la chaîne principale
     }
 
     // Longueur du motif
+    //on affecte
+    nb_op_filtre = nb_op_filtre + 1 ; 
     int motif_len = strlen(motif);
 
     // Parcours de la chaîne principale (mot)
+    nb_op_filtre = nb_op_filtre + 3 ;
     for (int i = 0; mot[i] != '\0'; i++) {
+        // on incrémente et on affecte dans i
+        nb_op_filtre = nb_op_filtre + 2 ;
         // Comparaison caractère par caractère, en ignorant la casse
+        // on effectue une opération TOLOWER dans le meilleur des cas mot[i] est déjà en minuscule
+        // dans le pire des cas, on doit faire -32 puis affecter. (Donc dans TOLOWER on a un test(mot[i] donc calcul), un calcul, une affectation) x 2 + la comparaison "==" 
+        nb_op_filtre = nb_op_filtre + 9 ; 
         if (tolower(mot[i]) == tolower(motif[0])) {
             // Si le premier caractère correspond, on vérifie le reste de la chaîne
+            nb_op_filtre = nb_op_filtre + 1 ; 
             int j = 0;
+            nb_op_filtre = nb_op_filtre + 17 ; 
+            //      3                  1    2             1   4           1      1          4 
             while (mot[i + j] != '\0' && motif[j] != '\0' && tolower(mot[i + j]) == tolower(motif[j])) {
+                nb_op_filtre = nb_op_filtre + 2 ; 
                 j++;
             }
 
             // Si on a trouvé toute la sous-chaîne (fin de motif)
+            //on calcule motif[0] et on le compare
+            nb_op_filtre = nb_op_filtre + 2 ; 
             if (motif[j] == '\0') {
                 return 1;  // Retourne l'indice où la sous-chaîne a été trouvée
             }
@@ -210,6 +226,7 @@ int filtre(int taille, CLIENT tab[taille] ){
                     indice2++;
             }
         }
+        printf("nombre d'operation élementaire pour le tri : %d\n",nb_op_filtre);
         break;
     // Filtrage par nom
     case 2:
