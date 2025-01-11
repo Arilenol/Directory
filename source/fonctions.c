@@ -6,6 +6,7 @@ int nb_op_tri=0;
 void ouverture(char chemin[]){
     char possible[8][50]={"Consulter","Ajouter","Consulter les Client avec données manquantes","Consulter un tableau trié","Suppresion","Modifier","Sauvegarder","Revenir en arrière"};
     int ligne;
+    int enregistrement;
     char choix[2];
     int option;
     FILE* fic = NULL;//ouverture du fichier
@@ -87,9 +88,16 @@ void ouverture(char chemin[]){
                 break;
             case (7)://enregistrement des modifications
                 system("cls");
-                fic= fopen(chemin,"w");
-                list_to_file(fic,nb_ligne,tab);
-                fclose(fic);
+                printf("Que voulez vous faire ?\n 1) Enregistrer ?\n 2) Enregistrer sous ?\n Entrez votre choix : ");
+                scanf("%d",&enregistrement);
+                if (enregistrement==1){
+                    fic= fopen(chemin,"w");
+                    list_to_file(fic,nb_ligne,tab);
+                    fclose(fic);
+                }
+                else{
+                    creerFichierCSV(nb_ligne,tab);
+                }
                 vider_buffer();
                 break;
             case (8):
