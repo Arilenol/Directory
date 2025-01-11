@@ -8,9 +8,8 @@ void ouverture(char chemin[]){
     int ligne;
     char choix[2];
     int option;
-    do{
     FILE* fic = NULL;//ouverture du fichier
-    fic = fopen(chemin,"r+");
+    fic = fopen(chemin,"r");
     if (fic == NULL){
         printf("Echec ouverture fichier\n");
         perror("fopen");
@@ -19,7 +18,9 @@ void ouverture(char chemin[]){
     int nb_ligne= total_lignes(fic);
     CLIENT tab[nb_ligne];//creation du tableau
     mot_par_mot(fic,nb_ligne,tab);
-        fclose(fic);
+    fclose(fic);
+    
+    do{
         printf("\n\nQue voulez-faire parmi les actions suivantes ? \n");//affichage des option
         for (int i = 0; i < 8; i++) {
             printf("%d) %s\n", i + 1, possible[i]);
@@ -54,45 +55,50 @@ void ouverture(char chemin[]){
                     }
                     afficher_ligne(nb_ligne,tab,ligne);
                 }
+                vider_buffer();
                 break;
             case (2)://ajout d'utilisateur
                 system("cls");
-                fic= fopen(chemin,"a");
+                fic = fopen(chemin,"a");
                 ajout(fic);
                 fclose(fic);
+                vider_buffer();
                 break;
 
             case (3)://
                 system("cls");
                 afficher_manq(nb_ligne,tab);
+                vider_buffer();
                 break;
             case(4):// tri du tableau
                 system("cls");
                 tri_tableau(nb_ligne,tab);
+                vider_buffer();
                 break;
             case (5):// suppression de ligne
                 system("cls");
                 suppression(&nb_ligne,tab);
-                //list_to_file(chemin,nb_ligne,tab);
+                vider_buffer();
                 break;
             case (6)://modification du fichier
                 system("cls");
                 modif(nb_ligne,tab);
+                vider_buffer();
                 break;
             case (7)://enregistrement des modifications
                 system("cls");
                 fic= fopen(chemin,"w");
                 list_to_file(fic,nb_ligne,tab);
                 fclose(fic);
+                vider_buffer();
                 break;
             case (8):
                 system("cls");
+                break;
             default:
                 printf("Valeur erronée");
                 break;
         }
-        system("cls");
-        vider_buffer();
     }while(option != 8);
 
 }
