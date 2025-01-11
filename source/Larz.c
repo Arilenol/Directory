@@ -806,5 +806,40 @@ void list_to_file(FILE* file,int taille, CLIENT tableau[taille]){
         }
                 
     }
+    printf("Fichier enregistré avec succès.\n");
 }
 
+void creerFichierCSV(int taille, CLIENT clients[]) {
+    char nomFichier[100];
+
+    // Demander à l'utilisateur le nom du fichier
+    printf("Entrez le nom du fichier CSV (sans extension) ou le chemin où vous voulez le déposer : ");
+    scanf("%99s", nomFichier); //limite nomfichier à 99
+
+    // Ajouter l'extension .csv
+    strcat(nomFichier, ".csv");
+
+    // Ouvrir le fichier en mode écriture
+    FILE *fichier = fopen(nomFichier, "w");
+    if (fichier == NULL) {
+        perror("Erreur lors de la création du fichier");
+        return;
+    }
+
+    // Écrire les données des clients
+    for (int i = 0; i < taille; i++) {
+        fprintf(fichier, "%s,%s,%s,%s,%s,%s,%s,%s\n", 
+                clients[i].prenom, 
+                clients[i].nom, 
+                clients[i].ville, 
+                clients[i].codep, 
+                clients[i].tel, 
+                clients[i].adrmail, 
+                clients[i].profession, 
+                clients[i].date_naissance);
+    }
+
+    // Fermer le fichier
+    fclose(fichier);
+    printf("Fichier '%s' créé avec succès.\n", nomFichier);
+}

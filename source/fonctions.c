@@ -3,9 +3,10 @@
 //
 #include "../head/head.h"
 void ouverture(char chemin[]){
-    char possible[8][50]={"Consulter","Ajouter","Consulter les Client avec données manquantes","Consulter un tableau trié","Suppresion","Modifier","Sauvegarder","Revenir en arrière"};
+    char possible[8][50]={"Consulter","Ajouter","Consulter les Client avec données manquantes","Consulter un tableau trié","Suppresion","Modifier","Enregistrer","Revenir en arrière"};
     int ligne;
     char choix[2];
+    int enregistrement;
     int option;
     FILE* fic = NULL;//ouverture du fichier
     fic = fopen(chemin,"r");
@@ -86,9 +87,16 @@ void ouverture(char chemin[]){
                 break;
             case (7)://enregistrement des modifications
                 system("cls");
-                fic= fopen(chemin,"w");
-                list_to_file(fic,nb_ligne,tab);
-                fclose(fic);
+                printf("Que voulez vous ?\n 1) Enregistrer ?\n 2) Enregistrer sous ?\n Entrez votre choix : ");
+                scanf("%d",&enregistrement);
+                if (enregistrement == 1){
+                    fic= fopen(chemin,"w");
+                    list_to_file(fic,nb_ligne,tab);
+                    fclose(fic);
+                }
+                else{
+                    creerFichierCSV(nb_ligne,tab);
+                }
                 vider_buffer();
                 break;
             case (8):

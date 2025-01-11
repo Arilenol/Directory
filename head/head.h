@@ -244,4 +244,15 @@ void enlever_espace_fin(char mot[]) ;
  * @return void
  */
 void enlever_espace_debut(char mot[]);
+
+/**
+ * @author Leny
+ * @brief Creation d'un fichier et csv et copie de la liste de CLIENT dedans
+ * @pre taille > 0
+ * @param[in] taille : int
+ * @param[in] clients : [CLIENT] 
+ * @post copie la liste de client dans un fichier csv 
+ * @return void
+ */
+void creerFichierCSV(int taille, CLIENT clients[taille]) ;
 #endif // HEAD_H_INCLUDED
