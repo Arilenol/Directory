@@ -1,5 +1,6 @@
 #include "../head/head.h"
 int nb_op_filtre = 0;
+int nb_op_recherche = 0;
 int total_lignes(FILE * fichier){
     // Remise à zéro du curseur du fichier pour s'assurer de commencer au début
     rewind(fichier);
@@ -19,31 +20,44 @@ int total_lignes(FILE * fichier){
 }
 
 void enlever_espace_debut(char mot[]) {
+    nb_op_recherche = nb_op_recherche + 2 ;
     int indice = 0; // Trouver le premier caractère non-espace
     int length = strlen(mot);
 
     // Parcours pour trouver le premier caractère alphabétique ou autre non-espace
+    nb_op_recherche = nb_op_recherche + 4 ;
     while (indice < length && mot[indice] == ' ') {
+        nb_op_recherche = nb_op_recherche + 2 ;
         indice++;
     }
 
     // Décaler la chaîne si des espaces ont été trouvés
+    nb_op_recherche = nb_op_recherche + 1 ;
     if (indice > 0) {
+        nb_op_recherche = nb_op_recherche + 3 ;
         for (int i = 0; i <= length - indice; i++) {
+            //mot[i] = mot[i + indice]; 1 affectation, 3 calculs
+            nb_op_recherche = nb_op_recherche + 4 ;
             mot[i] = mot[i + indice];
+            //i++
+            nb_op_recherche = nb_op_recherche + 2 ;
         }
     }
 }
 
 void enlever_espace_fin(char mot[]) {
+    nb_op_recherche = nb_op_recherche + 2 ;
     int length = strlen(mot) - 1;
 
     // Parcourir la chaîne à l'envers pour trouver le dernier caractère non espace
+    nb_op_recherche = nb_op_recherche + 4 ;
     while (length >= 0 && mot[length] == ' ') {
+        nb_op_recherche = nb_op_recherche + 2 ;
         length--;
     }
 
     // Ajouter le terminateur de chaîne après le dernier caractère non espace
+    nb_op_recherche = nb_op_recherche + 3 ;
     mot[length + 1] = '\0';
 }
 
@@ -127,11 +141,14 @@ void mot_par_mot(FILE* fichier,int nb_ligne, CLIENT tableau[nb_ligne]){
     }
 
 void retirerchariot(char mot[]){
+    nb_op_recherche = nb_op_recherche + 1 ;
     int i = 0;
+    nb_op_recherche = nb_op_recherche + 5 ;
     while (mot[i]!='\n' && mot[i]!='\0'){
+        nb_op_recherche = nb_op_recherche + 2 ;
         i++;
         }
-
+    nb_op_recherche = nb_op_recherche + 2 ;
     mot[i]='\0';
 }
 
@@ -288,6 +305,8 @@ int filtre(int taille, CLIENT tab[taille] ){
 
 int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     int indice_temporaire[100];
+    // 4 affectations ci-dessous, 4 "="
+    nb_op_recherche = nb_op_recherche + 4 ;
     int indice2 = 0;
     int indice_final = -1; //l'indice est init à -1 en cas de CLIENT non trouvé
     int option,nb_l;
@@ -305,14 +324,19 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
     printf("Entrez votre choix ici : ");
     // Lecture du premier caractère de l'entrée utilisateur en cas d'erreur de saisi, c'est seulement le premier élément qui est retenu
     choix[0] = fgetc(stdin);
+    //(calcul de choix[0] puis comparaison) x 2 puis opérateurs logique "ou" utilisé
+    nb_op_recherche = nb_op_recherche + 5 ;
     while (choix[0] < '1' || choix[0] > '5') {
         // Si la saisie est hors plage (c'est-à-dire en dehors des chiffres 1-5),
         // un message d'erreur est affiché et une nouvelle saisie est demandée
         printf("Sasie hors plage\nRéessayez : ");
         choix[0] = fgetc(stdin);
     }
+    //affectation
+    nb_op_recherche = nb_op_recherche + 1 ;
     option = atoi(choix);
     vider_buffer();
+    //on prend le pire des cas car on recherche le nb d'opérations élémentaires, le pire des cas est le cas 5
     switch (option) {
         //recherche avec le prénom
         case 1:
@@ -415,49 +439,96 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
 
             printf("Entrez le prénom de la personne : ");
             fgets(prenom, 41, stdin);
+            //nettoyer_char parcours la chaine entière jusqu'à trouver \n 
+            //calcul de nb_op_recherche dans nettoyer char.
             nettoyer_char(prenom);
+            //comparaison + calcul de prenom[0]
+            nb_op_recherche = nb_op_recherche + 2 ;
             if (prenom[0]!='\0'){
+                //affectation de i, comparaison
+                nb_op_recherche = nb_op_recherche + 2 ;
                 for (int i = 0; i < nb_ligne; i++) {
+                    //i++ donc 2 opérations + comparaison dans la boucle
+                    nb_op_recherche = nb_op_recherche + 3 ;
+                    //comparaison puis calcul tableau[i]
+                    nb_op_recherche = nb_op_recherche + 2 ;
                     if (stricmp(prenom, tableau[i].prenom) == 0) {
                         // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                        //affection + calcul de indice_temporaire[indice2] 
+                        nb_op_recherche = nb_op_recherche + 2 ;
                         indice_temporaire[indice2] = i;
                         // On copie l'élément correspondant dans le tableau temporaire
+                        //affection + calcul de indice_temporaire[indice2] 
+                        nb_op_recherche = nb_op_recherche + 2 ;
                         tab[indice2] = tableau[i];
                         // On incrémente l'indice pour le tableau temporaire
+                        //affection + calcul indice2
+                        nb_op_recherche = nb_op_recherche + 2 ;
                         indice2++;
                     }
+                    //affectation
+                    nb_op_recherche = nb_op_recherche + 1;
                     nb_ligne_change = indice2;
                 }
             }
 
             printf("Entrez le nom de la personne : ");
             fgets(nom, 41, stdin);
+            //calcul de nb_op_recherche dans nettoyer_char.
             nettoyer_char(nom);
+            //comparaison + calcul de nom[0] + 2 opérateurs logiques
+            nb_op_recherche = nb_op_recherche + 4 ;
             if (nom[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
+                    //i++ donc 2 opérations + comparaison dans la boucle
+                    nb_op_recherche = nb_op_recherche + 3 ;
+                    //comparaison puis calcul tableau[i]
+                    nb_op_recherche = nb_op_recherche + 2 ;
                     if (stricmp(nom, tableau[i].nom) == 0) {
                         // Si les noms correspondent, on ajoute l'indice dans un tableau temporaire
+                        //affection + calcul de indice_temporaire[indice2] 
+                        nb_op_recherche = nb_op_recherche + 2 ;
                         indice_temporaire[indice2] = i;
                         // On copie l'élément correspondant dans le tableau temporaire
+                        //affection + calcul de indice_temporaire[indice2] 
+                        nb_op_recherche = nb_op_recherche + 2 ;
                         tab[indice2] = tableau[i];
                         // On incrémente l'indice pour le tableau temporaire
+                        //affection + calcul indice2
+                        nb_op_recherche = nb_op_recherche + 2 ;
                         indice2++;
                     }
+                    //affectation
+                    nb_op_recherche = nb_op_recherche + 1;
                     nb_ligne_change = indice2;
                 }
             }
             else if (nom[0]!='\0' && nb_ligne_change!=nb_ligne){
+            //comparaison, calculs
+            nb_op_recherche = nb_op_recherche + 4 ;
+                // affection de i + comparaison
+                nb_op_recherche = nb_op_recherche + 2 ;
                 for (int i = 0; i < nb_ligne_change; ) { // pas de i++ car bug avec le décalage
+                    //calcul de tab[i] + comparaison
+                    nb_op_recherche = nb_op_recherche + 2 ;
                     if (stricmp(nom, tab[i].nom) != 0) {
                         // Décaler les éléments suivants pour supprimer l'élément courant
+                        //affection de j, comparaison
+                        nb_op_recherche = nb_op_recherche + 2 ;
                         for (int j = i; j < nb_ligne_change - 1; j++) {
+                            //(calcul de j + 1, de tab[j+1], de tab[j] et affection) x 2
+                            nb_op_recherche = nb_op_recherche + 8 ;
                             tab[j] = tab[j + 1];
                             indice_temporaire[j] = indice_temporaire[j+1];
 
                         }
+                        //affection et calcul
+                        nb_op_recherche = nb_op_recherche + 2 ;
                         nb_ligne_change--; // Réduire la taille logique
                         // Ne pas incrémenter i pour revérifier l'élément décalé
                     } else {
+                        //affection et calcul
+                        nb_op_recherche = nb_op_recherche + 2 ;
                         i++;
                     }
                 }
@@ -466,6 +537,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez la ville de la personne : ");
             fgets(ville, 41, stdin);
             nettoyer_char(ville);
+            //calcul de ville[0], 2 comparaison et une opération logique
+            nb_op_recherche = nb_op_recherche + 4;
             if (ville[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(ville, tableau[i].ville) == 0) {
@@ -499,6 +572,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le code postal de la personne : ");
             fgets(code, 41, stdin);
             nettoyer_char(code);
+            //calcul de code[0], 2 comparaison et une opération logique
+            nb_op_recherche = nb_op_recherche + 4;
             if (code[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(code, tableau[i].codep) == 0) {
@@ -531,6 +606,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le numéro de téléphone : ");
             fgets(numero, 41, stdin);
             nettoyer_char(numero);
+            //calcul de numero[0], 2 comparaison et une opération logique
+            nb_op_recherche = nb_op_recherche + 4;
             if (numero[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(numero, tableau[i].tel) == 0) {
@@ -563,6 +640,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez l'adresse mail : ");
             fgets(mail, 41, stdin);
             nettoyer_char(mail);
+            //calcul de mail[0], 2 comparaison et une opération logique
+            nb_op_recherche = nb_op_recherche + 4;
             if (mail[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(mail, tableau[i].adrmail) == 0) {
@@ -595,6 +674,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez le métier : ");
             fgets(metier, 21, stdin);
             nettoyer_char(metier);
+            //calcul de metier[0], 2 comparaison et une opération logique
+            nb_op_recherche = nb_op_recherche + 4;
             if (metier[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(metier, tableau[i].profession) == 0) {
@@ -627,6 +708,8 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Entrez la date de naissance : ");
             fgets(date, 21, stdin);
             nettoyer_char(date);
+            //calcul de date[0], 2 comparaison et une opération logique
+            nb_op_recherche = nb_op_recherche + 4;
             if (date[0]!='\0' && nb_ligne_change==nb_ligne){
                 for (int i = 0; i < nb_ligne; i++) {
                     if (stricmp(date, tableau[i].date_naissance) == 0) {
@@ -670,13 +753,21 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             printf("Choix incorrect\n");
             break;
     }
+    //comparaison
+    nb_op_recherche = nb_op_recherche + 1;
     if (option!=5)
     afficher_avec_lignes(indice2,tab);
+    //comparaison
+    nb_op_recherche = nb_op_recherche + 1;
     if (option!=3){
         printf("Entrez le numéro de la ligne sur laquelle vous voulez modifier un élément sinon tapez 0 : ");
         int ligne;
         scanf("%d",&ligne);
+        //comparaison
+        nb_op_recherche = nb_op_recherche + 1;
         if (ligne != 0){
+        //affectation, calcul de ligne - 1 et calcul de indice_temporaire[ligne - 1]
+        nb_op_recherche = nb_op_recherche + 3;
         indice_final = indice_temporaire[ligne - 1];
             }
         }
@@ -720,6 +811,7 @@ void modif(int nb_ligne, CLIENT tableau[nb_ligne]){
     {
     case 1:
         select = recherche(nb_ligne, tableau);
+        printf("nb_op_recherche est %d\n",nb_op_recherche);
         break;
     case 2:
         select = filtre(nb_ligne, tableau);
