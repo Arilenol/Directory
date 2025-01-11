@@ -1,5 +1,5 @@
 #include "../head/head.h"
-
+int nb_op_filtre = 0;
 int total_lignes(FILE * fichier){
     // Remise à zéro du curseur du fichier pour s'assurer de commencer au début
     rewind(fichier);
