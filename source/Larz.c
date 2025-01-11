@@ -250,7 +250,7 @@ int filtre(int taille, CLIENT tab[taille] ){
         printf("Erreur de valeur");
         break;
     }
-    afficher(indice2,tableau);
+    afficher_avec_lignes(indice2,tableau);
     // Demande à l'utilisateur quel élément de la liste il veut modifier
     printf("Entrez le numéro de la ligne sur laquelle vous voulez modifier un élément sinon tapez 0 : ");
     int ligne_choisie;
@@ -365,7 +365,10 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
                 printf("Aucun client trouvé avec ce prénom.\n");
                 return indice_final; // Retourne -1
             }
-            indice_final = indice_temporaire[0];
+            else{
+                printf("Vous avez rentré sa clé primaire, il a été trouvé !\n");
+                return indice_temporaire[0];
+            }
             break;
         //recherche avec mail
         case 4:
@@ -637,10 +640,11 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             }
 
             if (numero[0]!='\0'){
+                printf("Vous avez rentré sa clé primaire, il a été trouvé !\n");
                 return indice_temporaire[0];
             }
             else{
-                afficher(nb_ligne_change,tab);
+                afficher_avec_lignes(nb_ligne_change,tab);
             }
             
             break;
@@ -649,8 +653,7 @@ int recherche(int nb_ligne, CLIENT tableau[nb_ligne]) {
             break;
     }
     if (option!=5)
-    afficher(indice2,tab);
-    printf("%d",indice_temporaire[0]);
+    afficher_avec_lignes(indice2,tab);
     if (option!=3){
         printf("Entrez le numéro de la ligne sur laquelle vous voulez modifier un élément sinon tapez 0 : ");
         int ligne;

@@ -106,6 +106,20 @@ void afficher(int nb_l,CLIENT tab[nb_l]) {
     printf("Appuyer sur Entrer pour continuer");// permet d'attendre un saisie utilisateur pour changer de page
     scanf("%c",&suite);
 }
+
+void afficher_avec_lignes(int nb_l,CLIENT tab[nb_l]) {
+    char suite;
+    printf("%-5s |%-5s|%-20s|%-25s|%-20s|%-11s|%-14s|%-35s|%-15s|%-10s\n\n","ligne","id","prenom","nom","ville","Code postal","téléphone","adresse mail", "profession", "âge");// afficher l'entête
+    for(int i = 0; i< nb_l;i++){// pour chaque client
+        printf(" %-5d|%-5d|%-20s|%-25s|%-20s|%-11s|%-14s|%-40s|%-15s|",i+1,tab[i].id,tab[i].prenom,tab[i].nom,tab[i].ville,tab[i].codep,tab[i].tel,tab[i].adrmail,tab[i].profession);// afficher toute les information
+        calcul_age(tab[i].date_naissance);//sauf pour 'lage qui est caculer à l'affichage
+        printf("\n");
+    }
+    printf("Appuyer sur Entrer pour continuer");// permet d'attendre un saisie utilisateur pour changer de page
+    scanf("%c",&suite);
+}
+
+
 void afficher_manq(int nb_l,CLIENT tab[nb_l]) {
     char suite;
     int p=0;

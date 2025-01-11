@@ -180,6 +180,14 @@ int filtre(int taille, CLIENT tab[taille] );
 
 /**
  * @author Leny
+ * @brief Affiche les informations des clients dans un tableau avec les numéros de lignes.
+ * @param nb_l La taille du tableau contenant les structures CLIENT
+ * @param tab Le tableau des structures CLIENT à afficher
+ */
+void afficher_avec_lignes(int nb_l,CLIENT tab[nb_l]);
+
+/**
+ * @author Leny
  * @brief Supprime les espaces à la fin d'une chaîne de caractères.
  * @param mot Chaîne de caractères dont les espaces à la fin seront supprimés. La chaîne est modifiée directement.
  */
