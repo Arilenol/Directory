@@ -1,6 +1,70 @@
-# SAÉ_S1.01-S1.02
+# Annuaire en C
 
+Un gestionnaire d’annuaire développé en **langage C** fonctionnant en ligne de commande. Le projet permet de créer et gérer une liste de contacts avec des fonctionnalités de recherche, filtrage, ajout et consultation. Une suite de **tests** est incluse afin de vérifier le bon fonctionnement des différentes parties du programme.
 
+## Installation
+
+### Prérequis
+
+* Un compilateur C (**gcc** recommandé)
+* Un terminal (Linux, macOS ou Windows avec WSL/MinGW)
+
+### Étapes d'installation
+
+1. Clonez le dépôt :
+
+   ```
+   git clone https://github.com/Arilenol/Directory.git
+   ```
+
+2. Placez-vous à la racine du projet :
+
+   ```
+   cd annuaire-c
+   ```
+
+3. Compilez le programme
+
+4. Vérifiez que tous les dossiers sont présents :
+
+   * Les fichiers sources dans `src/`
+   * Les fichiers d’en-tête dans `include/`
+   * Les tests dans `tests/`
+   * Les fichiers de données dans `benchmark_1/` 
+
+## Utilisation
+
+Pour lancer l’application, exécutez le programme compilé :
+
+```
+./annuaire
+```
+
+Un menu interactif vous permettra de :
+
+* Ajouter un contact
+* Rechercher un contact
+* Filtrer les contacts selon certains critères
+* Afficher l’ensemble des contacts
+* Modifier ou supprimer un contact
+
+## Structure du projet
+
+```
+annuaire-c/
+│
+├── source/        # Code source principal
+├── head/    # Fichiers d'en-tête (.h)
+├── benchmark_1/       # Fichiers de sauvegarde 
+└── Makefile    # Script de compilation
+```
+
+## Fonctionnalités principales
+
+* Gestion de contacts avec des **structures en C**
+* Organisation du code en **modules**
+* Sauvegarde et lecture de données 
+* Tests unitaires
 
 ## Getting started
 
